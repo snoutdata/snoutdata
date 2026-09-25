@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/snoutdata/snoutdata/security/advisories/new
+    about: Privately. Never in a public issue.
+  - name: Help with your account or billing
+    url: https://snoutdata.com/contact
+    about: Anything about your plan, invoices or a specific project.
+  - name: Documentation
+    url: https://docs.snoutdata.com
+    about: Guides and references for Cloud, the CLI, the client and the desktop app.

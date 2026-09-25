@@ -1,0 +1,15 @@
+name: Example request
+description: Ask for an example of something you want to build with SnoutData.
+labels: [example]
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: What you want to build
+    validations:
+      required: true
+  - type: input
+    id: stack
+    attributes:
+      label: Language or framework
+      description: For example Node, Next.js, Python, a plain HTML page.
