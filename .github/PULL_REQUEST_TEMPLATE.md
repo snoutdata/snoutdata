@@ -8,5 +8,6 @@
 - [ ] For the docs: the change is to a file under `docs/`, and the page still reads well on its own.
 - [ ] No keys, passwords or connection strings anywhere in the diff.
 
-The files under `docs/` are copied here from the source of docs.snoutdata.com. A maintainer carries
-an accepted docs change into that source, and the next sync brings it back here.
+This repo is published from SnoutData's main repository. An accepted pull request is applied there
+with you as co-author and comes back here as a commit that credits you; see
+[CONTRIBUTING.md](../CONTRIBUTING.md).
