@@ -1,0 +1,14 @@
+{
+	"name": "snoutdata-example-node-todos",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"start": "node --env-file=.env index.mjs"
+	},
+	"dependencies": {
+		"@snoutdata/client": "^0.1.0"
+	},
+	"engines": {
+		"node": ">=22"
+	}
+}

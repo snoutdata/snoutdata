@@ -1,0 +1,21 @@
+name: Docs fix
+description: A page on docs.snoutdata.com is wrong, unclear or missing something.
+labels: [docs]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Page
+      description: The URL on docs.snoutdata.com, or the file under docs/.
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong or missing
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: What it should say

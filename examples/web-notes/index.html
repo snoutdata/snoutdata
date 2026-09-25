@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>SnoutData notes</title>
+	<style>
+		body { font: 16px/1.5 system-ui, sans-serif; max-width: 36rem; margin: 3rem auto; padding: 0 1rem; }
+		form { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 1rem 0; }
+		input { flex: 1; min-width: 10rem; padding: 0.4rem; }
+		li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.25rem 0; }
+		#message { color: #a33; }
+		[hidden] { display: none !important; }
+	</style>
+</head>
+<body>
+	<h1>Notes</h1>
+	<p id="message" role="status"></p>
+
+	<section id="signed-out">
+		<form id="auth-form">
+			<input id="email" type="email" placeholder="Email" required autocomplete="email" />
+			<input id="password" type="password" placeholder="Password" required minlength="6" autocomplete="current-password" />
+			<button type="submit" data-action="in">Sign in</button>
+			<button type="submit" data-action="up">Sign up</button>
+		</form>
+	</section>
+
+	<section id="signed-in" hidden>
+		<p>Signed in as <strong id="who"></strong> <button id="sign-out">Sign out</button></p>
+		<form id="note-form">
+			<input id="note" placeholder="Write a note" required />
+			<button type="submit">Add</button>
+		</form>
+		<ul id="notes"></ul>
+	</section>
+
+	<script type="module">
+		import { createClient } from 'https://cdn.jsdelivr.net/npm/@snoutdata/client@0.1/+esm'
+
+		// Your project's API URL and its ANON key (`npx snoutdata keys`). The anon key is meant
+		// to be public: row-level security in migrations/001_notes.sql decides what it reaches.
+		// Never put the service_role key in a page.
+		const SNOUTDATA_URL = 'https://<ref>.api.snoutdata.com'
+		const SNOUTDATA_ANON_KEY = '<anon key>'
+
+		const db = createClient(SNOUTDATA_URL, SNOUTDATA_ANON_KEY)
+		const $ = (id) => document.getElementById(id)
+
+		function say(text) {
+			$('message').textContent = text ?? ''
+		}
+
+		async function render() {
+			const { data } = await db.auth.getSession()
+			const session = data.session
+			$('signed-out').hidden = Boolean(session)
+			$('signed-in').hidden = !session
+			if (!session) {
+				return
+			}
+			$('who').textContent = session.user.email
+			const { data: notes, error } = await db.from('notes').select('id, body').order('id', { ascending: false })
+			if (error) {
+				say(error.message)
+				return
+			}
+			$('notes').replaceChildren(
+				...notes.map((note) => {
+					const li = document.createElement('li')
+					const text = document.createElement('span')
+					text.textContent = note.body
+					const remove = document.createElement('button')
+					remove.textContent = 'Delete'
+					remove.onclick = async () => {
+						const { error } = await db.from('notes').delete().eq('id', note.id)
+						say(error?.message)
+						render()
+					}
+					li.append(text, remove)
+					return li
+				})
+			)
+		}
+
+		$('auth-form').addEventListener('submit', async (event) => {
+			event.preventDefault()
+			const credentials = { email: $('email').value, password: $('password').value }
+			if (event.submitter?.dataset.action === 'up') {
+				const { error } = await db.auth.signUp(credentials)
+				say(error ? error.message : 'Check your email and click the link to confirm, then you are signed in.')
+				return
+			}
+			const { error } = await db.auth.signInWithPassword(credentials)
+			say(error?.message)
+			render()
+		})
+
+		$('note-form').addEventListener('submit', async (event) => {
+			event.preventDefault()
+			const { error } = await db.from('notes').insert({ body: $('note').value })
+			say(error?.message)
+			if (!error) {
+				$('note').value = ''
+			}
+			render()
+		})
+
+		$('sign-out').addEventListener('click', async () => {
+			await db.auth.signOut()
+			say('')
+			render()
+		})
+
+		db.auth.onAuthStateChange(() => render())
+		render()
+	</script>
+</body>
+</html>
