@@ -1,0 +1,40 @@
+name: Bug report
+description: Something in SnoutData Cloud, the CLI, the client or the desktop app does not work as it should.
+labels: [bug]
+body:
+  - type: dropdown
+    id: product
+    attributes:
+      label: Where
+      options:
+        - SnoutData Cloud (a project, the dashboard)
+        - The snoutdata CLI
+        - "@snoutdata/client"
+        - SnoutData Desktop
+        - An example in this repo
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what you expected
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Commands, code or clicks. Leave out keys, passwords and connection strings.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: "`npx snoutdata --version`, the client version, or the desktop app's Help → About."
+  - type: textarea
+    id: output
+    attributes:
+      label: Output
+      description: Error messages or `--json` output, if any.
+      render: text
