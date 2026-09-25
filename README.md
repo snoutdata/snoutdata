@@ -17,18 +17,6 @@
   <a href="https://snoutdata.com/download">Download</a>
 </p>
 
-## Repositories
-
-- **[snoutdata/snoutdata](https://github.com/snoutdata/snoutdata)**: this repo. The
-  [docs](./docs) behind docs.snoutdata.com, runnable [examples](./examples), and the place to start.
-- **[snoutdata/snout-cli](https://github.com/snoutdata/snout-cli)**: the source of the SnoutData
-  CLI and its MCP server ([`snoutdata` on npm](https://www.npmjs.com/package/snoutdata)).
-- **[snoutdata/snout-client](https://github.com/snoutdata/snout-client)**: `@snoutdata/client`,
-  the JavaScript client for a SnoutData Cloud project. MIT.
-- **[snoutdata/app](https://github.com/snoutdata/app)**: SnoutData Desktop releases for Windows,
-  macOS and Linux, and the feed the app updates itself from.
-- **[snoutdata/apt](https://github.com/snoutdata/apt)**: the signed Debian/Ubuntu apt repository.
-
 ## SnoutData Cloud
 
 Your app's backend in one project: **Postgres 17** with **auth**, **file storage**, **realtime**,
