@@ -109,5 +109,7 @@ inside it.
 ## License
 
 The [examples](./examples) are under the [MIT License](./LICENSE). The [docs](./docs) are under
-[CC BY 4.0](./LICENSE-docs). The CLI (Elastic License 2.0) and the client (MIT) carry their own
+[CC BY 4.0](./docs/LICENSE). The CLI (Elastic License 2.0) and the client (MIT) carry their own
 licences in their repos.
+
+Contributions are welcome: see [CONTRIBUTING.md](./CONTRIBUTING.md).
