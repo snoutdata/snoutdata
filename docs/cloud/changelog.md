@@ -11,6 +11,15 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. The desktop app has its own release notes, shown in the app
 after each update.
 
+## 2026-09-26
+
+- **Time series.** SnoutTime 0.1.3. A query over a few hosts or a short stretch of time reads
+  only the part of a sealed partition it needs, and a `WHERE host IN (...)` on the sort key seeks
+  to each value instead of scanning. A filter written as `ts >= '2026-09-26 12:00+00'::timestamptz
+  - interval '1 hour'` now narrows to the partitions it reaches while the query is planned
+  (`snouttime.plan_time_bounds`, on by default). Projects move onto it on their own; see
+  [Versions and upgrades](timeseries/limits#versions-and-upgrades).
+
 ## 2026-09-25
 
 - **GitHub.** [snoutdata/snoutdata](https://github.com/snoutdata/snoutdata) is the place to start:
