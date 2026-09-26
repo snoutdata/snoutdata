@@ -26,6 +26,10 @@ after each update.
   processes sharing one session no longer sign each other out when one refreshes it.
 - **Dashboard.** A project's API tab starts its code with `@snoutdata/client`. An app already
   written with supabase-js still works unchanged.
+- **Time series.** SnoutTime 0.1.6. Automatic sealing failed with "permission denied for schema
+  snouttime_internal" once a series had a sealed partition, and the dashboard's Time series tab
+  showed the seal job as failed. Partitions due for sealing were still sealed; what failed was
+  the check for a sealed partition that has changed enough to seal again. It runs now.
 - **Time series.** SnoutTime 0.1.5. With SnoutTime switched on, `DROP TABLE` failed for every
   table in the database with "permission denied for schema snouttime_internal". Dropping a table,
   a series table and its partitions included, works again.
