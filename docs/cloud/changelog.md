@@ -18,6 +18,8 @@ after each update.
   `auth.signInWithIdToken` (Google One Tap and similar), `auth.signInWithSSO`,
   `auth.startAutoRefresh`, and a `debug` option that says why a session ended. Two tabs or two
   processes sharing one session no longer sign each other out when one refreshes it.
+- **Dashboard.** A project's API tab starts its code with `@snoutdata/client`. An app already
+  written with supabase-js still works unchanged.
 - **Time series.** SnoutTime 0.1.3. A query over a few hosts or a short stretch of time reads
   only the part of a sealed partition it needs, and a `WHERE host IN (...)` on the sort key seeks
   to each value instead of scanning. A filter written as `ts >= '2026-09-26 12:00+00'::timestamptz
