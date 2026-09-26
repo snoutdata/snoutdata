@@ -20,7 +20,8 @@ after each update.
 - **CLI.** The source is on GitHub at [snoutdata/snout-cli](https://github.com/snoutdata/snout-cli),
   source-available under the Elastic License 2.0.
 - **Client.** `@snoutdata/client` is on GitHub at
-  [snoutdata/snout-client](https://github.com/snoutdata/snout-client), under the MIT licence.
+  [snoutdata/snout-client](https://github.com/snoutdata/snout-client), under the Apache License 2.0
+  (version 0.1.0 was published under MIT and stays MIT).
 
 ## 2026-09-24
 
