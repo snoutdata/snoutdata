@@ -23,7 +23,7 @@ Your app's backend in one project: **Postgres 17** with **auth**, **file storage
 a **REST and GraphQL API**, **Snout Functions** (your own TypeScript) and **timeseries**. It
 sleeps when idle and wakes on the next connection.
 
-Your app talks to it with [`@snoutdata/client`](https://github.com/snoutdata/snout-client) (MIT),
+Your app talks to it with [`@snoutdata/client`](https://github.com/snoutdata/snout-client) (Apache-2.0),
 or with the client it is already written against by changing one URL.
 [Get started](https://docs.snoutdata.com/cloud/getting-started).
 
@@ -97,7 +97,7 @@ inside it.
 ## License
 
 The [examples](./examples) are under the [MIT License](./LICENSE). The [docs](./docs) are under
-[CC BY 4.0](./docs/LICENSE). The CLI (Elastic License 2.0) and the client (MIT) carry their own
+[CC BY 4.0](./docs/LICENSE). The CLI (Elastic License 2.0) and the client (Apache-2.0) carry their own
 licences in their repos.
 
 Contributions are welcome: see [CONTRIBUTING.md](./CONTRIBUTING.md).
