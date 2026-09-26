@@ -13,6 +13,10 @@ after each update.
 
 ## 2026-09-26
 
+- **`@snoutdata/client` 0.2.1.** Without a `Database` type, rows and function results are `any`,
+  as in supabase-js, so moving an app over is changing its import. `insert(...).select()` (and
+  `update`, `upsert`, `delete`) returns the table's rows. With a `Database` type from
+  `snoutdata gen types typescript`, rows stay exact.
 - **`@snoutdata/client` 0.2.0.** A session can live in a cookie on your parent domain, so your
   subdomains share one sign-in ([`cookieStorage`](auth#one-sign-in-across-your-subdomains)). Adds
   `auth.signInWithIdToken` (Google One Tap and similar), `auth.signInWithSSO`,
