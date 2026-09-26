@@ -127,6 +127,24 @@ and the user's access token in `Authorization`, which names the person. That is 
 `auth.uid()` the signed-in user rather than nobody. The client library does this for you; if you
 call the API by hand, it is the one detail worth getting right.
 
+### One sign-in across your subdomains
+
+In a browser the session is kept in `localStorage`, which belongs to one origin: signing in on
+`www.example.com` does not sign anyone in on `app.example.com`. Keep it in a cookie on the parent
+domain instead, and both see the same session:
+
+```js
+import { createClient, cookieStorage } from '@snoutdata/client'
+
+const db = createClient(url, anonKey, {
+  auth: { storage: cookieStorage({ domain: '.example.com', secure: true }) }
+})
+```
+
+A session is larger than one cookie holds, so it is split across numbered cookies and joined
+again. The format is the one `@supabase/ssr` writes, so a site moving from it keeps its visitors
+signed in: give `storageKey: 'sb-<first label of the URL you used>-auth-token'` to read theirs.
+
 ## The emails your users get
 
 Confirm, password reset, magic link, invite and email change are sent for you, from our sending
