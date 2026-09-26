@@ -26,6 +26,8 @@ after each update.
   processes sharing one session no longer sign each other out when one refreshes it.
 - **Dashboard.** A project's API tab starts its code with `@snoutdata/client`. An app already
   written with supabase-js still works unchanged.
+- **Time series.** SnoutTime 0.1.4. A `LATERAL` join for "the latest reading at or before each
+  event", over a table with many series, no longer slows down as the number of series grows.
 - **Time series.** SnoutTime 0.1.3. A query over a few hosts or a short stretch of time reads
   only the part of a sealed partition it needs, and a `WHERE host IN (...)` on the sort key seeks
   to each value instead of scanning. A filter written as `ts >= '2026-09-26 12:00+00'::timestamptz
