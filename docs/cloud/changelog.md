@@ -13,6 +13,8 @@ after each update.
 
 ## 2026-09-26
 
+- **`@snoutdata/client` 0.2.2.** A sign-in that leaves the page and comes back (SSO, GitHub, a
+  magic link) completes when the session is kept in `cookieStorage`. In 0.2.0 and 0.2.1 it did not.
 - **`@snoutdata/client` 0.2.1.** Without a `Database` type, rows and function results are `any`,
   as in supabase-js, so moving an app over is changing its import. `insert(...).select()` (and
   `update`, `upsert`, `delete`) returns the table's rows. With a `Database` type from
