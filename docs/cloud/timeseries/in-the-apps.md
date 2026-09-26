@@ -130,7 +130,7 @@ series loaded with history, or one that has stopped receiving writes, still show
 
 ## The dashboard's Time series tab
 
-{/* screenshot: dashboard.snoutdata.com, a project's Time series tab with one series card showing its facts, the sealed before and after figure, its rollups and its jobs */}
+![The dashboard's Time series tab: the metrics series card with its time column, partition size and 90 days' retention, 9 partitions with sealed days at 3.5 MiB down to 512 KiB (6.9x), its hourly rollup, and its four jobs, each ok](/img/screenshots/cloud-timeseries-tab.png)
 
 On [dashboard.snoutdata.com](https://dashboard.snoutdata.com), open a project and choose the
 **Time series** tab.
