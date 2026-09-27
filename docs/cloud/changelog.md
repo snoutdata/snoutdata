@@ -13,6 +13,10 @@ after each update.
 
 ## 2026-09-26
 
+- **Dashboard.** The Storage tab can make and delete buckets, make a bucket public or private,
+  and upload, download and delete files. Upload takes several files at once, into an optional
+  folder, or a drop onto the Files card. Each change goes through your project's storage API, the
+  same one your app uses.
 - **`@snoutdata/client` 0.2.2.** A sign-in that leaves the page and comes back (SSO, GitHub, a
   magic link) completes when the session is kept in `cookieStorage`. In 0.2.0 and 0.2.1 it did not.
 - **`@snoutdata/client` 0.2.1.** Without a `Database` type, rows and function results are `any`,
