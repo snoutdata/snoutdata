@@ -15,7 +15,7 @@ Coding agents can learn all of this as an Agent Skill: `npx skills add https://s
 See [the SnoutData skill for coding agents](agent-skill).
 
 The source is on GitHub at [snoutdata/snout-cli](https://github.com/snoutdata/snout-cli),
-source-available under the Elastic License 2.0: read it, build it, file issues against it. The
+open source under the Apache License 2.0: read it, build it, file issues against it. The
 docs and runnable examples live in [snoutdata/snoutdata](https://github.com/snoutdata/snoutdata).
 A star on either helps other people find them.
 

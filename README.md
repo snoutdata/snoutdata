@@ -39,7 +39,7 @@ npx -y snoutdata mcp            # the same operations as MCP tools for your agen
 ```
 
 Its source is on GitHub at **[snoutdata/snout-cli](https://github.com/snoutdata/snout-cli)**,
-source-available under the Elastic License 2.0: read it, build it, file issues against it. It is built to be driven by a program as much as by a
+open source under the Apache License 2.0: read it, build it, file issues against it. It is built to be driven by a program as much as by a
 person:
 
 - **`--json` everywhere**, with exactly one JSON value on stdout, so a pipe into `jq` needs no
@@ -97,7 +97,7 @@ inside it.
 ## License
 
 The [examples](./examples) are under the [MIT License](./LICENSE). The [docs](./docs) are under
-[CC BY 4.0](./docs/LICENSE). The CLI (Elastic License 2.0) and the client (Apache-2.0) carry their own
+[CC BY 4.0](./docs/LICENSE). The CLI and the client (both Apache-2.0) carry their own
 licences in their repos.
 
 Contributions are welcome: see [CONTRIBUTING.md](./CONTRIBUTING.md).
