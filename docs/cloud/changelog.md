@@ -53,7 +53,7 @@ after each update.
   (a Node script, and a web page with sign-in and row-level security). "Edit this page" on any
   docs page opens its file there.
 - **CLI.** The source is on GitHub at [snoutdata/snout-cli](https://github.com/snoutdata/snout-cli),
-  source-available under the Elastic License 2.0.
+  open source under the Apache License 2.0.
 - **Client.** `@snoutdata/client` is on GitHub at
   [snoutdata/snout-client](https://github.com/snoutdata/snout-client), under the Apache License 2.0
   (version 0.1.0 was published under MIT and stays MIT).
