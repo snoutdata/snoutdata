@@ -93,6 +93,13 @@ comes out as its enum and an array as an array, where the portable view says `US
 Against a hosted project it needs `psql` on the machine. With `--local` it does not: it borrows
 the container's, like everything else here.
 
+## Why Podman and not Docker
+
+Hosted projects run under Podman, rootless, and `snoutdata start` runs the same image the same way.
+File ownership and user mapping are where the two differ, so a database that worked only under
+Docker could pass on your machine and fail once deployed. There is deliberately no Docker fallback.
+Podman runs on Windows, macOS and Linux, and installs alongside Docker Desktop.
+
 ## Also read
 
 - [CLI reference](cli#start-stop-status), for every flag.
