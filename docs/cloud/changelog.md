@@ -11,6 +11,10 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. The desktop app has its own release notes, shown in the app
 after each update.
 
+## 2026-09-27
+
+- **CLI 0.5.1.** The npm package carries its licence, the Apache License 2.0, with a NOTICE file.
+
 ## 2026-09-26
 
 - **Dashboard.** The Storage tab can make and delete buckets, make a bucket public or private,
