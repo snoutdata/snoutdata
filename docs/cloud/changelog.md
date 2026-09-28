@@ -18,7 +18,7 @@ after each update.
   rather than by polling, the first subscription on a quiet project is no longer dropped, and a
   policy that raises an error for one subscriber no longer stops changes for everyone else. See
   [Realtime](realtime).
-- **Push has its own section in the docs.** [Push notifications](./push/overview.md) is now a
+- **Push has its own section in the docs.** [Push notifications](/cloud/push) is now a
   page per job: switching it on, then browsers, iPhone and Android step by step (what you need,
   each step, how to tell it worked), devices, sending, the delivery log, and troubleshooting with
   every error each platform gives.

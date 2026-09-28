@@ -19,7 +19,7 @@ directly with your key, so **your app needs no Firebase SDK** and no Firebase pr
   Simulator**, which receives real notifications on an Apple-silicon Mac.
 - Your app's **bundle identifier**, for example `com.example.app`. It is what APNs calls the
   *topic*.
-- A project with [push switched on](./switch-on.md).
+- A project with [push switched on](/cloud/push/switch-on).
 
 ## Step 1: create an APNs key
 
@@ -148,7 +148,7 @@ launch: iOS asks only once, and a refusal can only be undone in Settings.
 ## Step 5: hand the token to your project
 
 Register the token for the user who is signed in, with their access token from
-[Authentication](../auth.md):
+[Authentication](/cloud/auth):
 
 ```swift
 // accessToken: the signed-in user's, from your sign-in with Authentication.
@@ -178,7 +178,7 @@ and App Store builds get **production** tokens. Apple refuses a token sent to th
 A token is 64 hex characters on a device and longer on the Simulator; both are fine. The token can
 change (after a restore, for instance), and iOS calls `didRegisterForRemoteNotificationsWithDeviceToken`
 again: registering it again is safe, it updates the same device. When the user signs out, remove
-the device: [Devices](./devices.md#signing-out).
+the device: [Devices](/cloud/push/devices#signing-out).
 
 ## Step 6: send a notification
 
@@ -189,7 +189,7 @@ select push.send('{"title": "Your order shipped", "body": "It arrives Thursday."
 
 `badge` sets the number on the app's icon, `sound` plays one (`"default"` for the system sound),
 and `thread` groups notifications. For anything else APNs offers, an `apns` object is merged over
-what is built: [Sending](./sending.md#what-a-notification-can-carry).
+what is built: [Sending](/cloud/push/sending#what-a-notification-can-carry).
 
 ## Step 7: check it worked
 
@@ -219,7 +219,7 @@ If the delivery **failed**, `error` is Apple's own reason:
 | `DeviceTokenNotForTopic` | the Bundle ID on the APNs card (or the device's `app`) is not the app's |
 | `InvalidProviderToken` | the Key ID, Team ID and `.p8` do not belong together, or the key was revoked |
 
-[Troubleshooting](./troubleshooting.md#iphone-ipad-and-mac) has the rest.
+[Troubleshooting](/cloud/push/troubleshooting#iphone-ipad-and-mac) has the rest.
 
 ## Going to production
 

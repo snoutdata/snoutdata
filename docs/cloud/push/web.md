@@ -7,7 +7,7 @@ description: Set up Snout Push for browsers step by step. A service worker, a su
 
 # Push to browsers (Web Push)
 
-**What you need:** a project with [push switched on](./switch-on.md). That is all: no Firebase
+**What you need:** a project with [push switched on](/cloud/push/switch-on). That is all: no Firebase
 project, no Google or Apple account. Your project made its own Web Push key pair (VAPID) when push
 started, and browsers subscribe with its public half.
 
@@ -43,7 +43,7 @@ self.addEventListener('notificationclick', (event) => {
 
 What arrives is the notification you sent: `title`, `body`, `image`, `url` (where a click goes)
 and your `data`, plus `snout_push_delivery`, the delivery's id (for
-[receipts](./delivery.md#received-and-opened)).
+[receipts](/cloud/push/delivery#received-and-opened)).
 
 With `@snoutdata/client`, `webNotification` builds `showNotification`'s arguments for you:
 
@@ -89,7 +89,7 @@ update push.settings set anonymous_devices = true;
 ```
 
 and register with the anon key alone. You then reach those browsers by `device_ids` or by a
-[topic](./sending.md#topics).
+[topic](/cloud/push/sending#topics).
 
 **Brave** switches off the push service Chrome uses, so subscribing fails with *"Registration
 failed - push service error"*. The user can turn on **Use Google services for push messaging** in
@@ -124,7 +124,7 @@ select push.send('{"title": "Hello", "body": "From SQL.", "url": "https://exampl
 ```
 
 or to everything a user has registered, with `user_ids => array['<the user id>'::uuid]`.
-[Sending](./sending.md) has the rest.
+[Sending](/cloud/push/sending) has the rest.
 
 ## Step 4: check it worked
 
@@ -147,7 +147,7 @@ order by d.id desc limit 5;
 - **In the browser**, the site's notification permission must be **Allow** (the padlock or site
   settings in the address bar).
 
-More in [Troubleshooting](./troubleshooting.md#browsers).
+More in [Troubleshooting](/cloud/push/troubleshooting#browsers).
 
 ## Unsubscribing
 

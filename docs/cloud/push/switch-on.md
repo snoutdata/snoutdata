@@ -30,8 +30,8 @@ The Push tab then shows a card per platform:
 | Card | Shows | What it needs from you |
 | --- | --- | --- |
 | **Web Push** | **Ready**, and your project's public key | nothing: the project made its own key pair (VAPID) when push first started |
-| **iPhone, iPad and Mac apps (APNs)** | **Not set** until you add a key | an APNs key from your Apple Developer account: [iPhone, iPad and Mac](./apple.md) |
-| **Android apps (FCM)** | **Not set** until you add a key | a Firebase service account: [Android](./android.md) |
+| **iPhone, iPad and Mac apps (APNs)** | **Not set** until you add a key | an APNs key from your Apple Developer account: [iPhone, iPad and Mac](/cloud/push/apple) |
+| **Android apps (FCM)** | **Not set** until you add a key | a Firebase service account: [Android](/cloud/push/android) |
 
 From a terminal, the same reading:
 
@@ -85,7 +85,7 @@ Then send to it:
 select push.send('{"title": "Hello", "body": "It works."}', device_ids => array['<that id>'::uuid]);
 ```
 
-For a browser, let the page register itself ([Browsers](./web.md) shows how): it prints the
+For a browser, let the page register itself ([Browsers](/cloud/push/web) shows how): it prints the
 device's id.
 
 ## How to tell it worked
@@ -102,6 +102,6 @@ order by m.id desc limit 5;
   `provider_id` is their id for it. What the screen shows after that is up to the device, so check
   the screen too.
 - `failed` means it was not taken, and `error` is the provider's own reason:
-  [Troubleshooting](./troubleshooting.md) says what each one means.
+  [Troubleshooting](/cloud/push/troubleshooting) says what each one means.
 
-In a real app, devices register themselves for the user who is signed in: [Devices](./devices.md).
+In a real app, devices register themselves for the user who is signed in: [Devices](/cloud/push/devices).

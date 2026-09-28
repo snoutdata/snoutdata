@@ -47,7 +47,7 @@ curl -X POST "https://<ref>.api.snoutdata.com/push/v1/send" \
   -d '{"notification": {"title": "Your order shipped"}, "user_ids": ["3f1c..."]}'
 ```
 
-or with [`@snoutdata/client`](../api.md#the-client-library):
+or with [`@snoutdata/client`](/cloud/api#the-client-library):
 
 ```js
 const { data, error } = await db.push.send({ notification: { title: 'Your order shipped' }, userIds: [userId] })

@@ -13,7 +13,7 @@ A device is one installation of your app (or one browser) that can receive notif
 ## Registering
 
 A device registers for the user who is **signed in**, with that user's access token from
-[Authentication](../auth.md). Your app gets a token from the platform first (the platform pages
+[Authentication](/cloud/auth). Your app gets a token from the platform first (the platform pages
 show how), then hands it over:
 
 ```bash
@@ -24,7 +24,7 @@ curl -X POST "https://<ref>.api.snoutdata.com/push/v1/devices" \
   -d '{"transport": "apns", "token": "<the device token, hex>", "environment": "production"}'
 ```
 
-It answers with the device's `id`. With [`@snoutdata/client`](../api.md#the-client-library) 0.3.0
+It answers with the device's `id`. With [`@snoutdata/client`](/cloud/api#the-client-library) 0.3.0
 or later, signed in as the user:
 
 ```js
@@ -74,7 +74,7 @@ update push.settings set anonymous_devices = true;
 ```
 
 A device registered with the anon key alone then belongs to nobody: reach it by `device_ids` or by
-a [topic](./sending.md#topics), since `user_ids` cannot find it.
+a [topic](/cloud/push/sending#topics), since `user_ids` cannot find it.
 
 ## Devices that go away
 
@@ -84,7 +84,7 @@ You do not clean up after uninstalled apps:
   permission revoked), the device is switched off and the delivery reads `unregistered`.
 - A device **not seen for 30 days** is switched off (`push.settings.stale_device_days`), since FCM
   itself drops tokens idle that long. Registering again switches it back on.
-- With [Authentication](../auth.md) on, **a deleted user's devices are deleted with them**.
+- With [Authentication](/cloud/auth) on, **a deleted user's devices are deleted with them**.
 
 The owner sees every device, and a signed-in user sees their own:
 
