@@ -102,7 +102,8 @@ A command that needs a project and cannot find one exits 2 saying so.
 | `snoutdata projects resume` | `--ref REF` |
 | `snoutdata projects delete` | `--ref REF` |
 | `snoutdata projects show` | `--ref REF` |
-| `snoutdata products` | `--ref REF`; `enable\|disable auth\|storage\|data-api` |
+| `snoutdata products` | `--ref REF`; `enable\|disable auth\|storage\|data-api\|push` |
+| `snoutdata push credentials` | `--ref REF`; `set apns --p8 FILE --key-id ID --team-id ID --topic BUNDLE [--environment E]`, `set fcm --file FILE`, `remove apns\|fcm`. Never prints a key |
 | `snoutdata domains` | `--ref REF`; `add\|verify\|remove HOSTNAME` |
 | `snoutdata teams` | |
 | `snoutdata link` | `--ref REF` (required) |

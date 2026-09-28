@@ -60,7 +60,8 @@ sees it with the first notification you send, and a key Apple refuses shows as t
 error (`APNs: InvalidProviderToken`). A Firebase service account must get a real token from Google
 before it is accepted. A stored key is never shown again, only what identifies it.
 
-From a server, the same is `PUT /push/v1/credentials/apns` or `/fcm` with the `service_role` key:
+From a terminal, [`snoutdata push credentials set`](cli#push-credentials) does the same (CLI 0.6.0 and
+later). From a server, it is `PUT /push/v1/credentials/apns` or `/fcm` with the `service_role` key:
 
 ```bash
 curl -X PUT "https://<ref>.api.snoutdata.com/push/v1/credentials/apns" \
@@ -211,6 +212,37 @@ order by m.id desc limit 20;
 Finished messages and their deliveries are kept for 30 days, and a device not seen for 30 days is
 switched off; both are in `push.settings`.
 
+## With `@snoutdata/client`
+
+Since 0.3.0, [`@snoutdata/client`](api#the-client-library) does all of the above as `db.push`:
+
+```js
+import { createClient, deliveryIdOf, webNotification } from '@snoutdata/client'
+
+const db = createClient('https://<ref>.api.snoutdata.com', '<your anon key>')
+
+// In an app, once the platform has given you a token (signed in as the user):
+await db.push.register({ transport: 'apns', token, environment: 'production' })
+// In a browser, with your service worker's registration, after permission is granted:
+await db.push.subscribeWeb(await navigator.serviceWorker.ready)
+// A topic, for the signed-in user:
+await db.push.join('news')
+// On a server, with the service_role key (or as a user your policies allow):
+const { data } = await db.push.send({ notification: { title: 'Your order shipped' }, userIds: [userId] })
+// When a notification arrives, report it:
+await db.push.receipt(deliveryIdOf(payload), 'received')
+```
+
+and in the service worker, `webNotification` turns what arrives into `showNotification`'s
+arguments:
+
+```js
+self.addEventListener('push', (event) => {
+  const { title, options } = webNotification(event.data?.json())
+  event.waitUntil(self.registration.showNotification(title, options))
+})
+```
+
 ## Limits, and what is not built
 
 - **A later send is paid.** On the free plan your database pauses when it is idle, and a paused
@@ -222,5 +254,5 @@ switched off; both are in `push.settings`.
   awake.
 - **A deleted user's devices go with them** only when [Authentication](auth) is on. When auth is
   switched on after push, this starts within the hour.
-- **Not built yet:** push in `@snoutdata/client` and the `snoutdata` CLI (use the HTTP API above
-  meanwhile), UnifiedPush, Expo's push tokens, and Live Activities.
+- **Not built yet:** UnifiedPush, Expo's push tokens, Live Activities, and push in the MCP server's
+  `set_product` (use `snoutdata products enable push`).
