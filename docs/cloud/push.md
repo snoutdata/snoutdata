@@ -32,6 +32,10 @@ It runs inside your project, beside your database, and keeps everything there:
 There is no per-notification price and no quota. How fast a project sends follows the size of its
 database's plan: a bigger plan sends more notifications at once.
 
+**Setting it up for the first time?** [Set up push, platform by platform](push-setup) walks each
+platform from nothing to a notification on a screen: what you need, every step, and how to tell it
+worked.
+
 ## Switching it on
 
 On the dashboard, open your project and choose **Push**, then **Turn on push**. Your database
