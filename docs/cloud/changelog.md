@@ -11,6 +11,14 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. The desktop app has its own release notes, shown in the app
 after each update.
 
+## 2026-09-28
+
+- **Realtime: table changes with a filter.** A subscription with a `filter` (`done=eq.false`,
+  say) was refused with "invalid column for filter" on any table you made. It now subscribes and
+  receives the rows the filter matches.
+- **Realtime: broadcast over HTTP.** Sending on a channel you have not joined (the client sends
+  it over HTTP then) failed with a 404. It now reaches everyone on the channel.
+
 ## 2026-09-27
 
 - **`@snoutdata/client` 0.3.0.** `db.push`: register a device, subscribe a browser, join a topic,
