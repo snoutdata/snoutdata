@@ -17,6 +17,13 @@ after each update.
   send, and report a notification received or opened. See [Push notifications](push).
 - **CLI 0.6.0.** `snoutdata products enable push`, and `snoutdata push credentials` to set and
   check a project's Apple and Firebase keys from a terminal.
+- **Resizable dashboard sidebar.** Drag its right edge to adjust the width, just like the chat
+  panel. Your width is remembered; double-click the edge to reset it.
+- **Dashboard account menu.** Click your name in the sidebar to open Settings, visit
+  snoutdata.com or Docs, choose Light, Dark or System appearance, or log out.
+- **Your display name.** The dashboard shows your name instead of your email address. It starts
+  as the name your sign-in provider gave, or a guess from your email address, and you can change
+  it under Settings, Your profile.
 - **Push notifications.** A project can send notifications to iPhone, Android and the web, from
   SQL (`push.send`) and from `/push/v1`. Switch it on from the dashboard's Push tab, on every plan.
   The devices, the queue, the delivery log and your Apple and Firebase keys are tables in your own
