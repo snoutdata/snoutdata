@@ -42,7 +42,7 @@ order by m.id desc limit 5;
 
 | `error` | What it means, and what to do |
 | --- | --- |
-| `TopicDisallowed` | the App ID is not registered with **Push Notifications**. Always the case after building only for the Simulator: [register it by hand](./apple.md#step-2-register-your-app-id-with-push) |
+| `TopicDisallowed` | the App ID is not registered with **Push Notifications**. Always the case after building only for the Simulator: [register it by hand](/cloud/push/apple#step-2-register-your-app-id-with-push) |
 | `BadDeviceToken` | the token is for the other environment. A build run from Xcode is `sandbox`; TestFlight and the App Store are `production` |
 | `DeviceTokenNotForTopic` | the bundle id on the APNs card (or the device's `app`) is not the app that made the token |
 | `InvalidProviderToken` | the Key ID, Team ID and `.p8` do not belong together, or the key was revoked in the portal |
@@ -53,7 +53,7 @@ order by m.id desc limit 5;
 | What you see | What to do |
 | --- | --- |
 | the app never gets a token | the target needs the **Push Notifications** capability (Signing & Capabilities); on a device, Developer Mode on and the developer trusted (Settings, General, VPN & Device Management) |
-| `accepted`, nothing shows, app open | implement `userNotificationCenter(_:willPresent:)` and return `.banner` ([Step 4](./apple.md#step-4-add-push-to-your-app-in-xcode)) |
+| `accepted`, nothing shows, app open | implement `userNotificationCenter(_:willPresent:)` and return `.banner` ([Step 4](/cloud/push/apple#step-4-add-push-to-your-app-in-xcode)) |
 | `accepted`, nothing shows, app closed | the user turned notifications off for the app in Settings, or a Focus mode is on |
 | the card refuses the key | the `.p8`, Key ID and Team ID must be from the same key; the file must be the downloaded `AuthKey_<KEYID>.p8` unchanged |
 
@@ -67,7 +67,7 @@ order by m.id desc limit 5;
 | `unregistered`: `INVALID_ARGUMENT` about the registration token | the token is malformed (copied with a character missing, say), so the device is switched off: register the right token |
 | `failed`: `INVALID_ARGUMENT` about the message | an `fcm` override is not valid FCM; the message says which field |
 | `failed`: `PERMISSION_DENIED` | the service account may not send for this project (its role was removed, or the key deleted): generate a new key and upload it |
-| `accepted`, nothing shows, app open | `onMessageReceived` must show it ([Step 5](./android.md#step-5-receive-notifications)) |
+| `accepted`, nothing shows, app open | `onMessageReceived` must show it ([Step 5](/cloud/push/android#step-5-receive-notifications)) |
 | `accepted`, nothing shows, app closed | the user turned notifications off for the app or its channel; on Android 13 and later, the `POST_NOTIFICATIONS` permission was not granted |
 | no token on an emulator | the emulator's system image must include **Google Play** |
 

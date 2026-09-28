@@ -23,7 +23,7 @@ database, and you send from SQL or your server exactly as for the other platform
   image includes **Google Play** (the ones marked *Google Play* in the Device Manager). An image
   without Google Play services cannot receive push at all.
 - Your app's **package name** (its `applicationId`), for example `com.example.app`.
-- A project with [push switched on](./switch-on.md).
+- A project with [push switched on](/cloud/push/switch-on).
 
 ## Step 1: create a Firebase project
 
@@ -173,7 +173,7 @@ decides whether a notification pops up (`IMPORTANCE_HIGH`) or arrives silently.
 ## Step 6: hand the token to your project
 
 Register the token for the user who is signed in, with their access token from
-[Authentication](../auth.md):
+[Authentication](/cloud/auth):
 
 ```kotlin
 // accessToken: the signed-in user's, from your sign-in with Authentication. Call off the main thread.
@@ -192,7 +192,7 @@ fun registerDevice(token: String) {
 
 A registration token is about 140 characters. FCM changes it from time to time and calls
 `onNewToken`; registering it again is safe, it updates the same device. When the user signs out,
-remove the device: [Devices](./devices.md#signing-out).
+remove the device: [Devices](/cloud/push/devices#signing-out).
 
 ## Step 7: send a notification
 
@@ -202,7 +202,7 @@ select push.send('{"title": "Your order shipped", "body": "It arrives Thursday."
 ```
 
 For anything else FCM offers (a notification colour, a click action, `direct_boot_ok`), an `fcm`
-object is merged over the message that is built: [Sending](./sending.md#what-a-notification-can-carry).
+object is merged over the message that is built: [Sending](/cloud/push/sending#what-a-notification-can-carry).
 
 ## Step 8: check it worked
 
@@ -212,7 +212,7 @@ open), and the delivery is `accepted` with a name like
 
 In the app, `message.data` carries your `data`, every value as a string (`"42"`), and
 `snout_push_delivery`, the delivery's id, to report **received and opened** back
-([receipts](./delivery.md#received-and-opened)).
+([receipts](/cloud/push/delivery#received-and-opened)).
 
 **If it does not work:**
 
@@ -224,7 +224,7 @@ In the app, `message.data` carries your `data`, every value as a string (`"42"`)
 | no token at all on an emulator | the emulator image must include Google Play |
 | no permission prompt | on Android 13 and later the app must request `POST_NOTIFICATIONS`; a user who refused changes it in the app's settings |
 
-[Troubleshooting](./troubleshooting.md#android) has the rest.
+[Troubleshooting](/cloud/push/troubleshooting#android) has the rest.
 
 ## Going to production
 

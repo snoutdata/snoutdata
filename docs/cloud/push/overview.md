@@ -40,19 +40,19 @@ is a good first check that your project sends.
 
 | Page | What it covers | You need | About |
 | --- | --- | --- | --- |
-| [Switch it on](./switch-on.md) | turning push on, where the keys live, a first test send | a project | 5 minutes |
-| [Browsers](./web.md) | Web Push in Chrome, Edge, Firefox and Safari | nothing more | 10 minutes |
-| [iPhone, iPad and Mac](./apple.md) | an APNs key, your App ID, the app code | a paid Apple Developer account, a Mac with Xcode | 20 minutes |
-| [Android](./android.md) | a Firebase project, its service account, the app code | a Google account, Android Studio | 30 minutes |
+| [Switch it on](/cloud/push/switch-on) | turning push on, where the keys live, a first test send | a project | 5 minutes |
+| [Browsers](/cloud/push/web) | Web Push in Chrome, Edge, Firefox and Safari | nothing more | 10 minutes |
+| [iPhone, iPad and Mac](/cloud/push/apple) | an APNs key, your App ID, the app code | a paid Apple Developer account, a Mac with Xcode | 20 minutes |
+| [Android](/cloud/push/android) | a Firebase project, its service account, the app code | a Google account, Android Studio | 30 minutes |
 
 Then, for everything after the first notification:
 
-- [Devices](./devices.md): registering, signing out, shared phones, visitors who never sign in.
-- [Sending](./sending.md): from SQL, a server or the client library; targets, topics, and letting
+- [Devices](/cloud/push/devices): registering, signing out, shared phones, visitors who never sign in.
+- [Sending](/cloud/push/sending): from SQL, a server or the client library; targets, topics, and letting
   your users send.
-- [What happened to a notification](./delivery.md): the delivery log, and received and opened
+- [What happened to a notification](/cloud/push/delivery): the delivery log, and received and opened
   receipts from your app.
-- [Troubleshooting](./troubleshooting.md): every error each platform gives, and what to do.
+- [Troubleshooting](/cloud/push/troubleshooting): every error each platform gives, and what to do.
 
 ## Plans
 
@@ -76,7 +76,7 @@ database's plan: a bigger plan sends more notifications at once.
 - **The first notification after a pause waits for the wake**, about a second when the project was
   paused recently and 10 to 20 seconds when it was paused long ago. Sending does not keep a project
   awake.
-- **A deleted user's devices go with them** only when [Authentication](../auth.md) is on. When auth
+- **A deleted user's devices go with them** only when [Authentication](/cloud/auth) is on. When auth
   is switched on after push, this starts within the hour.
 - **Android always needs your own Firebase project.** Google delivers to Android apps only through
   FCM, with the credentials of the project the app is built against. Browsers and Apple devices
