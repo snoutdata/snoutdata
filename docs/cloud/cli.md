@@ -158,15 +158,33 @@ limit, because that is the state you need to know about.
 
 ```
 snoutdata products [--ref REF]
-snoutdata products enable  auth|storage|data-api [--ref REF]
-snoutdata products disable auth|storage|data-api [--ref REF]
+snoutdata products enable  auth|storage|data-api|push [--ref REF]
+snoutdata products disable auth|storage|data-api|push [--ref REF]
 ```
 
-Whether a project's auth (user sign-up and sign-in), storage (files) and data API (REST and
-GraphQL over its tables) are on, and switching them. A switch asks for the change and the host
+Whether a project's auth (user sign-up and sign-in), storage (files), data API (REST and
+GraphQL over its tables) and [push notifications](push) are on, and switching them. Switching push
+on or off restarts the database once. A switch asks for the change and the host
 makes it within about a minute, so `products` may show `waiting for the host` for a moment. The
 data API is on paid plans only; a free project is refused with a sentence about the plan. Realtime
 needs no switch: it is on for every project from the start.
+
+### `push credentials`
+
+```
+snoutdata push credentials [--ref REF]
+snoutdata push credentials set apns --p8 FILE --key-id ID --team-id ID --topic BUNDLE [--environment production|sandbox] [--ref REF]
+snoutdata push credentials set fcm --file service-account.json [--ref REF]
+snoutdata push credentials remove apns|fcm [--ref REF]
+```
+
+A project's own keys for [push notifications](push): an Apple `.p8` key for iPhone, iPad and Mac
+apps, a Firebase service account for Android. Each is checked before it is stored, and a key that
+will not work is refused with the reason. They are stored in the project's own database, and
+nothing prints one back: the bare command shows what identifies each (the bundle id and key id,
+the Firebase project and account), and the start of the Web Push public key, which the project
+makes itself. The key
+is read from a file, never taken on the command line.
 
 ### `auth`
 
