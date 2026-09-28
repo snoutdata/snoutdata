@@ -20,8 +20,13 @@
 ## SnoutData Cloud
 
 Your app's backend in one project: **Postgres 17** with **auth**, **file storage**, **realtime**,
-a **REST and GraphQL API**, **Snout Functions** (your own TypeScript) and **timeseries**. It
-sleeps when idle and wakes on the next connection.
+a **REST and GraphQL API**, **Snout Functions** (your own TypeScript), **timeseries** and **push
+notifications** to iPhone, Android and the web. It sleeps when idle and wakes on the next
+connection.
+
+Push is [Snout Push](https://github.com/snoutdata/snout-push) (Apache-2.0): send from SQL or one
+API, with the devices, the queue and the delivery log as tables in your own database.
+[Push notifications](https://docs.snoutdata.com/cloud/push).
 
 Your app talks to it with [`@snoutdata/client`](https://github.com/snoutdata/snout-client) (Apache-2.0),
 or with the client it is already written against by changing one URL.

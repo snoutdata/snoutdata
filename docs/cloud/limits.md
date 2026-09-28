@@ -39,7 +39,8 @@ Per project, unless the row says otherwise.
 | Memory per function invocation | 128 MB | 256 MB | 512 MB |
 | Seconds per function invocation | 10 | 30 | 55 |
 
-**Auth, storage, realtime and Snout Functions are on every plan, including free.** The data API is
+**Auth, storage, realtime, Snout Functions and [push notifications](push) are on every plan,
+including free** (sending push at a later time is paid). The data API is
 the exception, and the reason is cost rather than packaging: it is a server per project that runs
 whether or not anyone calls it, and on a free project it would cost more per month than the
 database does. A free project asking for it is refused with a sentence about the plan, not an
@@ -69,8 +70,8 @@ instantly.
 
 ## The API stack, honestly
 
-A project also has an HTTPS door in front of it, serving a data API, auth, storage, realtime and
-Snout Functions. It is deployed and serving, and a real application has been driven through all of
+A project also has an HTTPS door in front of it, serving a data API, auth, storage, realtime,
+Snout Functions and push. It is deployed and serving, and a real application has been driven through all of
 it, 27 checks of 27. See [the project API](api).
 
 What is honest about it today, in one place:

@@ -6,8 +6,8 @@ sidebar_label: Getting started
 
 # SnoutData Cloud
 
-**SnoutData Cloud gives you a project: a hosted Postgres database with auth, storage, realtime
-and functions around it.** You create a project from a terminal, from
+**SnoutData Cloud gives you a project: a hosted Postgres database with auth, storage, realtime,
+functions and push notifications around it.** You create a project from a terminal, from
 [dashboard.snoutdata.com](https://dashboard.snoutdata.com) or from the [desktop app](desktop), and you get a `postgres://` URL that
 any client can use: `psql`, your ORM, the SnoutData desktop app, or a coding agent.
 
@@ -160,8 +160,8 @@ appears in its Connections list on its own, marked with the SnoutData butterfly.
 ## More than a database
 
 A project is not only a Postgres port. In front of it is an HTTPS door serving a REST and GraphQL
-API over your tables, authentication, file storage, realtime subscriptions and your own functions
-on the edge, at `https://<ref>.api.snoutdata.com`. It is ordinary HTTP, so it needs nothing
+API over your tables, authentication, file storage, realtime subscriptions, your own functions
+on the edge and [push notifications](push), at `https://<ref>.api.snoutdata.com`. It is ordinary HTTP, so it needs nothing
 installed, and an application already written against the same API shape works by changing one
 URL.
 
