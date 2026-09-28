@@ -13,6 +13,10 @@ after each update.
 
 ## 2026-09-27
 
+- **Push notifications.** A project can send notifications to iPhone, Android and the web, from
+  SQL (`push.send`) and from `/push/v1`. Switch it on from the dashboard's Push tab, on every plan.
+  The devices, the queue, the delivery log and your Apple and Firebase keys are tables in your own
+  database, and your row-level security decides who may send. See [Push notifications](push).
 - **CLI 0.5.1.** The npm package carries its licence, the Apache License 2.0, with a NOTICE file.
 
 ## 2026-09-26
