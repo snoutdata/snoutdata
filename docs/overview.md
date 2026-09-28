@@ -64,7 +64,8 @@ npx snoutdata init
 ```
 
 In front of that database is an HTTPS door serving a REST and GraphQL API over your tables,
-authentication, file storage, realtime subscriptions and your own TypeScript on the edge. It is
+authentication, file storage, realtime subscriptions, push notifications and your own TypeScript
+on the edge. It is
 ordinary HTTP, so it needs no client library at all.
 
 - **[Install the CLI](cloud/install-cli)**: a single binary, or straight off npm.
