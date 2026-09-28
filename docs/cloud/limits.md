@@ -76,13 +76,10 @@ it, 27 checks of 27. See [the project API](api).
 
 What is honest about it today, in one place:
 
-- **Realtime has one known defect**: the first subscription on a quiet project is dropped and the
-  next one works. It needs no switch, and what each plan gets is on [Realtime](./realtime).
+- **Realtime needs no switch**, and what each plan gets is on [Realtime](./realtime).
 - **Google is the only OAuth provider.** Email sign-up and sign-in work and really send mail, and
   Sign in with Google works with your own Google client; GitHub, Apple and the rest are not offered
   yet.
-- **A schema you create after the project was set up is not covered by realtime yet.** It needs us
-  to re-run the bootstrap. Tables in `public` are unaffected.
 - **Nothing reports that the data API is up yet.** Switching it on writes a desire and the
   container arrives when the project next restarts, so there is a gap between asking and
   answering, and no field that says "nearly".

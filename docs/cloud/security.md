@@ -70,8 +70,11 @@ provider. Nobody else receives your hosted data.
 - **Said plainly, because it is the honest nuance:** the database, its auth service and its data
   API run in your project's own container. Realtime, file storage, image resizing and the function
   runtime are **shared per machine**, so for those four the boundary between two customers is
-  inside a process rather than around a container. It is upstream software, pinned and unmodified,
-  and each request carries the tenant we resolved rather than one a client claimed.
+  inside a process rather than around a container. Realtime and file storage are our own servers,
+  open source ([snout-realtime](https://github.com/snoutdata/snout-realtime),
+  [snout-storage](https://github.com/snoutdata/snout-storage)); image resizing and the function
+  runtime are upstream software, pinned and unmodified. Each request carries the tenant we resolved
+  rather than one a client claimed.
 
 ## Who can see your data
 

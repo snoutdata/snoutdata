@@ -13,6 +13,11 @@ after each update.
 
 ## 2026-09-28
 
+- **Realtime runs on our own server**, [snout-realtime](https://github.com/snoutdata/snout-realtime),
+  open source. Nothing to change on your side. Table changes now arrive as they are committed
+  rather than by polling, the first subscription on a quiet project is no longer dropped, and a
+  policy that raises an error for one subscriber no longer stops changes for everyone else. See
+  [Realtime](realtime).
 - **Realtime: table changes with a filter.** A subscription with a `filter` (`done=eq.false`,
   say) was refused with "invalid column for filter" on any table you made. It now subscribes and
   receives the rows the filter matches.
