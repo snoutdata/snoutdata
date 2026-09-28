@@ -33,6 +33,7 @@ product by product, which is worth reading before you design around one.
 | `/storage/v1` | Files in buckets, in object storage | every plan | [File storage](storage) |
 | `/realtime/v1` | Broadcast, presence and table changes, over a websocket | broadcast and presence every plan; table changes paid | [Realtime](realtime) |
 | `/functions/v1` | Your own TypeScript | every plan | [Snout Functions](functions) |
+| `/push/v1` | Notifications to iPhone, Android and the web | every plan; a later send paid | [Push notifications](push) |
 
 **Each product has a page of its own**, linked above: what it does, the code, what each plan gets
 and what is not built. This page is the door they share, the keys that open it, and which of them
@@ -161,6 +162,16 @@ row-level security that governs a read, and are paid.
 
 **[Realtime](realtime) is the page** for the code, the two things you must set before a row
 reaches a subscriber, the per-plan numbers and the one known defect.
+
+## Push
+
+`/push/v1` sends notifications to iPhone, Android and the web, and so does `push.send()` in SQL.
+The devices, the queue, the delivery log and your Apple and Firebase keys are tables in your own
+database, and a policy on `push.messages` decides who may send. It is switched on per project, on
+every plan, from the dashboard's Push tab.
+
+**[Push notifications](push) is the page**: the keys, registering a device, sending, and what the
+log does and does not tell you.
 
 ## Extensions
 
