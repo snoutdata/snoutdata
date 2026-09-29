@@ -149,6 +149,26 @@ from net._http_response order by id desc limit 10;
 
 Responses are kept for six hours and then removed.
 
+### How a request is sent
+
+- **After COMMIT.** A request queued in a transaction that rolls back is never sent, and one that
+  queues thousands wakes the sender once.
+- **Each on its own.** A slow endpoint holds up no other request, and each response is written the
+  moment it arrives, so you can read it while others are still on their way. Requests to one
+  endpoint can arrive there in any order.
+- **Timeouts** are 1 ms to 10 minutes (`timeout_milliseconds`, default 5000). A request asking for
+  0, a negative number or more is not sent; its row in `net._http_response` says why.
+- **Headers** you pass are sent as given, except that one containing a line break is refused rather
+  than sent. The `headers` column holds the final response's headers, after any redirects; up to
+  30 redirects are followed.
+- **Bodies**: a response larger than 64 MB is recorded as an error rather than kept. `content` is
+  the body as text, up to its first NUL byte, with any bytes that are not UTF-8 replaced by `�`.
+- A request is sent again only if the database restarts while it is on the network.
+
+pg_net on SnoutData Cloud is our own implementation of the same functions and tables,
+[snout_net](https://github.com/snoutdata/snout-net) (Apache-2.0), so a snippet written for another
+hosted Postgres works unchanged.
+
 ### Calling a URL on a schedule
 
 The two together are a webhook on a timer, or a way to call one of your
@@ -184,7 +204,10 @@ anywhere on the internet.
 
 ### Where a request can go
 
-The public internet. A request to a private address (the cloud provider's metadata service, the
-network the database runs on, or any other private range) is refused at the network, whatever SQL
-asks for it, and comes back in `net._http_response` with an error such as
-`Couldn't connect to server`.
+The public internet. A request to an internal address (the database's own loopback, the cloud
+provider's metadata service, the network the database runs on, or any other private range) is
+refused before any connection is made, whatever SQL asks for it, and however it got there: an IP
+address in the URL, a name that resolves to one, or a redirect to one. Its row in
+`net._http_response` says which address and why, such as
+`Refused to connect to 10.0.0.1: it is a private address`. The network the database runs on
+refuses the same addresses underneath.
