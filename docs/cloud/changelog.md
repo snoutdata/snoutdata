@@ -13,6 +13,11 @@ after each update.
 
 ## 2026-09-28
 
+- **[status.snoutdata.com](https://status.snoutdata.com) covers more.** Besides hosted databases
+  and creating projects it now reports project APIs, sign-in, the dashboard, the AI assistant, app
+  downloads and updates, the website and the docs, each checked from the outside every fifteen
+  minutes, with 90 days of history per part. Scheduled maintenance and incident updates are posted
+  there, and you can follow it with the [Atom feed](https://status.snoutdata.com/feed.xml).
 - **Realtime runs on our own server**, [snout-realtime](https://github.com/snoutdata/snout-realtime),
   open source. Nothing to change on your side. Table changes now arrive as they are committed
   rather than by polling, the first subscription on a quiet project is no longer dropped, and a
