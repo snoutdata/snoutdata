@@ -11,6 +11,14 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. The desktop app has its own release notes, shown in the app
 after each update.
 
+## 2026-09-29
+
+- **Updating an extension works.** `alter extension <name> update` on an extension the image
+  carries (pgvector, pg_graphql, PostGIS and the rest) used to fail with `pgaudit stack is not
+  empty`; it now updates. See [Extensions](extensions).
+- **Only the owner role manages extensions.** Other login roles you create follow Postgres's own
+  rules and can no longer create or drop the extensions the image carries.
+
 ## 2026-09-28
 
 - **The dashboard links to the status page.** Your account menu now has **Status**, which opens
