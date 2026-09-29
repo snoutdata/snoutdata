@@ -13,6 +13,8 @@ after each update.
 
 ## 2026-09-28
 
+- **The dashboard links to the status page.** Your account menu now has **Status**, which opens
+  [status.snoutdata.com](https://status.snoutdata.com).
 - **[status.snoutdata.com](https://status.snoutdata.com) covers more.** Besides hosted databases
   and creating projects it now reports project APIs, sign-in, the dashboard, the AI assistant, app
   downloads and updates, the website and the docs, each checked from the outside every fifteen
