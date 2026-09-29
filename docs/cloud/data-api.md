@@ -57,7 +57,9 @@ curl -X POST "https://<ref>.api.snoutdata.com/graphql/v1" \
 ```
 
 The schema is derived from your tables and their foreign keys. Nothing to define, nothing to keep
-in step.
+in step. [GraphQL](graphql) covers filtering, paging, mutations, functions, and the comments that
+rename and extend the schema, including switching introspection on for GraphiQL and code
+generators.
 
 ## What decides who sees what
 

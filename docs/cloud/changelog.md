@@ -13,6 +13,13 @@ after each update.
 
 ## 2026-09-29
 
+- **GraphQL is faster, and has its own page.** A query after a schema change answers several
+  times sooner, a connection's memory no longer grows with every change it lives through, and
+  creating a temporary table or refreshing a materialized view no longer makes the next GraphQL
+  request read the whole schema again. A `BigInt` or `UUID` argument that is not one is now refused
+  with a GraphQL error naming the type, instead of reaching the database. A role granted to a user
+  takes effect on their next request. [GraphQL](graphql) documents the whole API, including how to
+  switch introspection on for GraphiQL and code generators.
 - **Each Snout Function has its own memory and concurrency.** On the dashboard's **Functions**
   tab, choose the memory one worker may use and how many workers a function may run at once,
   within your plan (up to 2 on Free, 4 on Plus, 8 on Pro). Memory × workers may not exceed your
