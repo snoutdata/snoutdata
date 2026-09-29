@@ -18,6 +18,7 @@ the data API are switched on per project; see [the project API](api).)
 ```bash
 snoutdata functions deploy hello
 snoutdata functions list
+snoutdata functions size hello --memory 256 --concurrency 4
 snoutdata functions delete hello
 ```
 
@@ -105,7 +106,8 @@ So you choose between fewer, larger workers and more, smaller ones: on Pro, 4 wo
 
 Until you choose, a function runs at the plan's memory and as many workers as fit beside it:
 **128 MB × 2** on Free, **256 MB × 4** on Plus, **512 MB × 4** on Pro. Change either on the
-dashboard's **Functions** tab, which shows the total and what your plan allows before you save. A
+dashboard's **Functions** tab, the desktop app's project tab, or `snoutdata functions size`; each
+shows the total and what your plan allows. A
 size that does not fit is refused with a sentence saying why. If your plan changes, a function keeps
 running at the largest size that still fits.
 
@@ -126,8 +128,8 @@ else's.
 
 ## For an agent
 
-Four MCP tools cover this: `deploy_function`, `list_functions`, `delete_function` and
-`list_function_secrets`. There is deliberately no tool that sets a secret. See
+Five MCP tools cover this: `deploy_function`, `list_functions`, `size_function`,
+`delete_function` and `list_function_secrets`. There is deliberately no tool that sets a secret. See
 [for an agent](agent#mcp-server).
 
 ## Also read

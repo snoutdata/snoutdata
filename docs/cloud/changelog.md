@@ -16,7 +16,9 @@ after each update.
 - **Each Snout Function has its own memory and concurrency.** On the dashboard's **Functions**
   tab, choose the memory one worker may use and how many workers a function may run at once,
   within your plan (up to 2 on Free, 4 on Plus, 8 on Pro). Memory × workers may not exceed your
-  project's memory, and the tab shows the total before you save. See
+  project's memory, and the tab shows the total before you save. The same from the CLI
+  (`snoutdata functions size <name> --memory 256 --concurrency 4`, and `functions list` shows each
+  function's size), the desktop app's project tab, and the MCP tool `size_function`. See
   [Memory and concurrency](functions#memory-and-concurrency).
 - **An access token can be limited to one project.** `snoutdata tokens create --project REF`, or
   the Project picker under Access tokens in the dashboard, makes a token that reaches that project

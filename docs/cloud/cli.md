@@ -425,6 +425,7 @@ a user is holding, which is why it insists on `--force`.
 ```
 snoutdata functions deploy <name> [--dir DIR] [--entrypoint FILE] [--no-verify-jwt]
 snoutdata functions list [--ref REF]
+snoutdata functions size <name> [--memory MB] [--concurrency N] [--reset]
 snoutdata functions delete <name>
 ```
 
@@ -434,6 +435,12 @@ Deploy a folder of TypeScript to `https://<ref>.api.snoutdata.com/functions/v1/<
 `--no-verify-jwt` makes the URL callable by anybody who knows it, which is what a webhook receiver
 needs and a mistake anywhere else. It is printed back after every deploy that uses it. See
 [Snout Functions](functions).
+
+`list` shows each function's memory and workers, and your plan's limits for both. `size` changes
+them: `--memory` is what one worker may use in MB, `--concurrency` how many workers the function
+may run at once, and memory × workers may not exceed your project's memory. Leave one out to keep
+it; `--reset` goes back to the plan's default. A size that does not fit is refused with a sentence.
+See [Memory and concurrency](functions#memory-and-concurrency).
 
 ### `secrets`
 

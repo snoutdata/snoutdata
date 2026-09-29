@@ -120,6 +120,7 @@ A command that needs a project and cannot find one exits 2 saying so.
 | `snoutdata keys rotate` | `--force` (required) `--ref REF` |
 | `snoutdata functions deploy <name>` | `--dir DIR` `--entrypoint FILE` `--no-verify-jwt` `--ref REF` |
 | `snoutdata functions list` | `--ref REF` |
+| `snoutdata functions size <name>` | `--memory MB` `--concurrency N` `--reset` `--ref REF` |
 | `snoutdata functions delete <name>` | `--ref REF` |
 | `snoutdata secrets set NAME=value ...` | `--stdin` `--ref REF` |
 | `snoutdata secrets list` | `--ref REF` |
@@ -379,7 +380,8 @@ turns that off.
 | `create_token` | `name` (required), `expires`, `project` | Mints an access token, limited to one project when `project` is a ref. **Returns it once and never again.** |
 | `revoke_token` | `id` (required) | Revokes one. Anything using it stops at once. |
 | `deploy_function` | `ref`, `name` (both required), `dir`, `entrypoint`, `openToAnyone` | Puts TypeScript on the edge. `openToAnyone` is for a webhook sender that cannot send an API key, and nothing else. |
-| `list_functions` | `ref` (required) | What is deployed, with URLs and whether each needs a key. |
+| `list_functions` | `ref` (required) | What is deployed, with URLs, whether each needs a key, and each one's memory and workers against the plan. |
+| `size_function` | `ref`, `name` (both required), `memoryMb`, `concurrency`, `reset` | Sets one function's memory and workers within the plan. Memory × workers may not exceed the project's memory. |
 | `delete_function` | `ref`, `name` (both required) | Removes one. It stops answering within seconds. |
 | `list_function_secrets` | `ref` (required) | The **names** of the environment variables functions run with. Never the values. |
 | `get_project` | `ref` (required) | One project whole: state, products, function and secret names, domains. |
