@@ -32,6 +32,16 @@ lets the owner create the extensions it vouches for, including PostGIS, pgvector
 pg_net, pg_graphql, hypopg, pgaudit and pg_repack, and grants the owner what each one creates. An
 extension that is not on that list fails with Postgres's own refusal rather than doing nothing.
 
+To bring an extension up to the version the image carries, update it:
+
+```sql
+alter extension vector update;
+```
+
+Creating, updating, moving and dropping these extensions is for the owner role, and for any role
+you grant the owner role to. Another login role you create (for a reporting tool, say) follows
+Postgres's own rules, so it cannot create or drop them.
+
 ### Time series: SnoutTime
 
 **SnoutTime, part of SnoutData Cloud**, is on that list on every plan: `create extension snouttime`
