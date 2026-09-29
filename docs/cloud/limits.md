@@ -36,7 +36,8 @@ Per project, unless the row says otherwise.
 | Mark a project production | no | yes | yes |
 | REST and GraphQL data API | no | yes | yes |
 | Snout Functions | 5 | 25 | 100 |
-| Memory per function invocation | 128 MB | 256 MB | 512 MB |
+| Memory per function worker | 128 MB | 256 MB | 512 MB |
+| Workers per function | 2 | 4 | 8 |
 | Seconds per function invocation | 10 | 30 | 55 |
 
 **Auth, storage, realtime, Snout Functions and [push notifications](push) are on every plan,
