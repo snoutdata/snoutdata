@@ -74,7 +74,9 @@ The environment wins deliberately. Two kinds of credential go in that variable:
 
 The control plane exchanges an `sdt_` token for a short-lived JWT on its side, so row-level
 security in the database is still the only thing deciding what it can see. **A token cannot create
-another token.** A token can revoke itself, or any other.
+another token.** An account-wide token can revoke itself, or any other. A token made with
+`--project REF` reaches that one project only, and is refused anything else with a sentence that
+says so.
 
 ### Where the project comes from
 
@@ -94,7 +96,7 @@ A command that needs a project and cannot find one exits 2 saying so.
 | `snoutdata logout` | |
 | `snoutdata whoami` | |
 | `snoutdata tokens list` | |
-| `snoutdata tokens create` | `--name NAME` (required) `--expires DAYS` |
+| `snoutdata tokens create` | `--name NAME` (required) `--expires DAYS` `--project REF` |
 | `snoutdata tokens revoke <id\|sdt_prefix>` | |
 | `snoutdata projects list` | |
 | `snoutdata projects create` | `--name NAME` (required) `--region REGION` `--team NAME\|ID` `--no-wait` |
@@ -374,7 +376,7 @@ turns that off.
 | `reset_password` | `ref` (required) | Rotates the database password. **The old one stops working immediately**, including any `DATABASE_URL` already written down. |
 | `list_teams` | | The teams this account is in, with the id `create_project` takes. |
 | `list_tokens` | | The `sdt_` access tokens: names, prefixes, when each was used. Never the token. |
-| `create_token` | `name` (required), `expires` | Mints an access token. **Returns it once and never again.** |
+| `create_token` | `name` (required), `expires`, `project` | Mints an access token, limited to one project when `project` is a ref. **Returns it once and never again.** |
 | `revoke_token` | `id` (required) | Revokes one. Anything using it stops at once. |
 | `deploy_function` | `ref`, `name` (both required), `dir`, `entrypoint`, `openToAnyone` | Puts TypeScript on the edge. `openToAnyone` is for a webhook sender that cannot send an API key, and nothing else. |
 | `list_functions` | `ref` (required) | What is deployed, with URLs and whether each needs a key. |

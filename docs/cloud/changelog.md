@@ -13,6 +13,12 @@ after each update.
 
 ## 2026-09-29
 
+- **An access token can be limited to one project.** `snoutdata tokens create --project REF`, or
+  the Project picker under Access tokens in the dashboard, makes a token that reaches that project
+  and nothing else, so a leaked CI secret costs one project rather than the account. `tokens list`
+  and the dashboard show which project each token reaches. See [the CLI](cli#tokens).
+- **An expiry set through the MCP `create_token` tool is kept.** It was dropped, so those tokens
+  never expired. Tokens made that way before today still do not; revoke and remake any that should.
 - **Updating an extension works.** `alter extension <name> update` on an extension the image
   carries (pgvector, pg_graphql, PostGIS and the rest) used to fail with `pgaudit stack is not
   empty`; it now updates. See [Extensions](extensions).
