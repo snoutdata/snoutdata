@@ -134,8 +134,10 @@ See [the project API](api) for what each one serves.
 
 ### Functions
 
-The functions deployed to the project, with whether they need a JWT, their size and when they were
-last deployed. Deploying stays in the CLI (`snoutdata functions deploy <name>`), because it bundles
+The functions deployed to the project, with whether they need a JWT, their size, their memory and
+workers, and when they were last deployed. **Memory and concurrency** changes one function's memory
+and workers within your plan, showing memory × workers against your project's memory; see
+[Memory and concurrency](functions#memory-and-concurrency). Deploying stays in the CLI (`snoutdata functions deploy <name>`), because it bundles
 your code. See [Snout Functions](functions).
 
 **Secrets** are the environment your functions run with. Set one with a name and a value, or
