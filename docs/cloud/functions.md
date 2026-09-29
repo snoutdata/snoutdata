@@ -80,7 +80,9 @@ refused, because a refusal people work around with `echo` is worse than a senten
 | | Free | Plus | Pro |
 | --- | --- | --- | --- |
 | Functions per project | 5 | 25 | 100 |
-| Memory per invocation | 128 MB | 256 MB | 512 MB |
+| Memory per worker, at most | 128 MB | 256 MB | 512 MB |
+| Workers per function, at most | 2 | 4 | 8 |
+| Memory × workers, at most | 512 MB | 1 GB | 2 GB |
 | Wall clock per invocation | 10 s | 30 s | 55 s |
 | CPU per invocation | 2 s | 8 s | 20 s |
 
@@ -92,6 +94,25 @@ that path boring.
 The wall clock cannot go past 59 seconds whatever the plan, because the front door gives up at 60.
 The limits are set a second under it deliberately, so a function that runs too long is refused by
 the runtime with a sentence you can act on, rather than by the proxy with a bad gateway.
+
+## Memory and concurrency
+
+Each function has two settings of its own, within the plan: the **memory** one worker may use, and
+how many **workers** it may run at once. One rule balances them: memory × workers may not exceed
+your project's memory, the same RAM its database gets (512 MB on Free, 1 GB on Plus, 2 GB on Pro).
+So you choose between fewer, larger workers and more, smaller ones: on Pro, 4 workers of 512 MB,
+8 of 256 MB, or anything in between.
+
+Until you choose, a function runs at the plan's memory and as many workers as fit beside it:
+**128 MB × 2** on Free, **256 MB × 4** on Plus, **512 MB × 4** on Pro. Change either on the
+dashboard's **Functions** tab, which shows the total and what your plan allows before you save. A
+size that does not fit is refused with a sentence saying why. If your plan changes, a function keeps
+running at the largest size that still fits.
+
+**What a worker is for.** One worker serves many requests at once while they wait on the network
+(a database query, a call to another API). A function gets a second worker only while every worker
+it has is busy on CPU, so workers are what make CPU-heavy functions run side by side, and a function
+that mostly waits never needs more than one.
 
 ## What a function can reach
 
