@@ -13,6 +13,14 @@ after each update.
 
 ## 2026-09-29
 
+- **HTTP from SQL (pg_net) sends each request on its own.** A request queued behind a slow one no
+  longer waits for it (a request now reaches the server in about a millisecond after COMMIT, where
+  it could take a second or more), responses appear as they arrive, and an endpoint that never
+  answers can no longer stop every later request in the project. A request to an internal address
+  is refused with a sentence saying which address and why, a header containing a line break is
+  refused rather than sent, and `headers` now holds the final response's headers after a redirect.
+  Same functions, same tables, nothing to migrate. See
+  [How a request is sent](extensions#how-a-request-is-sent).
 - **GraphQL is faster, and has its own page.** A query after a schema change answers several
   times sooner, a connection's memory no longer grows with every change it lives through, and
   creating a temporary table or refreshing a materialized view no longer makes the next GraphQL
