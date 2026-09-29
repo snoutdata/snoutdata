@@ -121,14 +121,19 @@ token.
 
 ```
 snoutdata tokens list
-snoutdata tokens create --name NAME [--expires DAYS]
+snoutdata tokens create --name NAME [--expires DAYS] [--project REF]
 snoutdata tokens revoke <id|sdt_prefix>
 ```
 
 `tokens create` prints the token on stdout, alone, once. Only its hash is stored, so there is no
 second call that returns it. Without `--expires` it does not expire.
 
-A token cannot create another token. A token can revoke itself, or any other.
+Without `--project` a token reaches every project on your account. With `--project REF` it
+reaches that one project and nothing else: it cannot see or change another project, create a
+project, or list and revoke tokens. Give a CI job that deploys one project a token for that
+project, so a leaked secret costs one project and not the account.
+
+A token cannot create another token. An account-wide token can revoke itself, or any other.
 
 ### `projects`
 
