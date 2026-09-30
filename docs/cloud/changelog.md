@@ -11,6 +11,19 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. The desktop app has its own release notes, shown in the app
 after each update.
 
+## 2026-09-30
+
+- **GraphQL can do more, when you ask it to.** Filter by related rows (`some`, `every`, `none`),
+  order by a related field or by how many related rows there are, upsert with `onConflict`,
+  `distinctOn`, keep a table off the root, read domains, composites, enum arrays and PostGIS
+  columns (as GeoJSON, with spatial filters), reflect overloaded functions and computed fields that
+  take arguments, cap what one document may ask for, run only registered documents for the public
+  key (with persisted queries), see the SQL and plan behind a request, and ask why a table is not in
+  the schema. Each is off until a comment on the table or schema switches it on, so nothing changes
+  for a project that does not: [GraphQL](graphql#more-when-you-switch-it-on) lists them.
+- **GraphQL refuses a document that spreads fragments over a million times**, where it used to work
+  through all of them before answering.
+
 ## 2026-09-29
 
 - **Authentication runs on our own server.** Sign-up, sign-in, sessions, email links, multi-factor,
