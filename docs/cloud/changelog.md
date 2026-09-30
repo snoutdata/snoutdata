@@ -13,6 +13,10 @@ after each update.
 
 ## 2026-09-30
 
+- **Snout Functions run on a new runtime.** A warm call takes about 2 ms and a function holds
+  any number of waiting requests at once, where 100 held for 20 seconds used to lose most of them.
+  A function that runs out of memory, CPU or time is now told which one, and a changed secret
+  reaches the very next request. Nothing to change in your code: [Snout Functions](functions).
 - **An emailed sign-in code can no longer be guessed.** After five wrong tries a code stops working
   and answers as an expired code does, so your app needs no change; the person asks for a new one.
 - **Keeping a session signed in is faster.** Refreshing a session now takes about 3 milliseconds on
