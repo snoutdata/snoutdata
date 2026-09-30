@@ -16,7 +16,7 @@ after each update.
 - **Every function is given `SNOUTDATA_URL`, `SNOUTDATA_ANON_KEY` and `SNOUTDATA_SERVICE_ROLE_KEY`**,
   so it can call its own project with no configuration. The variables functions were given before
   are still set, so a deployed function keeps working. See [Snout Functions](functions#secrets).
-- **`snoutdata` CLI.** `functions deploy` reads a function from `functions/<name>/`, or from the
+- **`snoutdata` CLI 0.9.0.** `functions deploy` reads a function from `functions/<name>/`, or from the
   folder `--dir` names. `gen types typescript` writes the schemas and the helper types and nothing
   else; `--data-api-version` is still accepted and does nothing.
 - **Snout Functions run on a new runtime.** A warm call takes about 2 ms and a function holds
@@ -25,6 +25,9 @@ after each update.
   reaches the very next request. It is our own, open source as
   [snout-functions](https://github.com/snoutdata/snout-functions). Nothing to change in your code:
   [Snout Functions](functions).
+- **One function that keeps growing no longer takes the others down.** When the functions on a
+  host near their shared memory, the one holding the most is stopped and its caller is told why; the
+  rest keep answering.
 - **An emailed sign-in code can no longer be guessed.** After five wrong tries a code stops working
   and answers as an expired code does, so your app needs no change; the person asks for a new one.
 - **Keeping a session signed in is faster.** Refreshing a session now takes about 3 milliseconds on
