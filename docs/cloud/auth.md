@@ -182,6 +182,9 @@ Two layers, so an attacker cannot spend your mail:
   answers from the sign-in, sign-up, recovery, OTP and verification endpoints get that address
   refused for a while. A valid `anon` key does not exempt anyone, because that key ships in every
   browser bundle by design.
+- **An emailed code is spent after five wrong guesses**, however many addresses they come from.
+  After that the code answers as an expired one does (`otp_expired`), and the person asks for a new
+  code, which starts the count again.
 - **Mail that succeeds has its own ceiling per project**, because the attack that matters there is
   a script signing up a thousand addresses and getting a thousand real emails sent.
 
