@@ -126,6 +126,16 @@ the instance metadata service refuses, and the public internet answers normally.
 property the whole design rests on, since the code running there is yours and one day somebody
 else's.
 
+## How it runs
+
+Functions run on **snout-functions**, our own runtime, open source under the Apache License 2.0 at
+[github.com/snoutdata/snout-functions](https://github.com/snoutdata/snout-functions). One process
+serves every project on a machine rather than running inside your project's container, and each
+function runs in V8 isolates of its own: it may read its own code, and reach the network, and
+nothing else of the machine or of anyone else's project. A request reaches it only through the front
+door, which proves itself with a secret the runtime checks before anything else, so no function can
+call another project's functions by going round it. [Security](security) says the same.
+
 ## For an agent
 
 Five MCP tools cover this: `deploy_function`, `list_functions`, `size_function`,
