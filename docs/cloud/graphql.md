@@ -2,7 +2,7 @@
 id: graphql
 title: GraphQL
 sidebar_label: GraphQL
-description: The GraphQL API every SnoutData Cloud project has at /graphql/v1. Reading, filtering, paging, writing, functions, and the comments that shape the schema.
+description: The GraphQL API every SnoutData Cloud project has at /graphql/v1. Reading, filtering, paging, writing, functions, the comments that shape the schema, and the additions you can switch on.
 ---
 
 # GraphQL
@@ -165,6 +165,51 @@ comment on table public.blog_post is '@graphql({"totalCount": {"enabled": true}}
 A comment that is not valid JSON inside `@graphql(...)` makes every request fail with the JSON
 error, so the next query after the mistake tells you.
 
+## More, when you switch it on
+
+Every addition below is off until a comment turns it on, so a schema that says nothing is read
+exactly as before and a generated client keeps working. Each is `{"<name>": {"enabled": true}}`
+inside `@graphql(...)`; on a table it is that table's, on a schema it is every table's there
+unless the table's own comment says otherwise.
+
+| On | Turn on | What you get |
+| --- | --- | --- |
+| a table or schema | `relationFilters` | Filter by related rows: `filter: {author: {name: {eq: "Ann"}}}`, and `some`, `every` or `none` over a collection: `filter: {commentCollection: {some: {flagged: {eq: true}}}}` |
+| a table or schema | `orderByRelated` | Order by a related row's field, `orderBy: [{author: {name: AscNullsLast}}]`, or by how many related rows there are, `orderBy: [{commentCollection: {count: DescNullsLast}}]`. Cursors page through it as usual |
+| a table or schema | `upsert` | `onConflict: {constraint: blog_post_slug_key, updateFields: [title, body], filter: {...}}` on the table's insert. `constraint` lists the table's unique keys by name; no `updateFields` inserts what is new and leaves the rest |
+| a table or schema | `distinctOn` | `distinctOn: [authorId]` on its collections: one row per value, the first in the collection's order |
+| a table | `root` (`{"root": {"enabled": false}}`) | Takes the table's collection and by-key fields off `Query`; it is still reached through relations, and keeps its mutations |
+| a table or schema | `enumArrays` | Filters on columns holding an array of an enum (`contains`, `containedBy`, `overlaps`, `eq`) |
+| a schema | `domains` | A column or argument whose type is a domain is its base type (`Int`, `String`, `[String]`, ...) instead of `Opaque`, and the domain's checks still hold on writes |
+| a schema | `composites` | A composite-type column is an object you select into, `address { city zipCode }`, and filter by its attributes; a function can return one |
+| a schema | `functionShapes` | Functions left out otherwise: overloads told apart by a `name` comment on each, arguments without names (`arg1`, `arg2`, ...), enum arguments and results, and computed fields that take arguments, `priceWithTax(rate: "0.1")`. A table's computed fields can then be filtered on too |
+| a schema | `postgis` | `geometry` and `geography` columns as a `GeoJSON` scalar, read and written as GeoJSON, with `intersects`, `contains`, `within` and `dWithin: {geometry, distance}` filters |
+| a schema | `validation` | Every validation rule of the GraphQL specification runs before a request does, with the same sentences GraphQL's reference implementation uses: an unknown field in a skipped selection, a variable used where its type does not fit, an unused fragment |
+
+A schema's comment can also carry:
+
+| Write | What it does |
+| --- | --- |
+| `{"limits": {"fields": 2000, "rows": 100000}}` | The most one document may select, counted before anything runs. `rows` counts each collection's page times the pages of the collections around it, so a request cannot fan out into a million-row join |
+| `{"allowlist": {"table": "public.graphql_operations"}}` | Only documents in that table run for `anon` and `authenticated` (or the `roles` you list). The table has `hash text` (the SHA-256 of the document, in hex) and `document text`, and those roles need `select` on it. Any role may also send just the hash, as Apollo's persisted queries do: `"extensions": {"persistedQuery": {"sha256Hash": "..."}}` |
+| `{"explain": {"enabled": true}}` | A request with `"extensions": {"explain": true}` gets each statement it ran, its parameters and its plan, under `extensions.explain` |
+| `{"schemaReport": {"enabled": true}}` | A request with `"extensions": {"schemaReport": true}` gets every table and function in the schema, whether it is in the GraphQL schema, and if not, why: no primary key, a name GraphQL cannot use, no grant, an overloaded function, two relations that would share a field name |
+
+`explain` and `schemaReport` describe objects the caller may not be able to read, so they are for
+development: turn them off before the anon key is published.
+
+```sql
+comment on schema public is '@graphql({"inflect_names": true, "introspection": true, "relationFilters": {"enabled": true}, "limits": {"rows": 50000}})';
+comment on table public.blog_post is '@graphql({"upsert": {"enabled": true}})';
+```
+
+Two foreign keys from one table to the same other table give the reverse side one name for both.
+Name them apart with a comment on each key:
+
+```sql
+comment on constraint person_manager on person is '@graphql({"foreign_name": "manager", "local_name": "reports"})';
+```
+
 ## Introspection is off until you switch it on
 
 GraphiQL, Apollo's tooling and code generators all read the schema by introspection, and **a
@@ -181,6 +226,9 @@ introspection shows the shape of what a role may see, never the rows.
 ## Limits
 
 - A selection nests at most 32 levels deep, and fragments may not refer to themselves.
+- A document may expand to at most a million selections once its fragments are spread, so a few
+  hundred bytes that spread one fragment into the next cannot tie up the database.
+- `limits` on a schema bounds the fields and rows one document may ask for (above).
 - A page holds at most `max_rows` rows (30 unless a comment raises it).
 - `atMost` bounds every update and delete (1 unless you pass more).
 
