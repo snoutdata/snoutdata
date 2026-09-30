@@ -142,7 +142,7 @@ const db = createClient(url, anonKey, {
 ```
 
 A session is larger than one cookie holds, so it is split across numbered cookies and joined
-again. The format is the one `@upstream/ssr` writes, so a site moving from it keeps its visitors
+again. The format is the one server-side cookie helpers for the v2 client API write, so a site moving from one keeps its visitors
 signed in: give `storageKey: 'sb-<first label of the URL you used>-auth-token'` to read theirs.
 
 ## The emails your users get

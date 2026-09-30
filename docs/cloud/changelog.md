@@ -13,6 +13,12 @@ after each update.
 
 ## 2026-09-30
 
+- **Every function is given `SNOUTDATA_URL`, `SNOUTDATA_ANON_KEY` and `SNOUTDATA_SERVICE_ROLE_KEY`**,
+  so it can call its own project with no configuration. The variables functions were given before
+  are still set, so a deployed function keeps working. See [Snout Functions](functions#secrets).
+- **`snoutdata` CLI.** `functions deploy` reads a function from `functions/<name>/`, or from the
+  folder `--dir` names. `gen types typescript` writes the schemas and the helper types and nothing
+  else; `--data-api-version` is still accepted and does nothing.
 - **Snout Functions run on a new runtime.** A warm call takes about 2 ms and a function holds
   any number of waiting requests at once, where 100 held for 20 seconds used to lose most of them.
   A function that runs out of memory, CPU or time is now told which one, and a changed secret
@@ -139,7 +145,7 @@ after each update.
 - **`@snoutdata/client` 0.2.2.** A sign-in that leaves the page and comes back (SSO, GitHub, a
   magic link) completes when the session is kept in `cookieStorage`. In 0.2.0 and 0.2.1 it did not.
 - **`@snoutdata/client` 0.2.1.** Without a `Database` type, rows and function results are `any`,
-  as in upstream-js, so moving an app over is changing its import. `insert(...).select()` (and
+  as in the v2 client API, so moving an app over is changing its import. `insert(...).select()` (and
   `update`, `upsert`, `delete`) returns the table's rows. With a `Database` type from
   `snoutdata gen types typescript`, rows stay exact.
 - **`@snoutdata/client` 0.2.0.** A session can live in a cookie on your parent domain, so your
@@ -148,7 +154,7 @@ after each update.
   `auth.startAutoRefresh`, and a `debug` option that says why a session ended. Two tabs or two
   processes sharing one session no longer sign each other out when one refreshes it.
 - **Dashboard.** A project's API tab starts its code with `@snoutdata/client`. An app already
-  written with upstream-js still works unchanged.
+  written against the v2 client API still works unchanged.
 - **Time series.** SnoutTime 0.1.6. Automatic sealing failed with "permission denied for schema
   snouttime_internal" once a series had a sealed partition, and the dashboard's Time series tab
   showed the seal job as failed. Partitions due for sealing were still sealed; what failed was

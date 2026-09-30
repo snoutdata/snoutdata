@@ -67,6 +67,11 @@ snoutdata secrets list
 snoutdata secrets unset STRIPE_KEY
 ```
 
+Every function is also given three variables of its own, so it can call its project with no
+configuration: `SNOUTDATA_URL` (the project's API address), `SNOUTDATA_ANON_KEY` and
+`SNOUTDATA_SERVICE_ROLE_KEY`. Names beginning with `SNOUTDATA_` or `SNOUT_` are the platform's, so
+a secret cannot take one.
+
 **Nothing ever prints a value back.** `list` shows names, sizes and when each was last set, which
 answers the real question ("is the thing I set the thing that is there") without the control plane
 ever growing an endpoint that returns a secret. There is no `get`, deliberately, and no MCP tool
