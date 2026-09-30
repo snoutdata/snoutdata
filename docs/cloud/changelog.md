@@ -13,6 +13,15 @@ after each update.
 
 ## 2026-09-29
 
+- **Authentication runs on our own server.** Sign-up, sign-in, sessions, email links, multi-factor,
+  Google and GitHub sign-in and SAML single sign-on now run on snout-auth, for every project with
+  auth on and for SnoutData itself. Nothing to change: the same endpoints, the same tokens, the
+  same `auth` schema and your existing users and sessions. It uses about a megabyte of memory where
+  the previous server used over ten. What behaves better: a sign-up sent twice at once no longer
+  fails with a server error, one emailed link or one authenticator code can no longer be spent
+  twice at the same moment, a single sign-on that fails now returns to your app's own address with
+  the error rather than to your site's home page, and a refused SAML response is no longer echoed
+  back into the error.
 - **HTTP from SQL (pg_net) sends each request on its own.** A request queued behind a slow one no
   longer waits for it (a request now reaches the server in about a millisecond after COMMIT, where
   it could take a second or more), responses appear as they arrive, and an endpoint that never
