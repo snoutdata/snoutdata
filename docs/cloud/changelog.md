@@ -13,6 +13,9 @@ after each update.
 
 ## 2026-09-30
 
+- **Keeping a session signed in is faster.** Refreshing a session now takes about 3 milliseconds on
+  its own, and a project answers roughly twice as many refreshes a second as it did a day ago, so a
+  busy app's sign-ins stay quick when many devices refresh at once. Nothing to change.
 - **GraphQL can do more, when you ask it to.** Filter by related rows (`some`, `every`, `none`),
   order by a related field or by how many related rows there are, upsert with `onConflict`,
   `distinctOn`, keep a table off the root, read domains, composites, enum arrays and PostGIS
