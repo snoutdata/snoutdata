@@ -13,6 +13,8 @@ after each update.
 
 ## 2026-09-30
 
+- **An emailed sign-in code can no longer be guessed.** After five wrong tries a code stops working
+  and answers as an expired code does, so your app needs no change; the person asks for a new one.
 - **Keeping a session signed in is faster.** Refreshing a session now takes about 3 milliseconds on
   its own, and a project answers roughly twice as many refreshes a second as it did a day ago, so a
   busy app's sign-ins stay quick when many devices refresh at once. Nothing to change.
