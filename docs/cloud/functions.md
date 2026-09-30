@@ -41,7 +41,7 @@ $ curl -H "apikey: $ANON_KEY" -H 'content-type: application/json' \
 {"hello":"world"}
 ```
 
-A cold start is about **52 ms** and a warm call about **2.9 ms**, measured on the live host.
+A warm call takes about **2 ms**. A cold start takes about **30 ms** when many functions start at once, and less when one starts on its own, because a worker is kept booted and ready for it. One worker holds any number of requests that are waiting on something: 100 held at once for 20 seconds were all answered. Measured on the host class the fleet runs (2 arm64 cores).
 
 ## Who may call it
 
