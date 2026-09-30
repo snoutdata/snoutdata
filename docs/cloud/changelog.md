@@ -24,6 +24,12 @@ after each update.
   key (with persisted queries), see the SQL and plan behind a request, and ask why a table is not in
   the schema. Each is off until a comment on the table or schema switches it on, so nothing changes
   for a project that does not: [GraphQL](graphql#more-when-you-switch-it-on) lists them.
+- **GraphQL checks every request against the specification before running it**, with the same
+  error sentences as GraphQL's reference implementation. A document it used to answer despite a
+  mistake is now refused with the reason, most often an enum value written as a string
+  (`{plan: {eq: "free"}}` instead of `{plan: {eq: free}}`) or a variable declared with the wrong
+  type. [GraphQL](graphql#requests-are-checked-before-they-run) shows the fixes, and how a schema
+  can switch the checks off while a client catches up.
 - **GraphQL refuses a document that spreads fragments over a million times**, where it used to work
   through all of them before answering.
 

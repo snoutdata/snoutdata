@@ -184,7 +184,6 @@ unless the table's own comment says otherwise.
 | a schema | `composites` | A composite-type column is an object you select into, `address { city zipCode }`, and filter by its attributes; a function can return one |
 | a schema | `functionShapes` | Functions left out otherwise: overloads told apart by a `name` comment on each, arguments without names (`arg1`, `arg2`, ...), enum arguments and results, and computed fields that take arguments, `priceWithTax(rate: "0.1")`. A table's computed fields can then be filtered on too |
 | a schema | `postgis` | `geometry` and `geography` columns as a `GeoJSON` scalar, read and written as GeoJSON, with `intersects`, `contains`, `within` and `dWithin: {geometry, distance}` filters |
-| a schema | `validation` | Every validation rule of the GraphQL specification runs before a request does, with the same sentences GraphQL's reference implementation uses: an unknown field in a skipped selection, a variable used where its type does not fit, an unused fragment |
 
 A schema's comment can also carry:
 
@@ -209,6 +208,28 @@ Name them apart with a comment on each key:
 ```sql
 comment on constraint person_manager on person is '@graphql({"foreign_name": "manager", "local_name": "reports"})';
 ```
+
+## Requests are checked before they run
+
+Every validation rule of the GraphQL specification runs before a request does, and the errors use
+the same sentences GraphQL's reference implementation does, such as `Cannot query field "x" on type
+"Account".` A document the specification calls invalid is refused whole, with every problem listed,
+before any SQL runs: an unknown field (even in a skipped selection), a variable used where its type
+does not fit or used without being declared, an unused fragment, an enum value written as a string.
+
+That last one catches code written against a more forgiving server. Write enum values bare:
+
+```graphql
+# refused: Enum "Plan" cannot represent non-enum value: "free".
+accountCollection(filter: {plan: {eq: "free"}}) { ... }
+# answered
+accountCollection(filter: {plan: {eq: free}}) { ... }
+```
+
+and declare a variable with the type its place expects (`$order: [AccountOrderBy!]` for `orderBy`,
+not `[AccountOrderBy]`). A code generator reading the schema writes both correctly already. If a
+client you cannot change yet depends on the looser reading, a schema's comment can switch the checks
+off, `@graphql({"validation": {"enabled": false}})`, and put them back when it is fixed.
 
 ## Introspection is off until you switch it on
 
