@@ -14,7 +14,8 @@ after each update.
 ## 2026-09-29
 
 - **Authentication runs on our own server.** Sign-up, sign-in, sessions, email links, multi-factor,
-  Google and GitHub sign-in and SAML single sign-on now run on snout-auth, for every project with
+  Google and GitHub sign-in and SAML single sign-on now run on
+  [snout-auth](https://github.com/snoutdata/snout-auth), open source, for every project with
   auth on and for SnoutData itself. Nothing to change: the same endpoints, the same tokens, the
   same `auth` schema and your existing users and sessions. It uses about a megabyte of memory where
   the previous server used over ten. What behaves better: a sign-up sent twice at once no longer

@@ -188,6 +188,14 @@ Two layers, so an attacker cannot spend your mail:
 A throttled address is throttled for every service on that project, not just auth: the address is
 misbehaving.
 
+## How it runs
+
+Authentication is **snout-auth**, our own server, open source under the Apache License 2.0 at
+[github.com/snoutdata/snout-auth](https://github.com/snoutdata/snout-auth). It runs inside your
+project's own container, next to your database, as one static binary using about a megabyte of
+memory. It keeps your users, sessions and factors in your database's `auth` schema, so nothing
+about them lives anywhere else.
+
 ## Not built yet
 
 - **Other sign-in providers.** Google is the first; GitHub, Apple and the rest are not offered yet.
