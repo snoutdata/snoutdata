@@ -13,6 +13,8 @@ after each update.
 
 ## 2026-10-01
 
+- **The data API's switch moved to the project's Settings tab** in the dashboard. API docs is now
+  only the reference for your tables, and its snippets use `@snoutdata/client`.
 - **Run the whole stack yourself.** Postgres, auth, the REST and GraphQL API, storage, Realtime and
   functions on one machine with Docker Compose, behind one gateway, from the same open-source
   servers Cloud runs. Three commands, keys made for your stack alone, and your client code works

@@ -16,7 +16,7 @@ database rather than written by you, and both governed by the same row-level sec
 snoutdata products enable data-api
 ```
 
-Or use the switch at the top of the project's API docs tab in the dashboard.
+Or use the data API switch on the project's Settings tab in the dashboard. Its API docs tab is the reference for your own tables, with `@snoutdata/client` snippets for each one.
 
 A free project asking for it is refused with a sentence about the plan, never an error that reads
 like a fault. The reason is running cost rather than packaging: this is a server per project that
