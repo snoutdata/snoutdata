@@ -5,7 +5,7 @@
 <h3 align="center">Where your agents meet your data</h3>
 
 <p align="center">
-  A full-stack cloud backend to build on. A desktop workbench to explore your data and work with coding agents.<br/>
+  A full-stack cloud backend to build on. SnoutData Studio, a desktop workbench to explore your data and work with coding agents.<br/>
   <b>For developers and businesses of every size.</b>
 </p>
 
@@ -57,7 +57,7 @@ person:
 
 [CLI reference](https://docs.snoutdata.com/cloud/cli).
 
-## SnoutData Desktop
+## SnoutData Studio
 
 A workbench for every database and cloud log you already have, with your own coding agent running
 inside it.

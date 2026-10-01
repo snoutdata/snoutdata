@@ -8,4 +8,4 @@ contact_links:
     about: Anything about your plan, invoices or a specific project.
   - name: Documentation
     url: https://docs.snoutdata.com
-    about: Guides and references for Cloud, the CLI, the client and the desktop app.
+    about: Guides and references for Cloud, the CLI, the client and SnoutData Studio.

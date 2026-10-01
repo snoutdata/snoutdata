@@ -18,6 +18,10 @@ after each update.
   servers Cloud runs. Three commands, keys made for your stack alone, and your client code works
   unchanged. [Run the stack yourself](self-hosting), source at
   [snoutdata/snout-stack](https://github.com/snoutdata/snout-stack).
+- **The desktop app is now SnoutData Studio**, and the dashboard says so: your account, your plan
+  and your team read Studio and Cloud. The `snoutdata` CLI says it too from its next release, in
+  its help, its sign-in and the tools `snoutdata mcp` borrows. Nothing about either product
+  changes. See [Cloud projects in Studio](studio).
 
 ## 2026-09-30
 

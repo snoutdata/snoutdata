@@ -1,5 +1,5 @@
 name: Bug report
-description: Something in SnoutData Cloud, the CLI, the client or the desktop app does not work as it should.
+description: Something in SnoutData Cloud, the CLI, the client or SnoutData Studio does not work as it should.
 labels: [bug]
 body:
   - type: dropdown
@@ -10,7 +10,7 @@ body:
         - SnoutData Cloud (a project, the dashboard)
         - The snoutdata CLI
         - "@snoutdata/client"
-        - SnoutData Desktop
+        - SnoutData Studio
         - An example in this repo
     validations:
       required: true
@@ -31,7 +31,7 @@ body:
     id: version
     attributes:
       label: Version
-      description: "`npx snoutdata --version`, the client version, or the desktop app's Help → About."
+      description: "`npx snoutdata --version`, the client version, or Studio's Help → About."
   - type: textarea
     id: output
     attributes:
