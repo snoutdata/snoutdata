@@ -11,6 +11,14 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. The desktop app has its own release notes, shown in the app
 after each update.
 
+## 2026-10-01
+
+- **Run the whole stack yourself.** Postgres, auth, the REST and GraphQL API, storage, Realtime and
+  functions on one machine with Docker Compose, behind one gateway, from the same open-source
+  servers Cloud runs. Three commands, keys made for your stack alone, and your client code works
+  unchanged. [Run the stack yourself](self-hosting), source at
+  [snoutdata/snout-stack](https://github.com/snoutdata/snout-stack).
+
 ## 2026-09-30
 
 - **Every function is given `SNOUTDATA_URL`, `SNOUTDATA_ANON_KEY` and `SNOUTDATA_SERVICE_ROLE_KEY`**,
