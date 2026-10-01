@@ -77,6 +77,10 @@ provider. Nobody else receives your hosted data.
   [snout-functions](https://github.com/snoutdata/snout-functions)); image resizing is upstream
   software, pinned and unmodified. Each request carries the tenant we resolved rather than one a
   client claimed, and a function runs in V8 isolates of its own that may read only its own code.
+  The function runtime goes one step further: each project's functions run in a **process of their
+  own**, shut into a directory holding only that project's code, as an operating-system user of
+  their own with no privileges, and handed only that project's secrets. So code that got out of its
+  isolate still could not read another project's secrets or code, or reach its processes.
 
 ## Who can see your data
 

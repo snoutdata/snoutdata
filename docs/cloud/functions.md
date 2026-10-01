@@ -134,10 +134,12 @@ else's.
 ## How it runs
 
 Functions run on **snout-functions**, our own runtime, open source under the Apache License 2.0 at
-[github.com/snoutdata/snout-functions](https://github.com/snoutdata/snout-functions). One process
-serves every project on a machine rather than running inside your project's container, and each
-function runs in V8 isolates of its own: it may read its own code, and reach the network, and
-nothing else of the machine or of anyone else's project. A request reaches it only through the front
+[github.com/snoutdata/snout-functions](https://github.com/snoutdata/snout-functions). It runs
+beside your project's container rather than inside it, and your project's functions run in a
+process of their own on the machine: shut into a directory holding only your project's code, as a
+user of their own with no privileges, and handed only your project's secrets. Each function runs in
+V8 isolates of its own inside it: it may read its own code, and reach the network, and nothing else
+of the machine or of anyone else's project. A request reaches it only through the front
 door, which proves itself with a secret the runtime checks before anything else, so no function can
 call another project's functions by going round it. [Security](security) says the same.
 

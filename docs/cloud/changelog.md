@@ -25,6 +25,10 @@ after each update.
   reaches the very next request. It is our own, open source as
   [snout-functions](https://github.com/snoutdata/snout-functions). Nothing to change in your code:
   [Snout Functions](functions).
+- **Your functions run in a process of their own.** Each project's functions now run apart from
+  every other project's on the machine, confined to your project's code and secrets as a user of
+  their own, so even code that escaped its sandbox could not reach another project. A first call
+  to a project that has been idle takes a few milliseconds more. [Security](security).
 - **One function that keeps growing no longer takes the others down.** When the functions on a
   host near their shared memory, the one holding the most is stopped and its caller is told why; the
   rest keep answering.
