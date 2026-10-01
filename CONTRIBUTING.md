@@ -21,7 +21,7 @@ on docs.snoutdata.com at that point.
 - **Examples:** fixes to the existing ones, or a new one. Run it from a clean checkout by following
   its README before you open the pull request. To suggest one without writing it, open an
   [example request](https://github.com/snoutdata/snoutdata/issues/new?template=example-request.yml).
-- **Bugs** in SnoutData Cloud, the CLI, the client or the desktop app: open a
+- **Bugs** in SnoutData Cloud, the CLI, the client or SnoutData Studio: open a
   [bug report](https://github.com/snoutdata/snoutdata/issues/new?template=bug.yml).
 
 Never include keys, passwords or connection strings. Security problems go to
