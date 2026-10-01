@@ -13,8 +13,12 @@ after each update.
 
 ## 2026-10-01
 
-- **The data API's switch moved to the project's Settings tab** in the dashboard. API docs is now
-  only the reference for your tables, and its snippets use `@snoutdata/client`.
+- **API docs is now Data API** in the dashboard, under Services, with two tabs: Settings for the
+  switch that turns REST and GraphQL on, and Docs for the reference to your own tables, whose
+  snippets now use `@snoutdata/client`.
+- **The project menu is regrouped.** Extensions, Cron and Time series sit under Database, since
+  they run inside Postgres; Services is the servers beside it (Auth, Storage, Data API, Functions,
+  Realtime, Push); Manage is Logs, Domains and Settings.
 - **Run the whole stack yourself.** Postgres, auth, the REST and GraphQL API, storage, Realtime and
   functions on one machine with Docker Compose, behind one gateway, from the same open-source
   servers Cloud runs. Three commands, keys made for your stack alone, and your client code works
