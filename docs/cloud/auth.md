@@ -34,7 +34,7 @@ Press **Turn on auth** on the project's Auth tab in the dashboard, or:
 snoutdata products enable auth
 ```
 
-The desktop app's project tab has the same switch. Auth starts within about a minute.
+Studio's project tab has the same switch. Auth starts within about a minute.
 
 Then set where sign-ins may send your users back to, under **Redirect addresses** on the same tab:
 

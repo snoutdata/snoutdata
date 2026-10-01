@@ -6,7 +6,7 @@ sidebar_label: Install
 
 # Install SnoutData
 
-SnoutData is a desktop app for Windows, macOS, and Linux. Get the build for your
+SnoutData Studio is a desktop app for Windows, macOS, and Linux. Get the build for your
 platform from the [download page](https://snoutdata.com/download).
 
 ## Windows

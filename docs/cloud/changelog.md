@@ -8,7 +8,7 @@ description: What changed in SnoutData Cloud, dated and newest first. The dashbo
 # SnoutData Cloud changelog
 
 What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snoutdata` CLI and
-`@snoutdata/client`. Newest first. The desktop app has its own release notes, shown in the app
+`@snoutdata/client`. Newest first. Studio has its own release notes, shown in the app
 after each update.
 
 ## 2026-10-01
@@ -94,7 +94,7 @@ after each update.
   within your plan (up to 2 on Free, 4 on Plus, 8 on Pro). Memory × workers may not exceed your
   project's memory, and the tab shows the total before you save. The same from the CLI
   (`snoutdata functions size <name> --memory 256 --concurrency 4`, and `functions list` shows each
-  function's size), the desktop app's project tab, and the MCP tool `size_function`. See
+  function's size), Studio's project tab, and the MCP tool `size_function`. See
   [Memory and concurrency](functions#memory-and-concurrency).
 - **An access token can be limited to one project.** `snoutdata tokens create --project REF`, or
   the Project picker under Access tokens in the dashboard, makes a token that reaches that project

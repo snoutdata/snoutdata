@@ -19,7 +19,7 @@ Take either on its own. One account and one plan cover both, and neither needs t
 
 ## On your machine: the workbench
 
-A standalone desktop app for Windows, macOS, and Linux. Connect to relational, document, and
+SnoutData Studio, a standalone desktop app for Windows, macOS, and Linux. Connect to relational, document, and
 vector databases and query them with SQL, a native pipeline, or plain language. Bring data in
 from files, PDFs, web pages and other databases. Run Claude Code, Codex or opencode inside the
 app with your databases already connected.
@@ -101,8 +101,7 @@ password is encrypted with a key we hold, revealable to you whenever you ask, re
 and every change to a project is on an audit log. We do not tell you we cannot read it, because
 that would not be true.
 
-If credentials that never leave your machine are a requirement rather than a preference, the
-desktop app is the product for that, and it needs none of the cloud.
+If credentials that never leave your machine are a requirement rather than a preference, Studio is the product for that, and it needs none of the cloud.
 
 ## Get started
 

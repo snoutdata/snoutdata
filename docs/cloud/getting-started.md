@@ -8,8 +8,8 @@ sidebar_label: Getting started
 
 **SnoutData Cloud gives you a project: a hosted Postgres database with auth, storage, realtime,
 functions and push notifications around it.** You create a project from a terminal, from
-[dashboard.snoutdata.com](https://dashboard.snoutdata.com) or from the [desktop app](desktop), and you get a `postgres://` URL that
-any client can use: `psql`, your ORM, the SnoutData desktop app, or a coding agent.
+[dashboard.snoutdata.com](https://dashboard.snoutdata.com) or from [Studio](studio), and you get a `postgres://` URL that
+any client can use: `psql`, your ORM, SnoutData Studio, or a coding agent.
 
 Each project is a Postgres 17 database with `pgvector` available, reachable at
 `<ref>.db.snoutdata.com` over TLS on port 5432. Its data is continuously shipped to object
@@ -40,7 +40,7 @@ where it puts things, Windows, and which one an agent should use.
 snoutdata login
 ```
 
-This opens your browser, signs you in with the same account as the desktop app and
+This opens your browser, signs you in with the same account as Studio and
 snoutdata.com, and writes a session to `~/.snoutdata/auth.json` (mode 0600).
 
 The session lasts an hour and the CLI refreshes it while you are at the machine. For CI or an
@@ -150,12 +150,12 @@ a table browser, usage, the audit log in plain words, access tokens, and your pl
 The dashboard is not privileged. Every call it makes is the same function the CLI calls, with your
 own session, and the database decides once.
 
-## The desktop app
+## SnoutData Studio
 
-The SnoutData desktop app does the same from where you work with the data: create, start, stop and
+SnoutData Studio does the same from where you work with the data: create, start, stop and
 delete projects, copy keys, take backups and switch products on. Every database in your account
 appears in its Connections list on its own, marked with the SnoutData butterfly. See
-[Cloud projects in the desktop app](desktop).
+[Cloud projects in Studio](studio).
 
 ## More than a database
 

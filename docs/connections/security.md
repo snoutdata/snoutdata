@@ -6,7 +6,7 @@ sidebar_label: Security
 
 # Security
 
-SnoutData is a desktop app, and your data stays with you. There is no SnoutData server in
+SnoutData Studio is a desktop app, and your data stays with you. There is no SnoutData server in
 the path between the app and your database.
 
 ## Where credentials live

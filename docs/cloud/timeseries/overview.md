@@ -85,8 +85,7 @@ Everything you would expect to, because a series table is a Postgres table:
 - **Indexes and constraints.** Primary keys, unique constraints, foreign keys the table holds, and
   btree indexes all work. The one rule Postgres itself sets is that a unique key on a partitioned
   table must include the partition column, so a primary key must include the time column.
-- **Tools.** psql, any driver, any ORM, `pg_dump`, the [data API](../data-api.md), the
-  [SnoutData desktop app](./in-the-apps.md) and the dashboard's SQL tab all see an ordinary
+- **Tools.** psql, any driver, any ORM, `pg_dump`, the [data API](../data-api.md), [SnoutData Studio](./in-the-apps.md) and the dashboard's SQL tab all see an ordinary
   partitioned table.
 - **Backups.** A sealed partition is WAL-logged like everything else, so it is in every backup
   and every point-in-time restore of your project, and it survives a crash. See
@@ -195,5 +194,5 @@ run yet, and this page will not quote a number until it has.
 - [Rollups](./rollups.md): aggregates by bucket that are never stale.
 - [Time functions](./functions.md): buckets, gap filling, sketches, as-of and window joins.
 - [Jobs and monitoring](./jobs.md): the worker, its jobs, and the views that say what it did.
-- [In the SnoutData apps](./in-the-apps.md): the desktop app and the dashboard.
+- [In the SnoutData apps](./in-the-apps.md): Studio and the dashboard.
 - [Limits and upgrades](./limits.md): what is not supported yet, versions, and removing it.
