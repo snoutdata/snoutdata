@@ -62,7 +62,7 @@ person:
 A workbench for every database and cloud log you already have, with your own coding agent running
 inside it.
 
-- **Fourteen database engines**, relational, document and vector, plus **CloudWatch, Azure Monitor
+- **Many database engines**, relational, document and vector, plus **CloudWatch, Azure Monitor
   and Google Cloud logs** queried with SQL.
 - **Claude Code, Codex and opencode** run in a dock inside the app with your connections handed
   over. The agent never receives your credentials; they stay in your OS keychain.
