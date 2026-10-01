@@ -109,8 +109,7 @@ defaults to `google`. The session it writes lasts an hour and is refreshed autom
 or on a machine with no desktop. `--no-browser` keeps the ordinary flow but prints the URL instead
 of opening it.
 
-With no credential and a person present, sign-in is offered rather than demanded: the SnoutData
-desktop app if it is running on this machine, then a pairing code. With nobody present (stdin is
+With no credential and a person present, sign-in is offered rather than demanded: SnoutData Studio if it is running on this machine, then a pairing code. With nobody present (stdin is
 not a terminal, or `--json`, or `CI`, or `SNOUTDATA_NO_INTERACTIVE`) nothing is asked and it exits
 3 at once.
 
@@ -463,7 +462,7 @@ CI job should use.
 snoutdata mcp [--allow-delete]
 ```
 
-Serves the same operations to an agent over stdio. When the SnoutData desktop app is running on
+Serves the same operations to an agent over stdio. When SnoutData Studio is running on
 this machine it also offers that app's own tools, so one server covers both the cloud and the
 databases on your desk; `SNOUTDATA_NO_DESKTOP` opts out. See [for an agent](agent#mcp-server).
 
@@ -474,5 +473,5 @@ databases on your desk; `SNOUTDATA_NO_DESKTOP` opts out. See [for an agent](agen
 | `SNOUTDATA_ACCESS_TOKEN` | The credential to use. Wins over `~/.snoutdata/auth.json`. |
 | `SNOUTDATA_PROJECT` | The project ref to act on, when there is no `--ref`. |
 | `SNOUTDATA_NO_INTERACTIVE` | Never offer sign-in. Fail with exit 3 instead. |
-| `SNOUTDATA_NO_DESKTOP` | Do not look for the SnoutData desktop app, for sign-in or for `mcp` tools. |
+| `SNOUTDATA_NO_DESKTOP` | Do not look for SnoutData Studio, for sign-in or for `mcp` tools. |
 | `NO_COLOR` | Turn off the bold and dim escape codes. Colour is off anyway when stdout is not a terminal. |

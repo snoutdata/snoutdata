@@ -22,7 +22,7 @@ provider for what you use, at their rates.
 ## Set it up
 
 1. Make sure you are on **Plus** or **Pro** ([plans](../account/plans)).
-2. In the desktop app, open **Settings, AI**.
+2. In Studio, open **Settings, AI**.
 3. Add a key for OpenAI, OpenRouter, or Anthropic, then pick a model.
 
 Each provider also has an optional **base URL** field, so you can point at a proxy, Azure

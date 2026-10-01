@@ -181,7 +181,7 @@ project's doors, and the compliance position.
 The one sentence from it that belongs here too, because it is a limit in the sense this page means:
 **we hold your database password.** A hosted database is held by its host, and our terms of service
 are what bind us, the same as every other cloud. If you want credentials that never leave your
-machine, that is the [SnoutData desktop app](../getting-started/install), where they never do.
+machine, that is [SnoutData Studio](../getting-started/install), where they never do.
 
 ## Not built
 
@@ -200,6 +200,6 @@ Named here so you do not go looking:
   plan. [Extensions and cron jobs](./extensions) covers pg_cron and pg_net, including the two
   limits that matter: a paused project runs no scheduled jobs, and at most three run at once.
 - **Switching realtime on yourself.** Auth, storage and the data API are switches you throw
-  (`snoutdata products enable`, or the project's tab in the desktop app); realtime is the one we
+  (`snoutdata products enable`, or the project's tab in Studio); realtime is the one we
   still turn on for you, because its switch is not built. See
   [the API stack, honestly](#the-api-stack-honestly).

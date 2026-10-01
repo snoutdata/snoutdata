@@ -236,7 +236,7 @@ from snouttime.series_info;
 
 `bytes` includes the partition's indexes; the small delta store and delete log beside a sealed partition are not counted. `bytes_before` is `NULL` for a partition that was
 never sealed, and it is forgotten by `unseal`. How much a partition shrinks depends on the data:
-repetitive text, regular timestamps and slowly changing numbers compress best. The desktop app's
+repetitive text, regular timestamps and slowly changing numbers compress best. Studio's
 explorer and the dashboard's Time series tab show the same figures; see
 [In the SnoutData apps](./in-the-apps.md).
 

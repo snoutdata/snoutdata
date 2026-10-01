@@ -80,7 +80,7 @@ rather than showing an empty grid.
 
 ## What it is not
 
-This is a read you ask for, not monitoring. SnoutData is a desktop app: it is not running when
+This is a read you ask for, not monitoring. SnoutData Studio is a desktop app: it is not running when
 your laptop is shut, and it does not sample your database continuously, keep a history of its own,
 or alert you. The database accumulates these statistics by itself whether or not SnoutData is
 open; Query Performance is the window onto them, and everything it shows was already there.

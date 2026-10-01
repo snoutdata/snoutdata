@@ -26,9 +26,9 @@ The exact allowances and prices are on the [pricing page](https://snoutdata.com/
 
 Sign in on [snoutdata.com](https://snoutdata.com) to buy, change, or cancel a plan. Billing
 is handled by Stripe; the app picks up your new plan automatically on its next refresh, so
-there is nothing to re-enter in the desktop app.
+there is nothing to re-enter in Studio.
 
 ## Signing in
 
-The desktop app signs in with the same account as the website (Google or GitHub). Your plan
+Studio signs in with the same account as the website (Google or GitHub). Your plan
 follows your account across both.

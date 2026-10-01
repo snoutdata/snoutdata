@@ -2,19 +2,19 @@
 id: in-the-apps
 title: SnoutTime in the SnoutData apps
 sidebar_label: In the SnoutData apps
-description: How the SnoutData desktop app and the SnoutData Cloud dashboard show SnoutTime series tables, partitions, compression and rollups, make a table a series, ground the AI assistant, and warn about queries that read every partition.
+description: How SnoutData Studio and the SnoutData Cloud dashboard show SnoutTime series tables, partitions, compression and rollups, make a table a series, ground the AI assistant, and warn about queries that read every partition.
 ---
 
 # SnoutTime in the SnoutData apps
 
-Series tables are Postgres tables, so any client can use them. The SnoutData desktop app and the
+Series tables are Postgres tables, so any client can use them. SnoutData Studio and the
 SnoutData Cloud dashboard also know what SnoutTime (part of SnoutData Cloud) is, and show it: which
 tables are series, what state each partition is in, what sealing saved, and which rollups exist.
 Both read SnoutTime's own views, so nothing they show scans your data.
 
-## The desktop app
+## SnoutData Studio
 
-Connect to your Cloud project from the [desktop app](../desktop.md) (every Cloud database appears
+Connect to your Cloud project from [Studio](../studio.md) (every Cloud database appears
 in **Connections** by itself). What follows applies to any Postgres connection whose database has
 SnoutTime installed.
 

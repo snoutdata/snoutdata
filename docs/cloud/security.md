@@ -8,14 +8,13 @@ sidebar_label: Security
 
 This is the page for the reader who has to sign off on us: what we hold, where it runs, how it is
 protected, and what we have not built. It is about **SnoutData Cloud**, the
-hosted service. The desktop app is the opposite arrangement and is covered in
+hosted service. Studio is the opposite arrangement and is covered in
 [its own security page](../connections/security).
 
 The short version, and the rest of this page is the detail behind it: **a hosted database is held
 by its host.** We run your database, we hold your data and your project's password, and what binds
 us is our terms of service and the controls below. We would rather write that down than imply
-otherwise. If what you need is a credential that never leaves your own machine, that is the
-desktop app, and it is free.
+otherwise. If what you need is a credential that never leaves your own machine, that is Studio, and it is free.
 
 ## What we hold
 
@@ -87,8 +86,7 @@ provider. Nobody else receives your hosted data.
 **An operator of ours can.** Someone holding the platform's key material and the control plane's
 service role can decrypt a project's password and reach its database. There is no technical
 control that removes this; what stands in its place is key handling discipline, the audit log, and
-our terms of service. That is the ordinary trust boundary of every managed host, and it is why the
-desktop app, not this service, is the answer for a credential that must never leave your machine.
+our terms of service. That is the ordinary trust boundary of every managed host, and it is why Studio, not this service, is the answer for a credential that must never leave your machine.
 
 Who can see a *project* is decided by row-level security on every read, not by application code
 that could be asked to skip it. The dashboard is not privileged: it calls the same functions the

@@ -356,7 +356,7 @@ config:
 It holds **no credential of its own**. It runs as whoever started it and every call is the same
 function the CLI makes, so it is exactly as capable as that person, minus deleting a database.
 
-When the SnoutData desktop app is running on the same machine, its tools are offered here too, so
+When SnoutData Studio is running on the same machine, its tools are offered here too, so
 one server covers both the hosted databases and the ones on that desk. `SNOUTDATA_NO_DESKTOP=1`
 turns that off.
 
@@ -443,7 +443,7 @@ sentence about the plan. Auth, storage, realtime and Snout Functions are on ever
 
 **Snout Functions are self-serve**, with `deploy_function`. **Auth, storage and the data API can
 be switched on per project** with `set_product` / `snoutdata products enable`
-or in the desktop app's project tab; the data API on paid plans only. **Realtime needs no switch**:
+or in Studio's project tab; the data API on paid plans only. **Realtime needs no switch**:
 it is on for every project. A switch takes about a minute to arrive, so a `/rest/v1` that is not answering straight
 after `set_product` is still starting, not broken. See [the project API](api).
 

@@ -1,12 +1,12 @@
 ---
-id: desktop
-title: Cloud projects in the desktop app
-sidebar_label: In the desktop app
+id: studio
+title: Cloud projects in Studio
+sidebar_label: In Studio
 ---
 
-# Cloud projects in the desktop app
+# Cloud projects in Studio
 
-The SnoutData desktop app manages your SnoutData Cloud projects from where you work with the data:
+SnoutData Studio manages your SnoutData Cloud projects from where you work with the data:
 create a project, start and stop it, open its database, copy its keys, take a backup, switch
 products on, and delete it. You do not have to open the dashboard or a terminal for any of that.
 
@@ -20,7 +20,7 @@ example "a production project is never paused"), red when something went wrong.
 
 ## Sign in
 
-Sign in to the desktop app with the same account you use for the CLI and the dashboard
+Sign in to Studio with the same account you use for the CLI and the dashboard
 (**Settings → Account**). The **Cloud projects** icon in the activity bar opens the panel.
 
 ## Your databases appear by themselves

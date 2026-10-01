@@ -101,7 +101,7 @@ It does not expire unless you ask it to, and `snoutdata tokens revoke` takes it 
 
 The skill teaches the agent to run the CLI. [`snoutdata mcp`](agent#mcp-server) gives it the same
 operations as MCP tools instead. They do the same things; use whichever your agent handles better,
-or both. Inside the SnoutData desktop app, a coding agent gets the app's own tools automatically and
+or both. Inside SnoutData Studio, a coding agent gets the app's own tools automatically and
 needs neither.
 
 ## Keeping it current

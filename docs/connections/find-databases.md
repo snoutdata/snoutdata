@@ -2,12 +2,12 @@
 id: find-databases
 title: Find your databases
 sidebar_label: Find your databases
-description: SnoutData Desktop can find the databases on your computer, in your containers and in other database tools' saved connections, and import them in one step. Nothing leaves your computer.
+description: SnoutData Studio can find the databases on your computer, in your containers and in other database tools' saved connections, and import them in one step. Nothing leaves your computer.
 ---
 
 # Find your databases
 
-The first time you open SnoutData Desktop, it offers to look for databases you already have, so you
+The first time you open SnoutData Studio, it offers to look for databases you already have, so you
 do not have to type in connections you have typed into other tools before. It looks on your own
 computer, and nothing it reads leaves it.
 
