@@ -1,36 +1,40 @@
 ---
 id: studio
-title: Cloud projects in Studio
+title: Projects in Studio
 sidebar_label: In Studio
 ---
 
-# Cloud projects in Studio
+# Projects in Studio
 
-SnoutData Studio manages your SnoutData Cloud projects from where you work with the data:
-create a project, start and stop it, open its database, copy its keys, take a backup, switch
-products on, and delete it. You do not have to open the dashboard or a terminal for any of that.
+SnoutData Studio is a dashboard for your projects, in the app where you work with their data. The
+**Dashboard** panel holds two kinds:
 
-The app is a third client of the same control plane as the [CLI](cli) and
-[dashboard.snoutdata.com](https://dashboard.snoutdata.com). Every action here makes the same call
-they make, with your own session, so your plan's limits and every refusal are the same wherever
-you ask. When the control plane says no, the app shows its own words: amber for a refusal (for
-example "a production project is never paused"), red when something went wrong.
+- **Cloud**: your SnoutData Cloud projects. Studio is a third client of the same control plane as
+  the [CLI](cli) and [dashboard.snoutdata.com](https://dashboard.snoutdata.com). Every action makes
+  the same call they make, with your own session, so your plan's limits and every refusal are the
+  same wherever you ask.
+- **Local**: the [whole stack](self-hosting) running in Docker on your own computer, set up from
+  the panel. For these, Studio is the dashboard.
 
-![The Cloud projects panel with the orders project open: Overview with Start, Stop and Delete, then Databases and the project's sections, and the project's tab open on its Overview](/img/screenshots/cloud-projects.png)
+Both kinds open the same tab with the same menu as the online dashboard, so a project looks the
+same whether it runs on SnoutData Cloud or on your laptop. When the control plane says no, the app
+shows its own words: amber for a refusal (for example "a production project is never paused"), red
+when something went wrong.
 
 ## Sign in
 
 Sign in to Studio with the same account you use for the CLI and the dashboard
-(**Settings → Account**). The **Cloud projects** icon in the activity bar opens the panel.
+(**Settings → Account**). The **Dashboard** icon in the activity bar opens the panel, with
+**Local** and **Cloud** groups. Local projects need no account.
 
-## Your databases appear by themselves
+## Your cloud databases appear by themselves
 
 Every database in your account shows up in the **Connections** list on its own. There is nothing
 to import. It happens shortly after the app starts, when you sign in, and whenever you open or
-refresh the Cloud projects panel. It never slows the app's startup.
+refresh the Dashboard panel. It never slows the app's startup.
 
-A cloud database is marked with the SnoutData butterfly instead of the Postgres icon, so you can
-tell it from the databases on your own servers at a glance.
+A SnoutData database, cloud or local, is marked with the SnoutData butterfly instead of the
+Postgres icon, so you can tell it from the databases on your own servers at a glance.
 
 ![The Connections list with three SnoutData Cloud databases, analytics (marked prod), orders and staging, each marked with the butterfly](/img/screenshots/cloud-connections-butterfly.png)
 
@@ -41,8 +45,9 @@ A few details worth knowing:
 - **Nothing is removed for you.** Deleting a project in the cloud leaves its connection in your
   list, with your settings on it, until you remove it yourself.
 - **The password is stored in your system keychain**, like any other connection's, and it never
-  passes through the app's window. Reading it is recorded on the project's activity log.
-- A project marked **production** in the cloud is marked production here too, so the app's
+  passes through the app's window. Reading a cloud project's password is recorded on its activity
+  log.
+- A project marked **production** is marked production in Connections too, so the app's
   production guard applies to it.
 
 **Import** (the cloud icon in the Connections header) still works, and is how you pick up a new
@@ -50,7 +55,9 @@ password on a connection you set up before this.
 
 ## Create a project
 
-Click **+** in the Cloud projects header (or **New project** when you have none yet).
+Click **+** in the Dashboard header and choose where it runs.
+
+**In SnoutData Cloud:**
 
 ![The New project dialog: a name, the region, and a switch to treat the project as production](/img/screenshots/cloud-new-project.png)
 
@@ -63,96 +70,144 @@ The project is added to your connections the moment it is created. It takes abou
 to start, so give it that long before you connect. If your plan has no room for another project,
 the dialog stays open and tells you.
 
-## The Cloud projects panel
+**Local, in Docker:** a short setup checks Docker first (installed, running, recent enough Compose,
+enough memory) and says what to do about anything missing. It then asks for a name, a folder and
+the two ports, how users sign in, and where files are kept, downloads the
+[published stack](self-hosting), and starts it. The project's keys are made for it alone and live
+in the `.env` in its folder, which is their only copy.
 
-Each project is a row with a status dot: green when it is ready, amber while it is starting or
-stopping, grey when it is paused, red if it is stuck. Expand it to see what belongs to it:
+## The Dashboard panel
 
-- **Overview**: the state, size, region, last connection and address, with **Start**, **Stop** and
-  **Delete**.
-- **Databases**: the project's database. Click it to show its connection in Connections and put it
-  on the current editor tab.
-- **Connection & keys**, **Backups**, **Usage**, **Auth**, **Storage**, **Data API**,
-  **Functions** and **Domains**: each opens the project's tab at that section.
+![The Dashboard panel with Local and Cloud groups, the orders project expanded into its menu with Overview open in place, and the project's tab on Overview: status with Start and Stop, storage against the plan, and the last 30 days](/img/screenshots/studio-projects-overview.png)
 
-Start and Stop **ask** for a change rather than making it on the spot: the host acts on it a few
-seconds later, so the panel says "asked" and the state catches up. While a project is starting,
-stopping or restoring, it offers no other action.
+Each project is a row with a status dot: green when it is running or ready, amber while it is
+starting or stopping, grey when it is stopped or paused, red if something is wrong. Expand it and
+it shows the same menu the online dashboard has:
+
+- **Database**: Overview, Database, Extensions, Cron, Time series.
+- **Services**: Auth, Storage, Data API, Functions, Realtime, Push.
+- **Manage**: Logs, Domains, Settings.
+
+**Overview** opens in place, with **Start** and **Stop**, so you can run a project without opening
+a tab. Every other row opens the project's tab at that section. The **Database** row also carries
+a plug: click it to show the project's database in Connections.
+
+A cloud project's Start and Stop **ask** for a change rather than making it on the spot: the host
+acts on it a few seconds later, so the panel says "asked" and the state catches up. While a project
+is starting, stopping or restoring, it offers no other action.
 
 ## The project tab
 
-A project opens as a tab in the editor area, one tab per project, with its sections down the left.
+A project opens as a tab in the editor area, one tab per project, with the menu down the left.
 
 ### Overview
 
-Everything about the project's state, with Start, Stop and **Delete project**. Delete asks you to
-confirm. It is the control plane's soft delete: the project can be brought back for your plan's
-grace period.
+- **Status**: the state, with **Start** and **Stop**. A production project asks before it stops.
+- **The numbers**: for a cloud project, its size against your plan's limit and the last 30 days
+  (database size, backup size, connections, compute). For a local one, its size, open
+  connections, files in storage and how long it has been up, and the health of every service.
+- **Work on it**: run a statement in a new SQL tab on the project's database, browse its tables,
+  or go to Settings.
+- **API keys**: copy the **anon** key and the **service role** key for the [project API](api) and
+  [`@snoutdata/client`](api#the-client-library). The service role key bypasses row-level security,
+  so keep it on a server. **Rotate keys** replaces both; every key already pasted into an app, a
+  deployment or a CI secret stops working, which is why it asks first.
+- **Recent activity**, on a local project: what the app has done to it (started, stopped, settings
+  changed, keys copied, exports, deploys).
 
-### Connection & keys
+### Database
 
-![The Connection & keys section: host, port, database and user, buttons to copy the connection string and the password, Reset password, and the API keys with Rotate keys](/img/screenshots/cloud-project-connection.png)
+![A project's Database section: Open in Connections, then the host, port, database and user, with Copy connection string, Copy password and Reset password](/img/screenshots/studio-project-database.png)
 
-- **Host, port, database and user**, to paste into any Postgres client. TLS is required.
+- **Open in Connections**: the database is already a connection; browse it and query it there.
+- **Host, port, database and user**, to paste into any Postgres client. A cloud project requires
+  TLS; a local one listens on this computer only.
 - **Copy connection string** and **Copy password** put them on your clipboard. The password is
   never shown on screen.
-- **Reset password** issues a new one and updates your connections in the app to use it. Anything
-  else connected with the old password is disconnected when it next reconnects.
-- **Copy anon key** and **Copy service role key**: the two API keys for the
-  [project API](api) and [`@snoutdata/client`](api#the-client-library). The service role key bypasses row-level
-  security, so keep it on a server.
-- **Rotate keys** replaces both. Every key already pasted into an app, a deployment or a CI secret
-  stops working, which is why it asks first.
+- On a cloud project, **Reset password** is here; on a local one it is under Settings.
 
-### Backups
+### Extensions, Cron and Time series
 
-- **Export now** takes a `pg_dump` of the whole database. It is taken a moment later, and
-  **Download** appears when it is ready. The link lasts a few hours.
-- **Restore to a point in time**: pick a moment inside your plan's window. The restore goes into a
-  **new** project beside this one, never over it, so a wrong guess costs nothing. It uses one of
-  your plan's project slots, and the new project appears in your connections. On a plan without
-  point-in-time restore, the section says so.
+The project's own Postgres, as the online dashboard shows it:
 
-### Usage
+- **Extensions**: the catalog, with the ones already on first. Switch one on or off.
+- **Cron**: switch pg_cron on, then schedule jobs from presets or your own SQL, pause them, read
+  their runs and delete them.
+- **Time series**: [SnoutTime](timeseries/overview) series tables, their partitions and rollups.
 
-Your database's size against your plan's storage limit, and the last 30 days: database size,
-backup size, connections and compute, one row per day.
+### Auth
 
-### Auth, Storage and Data API
+- **Users**: list and search them, add one, confirm, ban or delete.
+- On a cloud project, the **Auth** switch, and Google and SAML status.
+- On a local project: **Sign in with** Google and GitHub (your own OAuth client, with the steps and
+  the exact callback to register), **Redirect addresses**, **Sign-ups** (confirm without email,
+  refuse new sign-ups), the **Mail server** auth sends through, and **Email templates**: edit the
+  five account emails with a preview, or go back to the built-in ones.
 
-Each has a switch. Turning one on starts it in the project within about a minute, and the section
-shows the address it is served at.
+### Storage
 
-- **Auth**: sign-up and sign-in for your application's users, with Google and SAML status. Google's
-  client ID and secret are set on the dashboard's Auth tab or with `snoutdata auth google`.
-  Providers are set up in the dashboard.
-- **Storage**: files for your application, with how many and how much.
-- **Data API**: REST and GraphQL over your tables. It is on the paid plans; on Free the switch is
-  off and the section says why.
+Buckets and files: create and delete buckets, upload and download files. A cloud project has the
+**Storage** switch here, with how many files and how much.
 
-See [the project API](api) for what each one serves.
+### Data API
+
+Two tabs. **Settings** has the switch that turns REST and GraphQL on (paid plans on Cloud; on Free
+the switch is off and the section says why). **Docs** is the reference for your own tables, with
+`@snoutdata/client` snippets.
 
 ### Functions
 
-The functions deployed to the project, with whether they need a JWT, their size, their memory and
-workers, and when they were last deployed. **Memory and concurrency** changes one function's memory
-and workers within your plan, showing memory × workers against your project's memory; see
-[Memory and concurrency](functions#memory-and-concurrency). Deploying stays in the CLI (`snoutdata functions deploy <name>`), because it bundles
-your code. See [Snout Functions](functions).
+- On a cloud project: the deployed functions, with whether they need a JWT, their size, their
+  memory and workers, and when they were last deployed. **Memory and concurrency** changes one
+  function's memory and workers within your plan; see
+  [Memory and concurrency](functions#memory-and-concurrency). Deploying stays in the CLI
+  (`snoutdata functions deploy <name>`), because it bundles your code.
+- On a local project: your functions are folders (`functions/<name>/index.ts` in the project's
+  folder). Create one from a template, edit it in your own editor, and **Deploy functions**. Each
+  can be made callable with **No key needed**, for a webhook's receiver. **Memory and time** sets
+  each function's memory, the memory they share, and how long a call may run.
+- **Secrets** are the environment your functions run with. Set one with a name and a value, or
+  remove one. A value goes in and never comes back out: only the names are listed.
 
-**Secrets** are the environment your functions run with. Set one with a name and a value, or
-remove one. A value goes in and never comes back out: only the names are listed.
+See [Snout Functions](functions).
+
+### Realtime
+
+The tables that stream their changes, and the subscriptions open now.
+
+### Push
+
+The **Push** switch on a cloud project. See [Push](push).
+
+### Logs
+
+Postgres's own record of the statements it has run, heaviest first. On a local project, also
+every service's log straight from Docker, and the activity log.
 
 ### Domains
 
-Serve the project's API at your own domain, with a certificate obtained and renewed for you. Add
-a hostname, publish the DNS records the section lists, then **Verify**. Paid plans only; on Free
-the control plane refuses it and the section says so.
+- On a cloud project: serve the project's API at your own domain, with a certificate obtained and
+  renewed for you. Add a hostname, publish the DNS records the section lists, then **Verify**. Paid
+  plans only.
+- On a local project: the **public address** clients reach it at, the header a TLS proxy in front
+  of it writes the caller's address into, and a ready Caddy configuration for your own domain.
+
+### Settings
+
+- On a cloud project: **Backups** (**Export now** takes a `pg_dump`, with **Download** when it is
+  ready; **Restore to a point in time** goes into a **new** project beside this one, never over it)
+  and **Delete this project**, the control plane's soft delete, recoverable for your plan's grace
+  period.
+- On a local project: **Password** (reset the owner's), **Production**, **Running**, **Export**
+  (a `pg_dump` into the project's `backups/` folder), **Put it back** (restores an export over the
+  project: it is restored beside the database first, so a restore that fails changes nothing),
+  **Network** (the ports, and whether other devices on your network can reach it), the largest
+  upload, and **Remove**, which keeps the data and folder unless you ask otherwise.
 
 ## Ask the assistant, or your coding agent
 
-The AI assistant can do all of this for you, by name: "which cloud projects do I have?", "create
-a project called billing", "turn storage on for orders", "stop staging", "delete the old test
+The AI assistant can do this for you, by name: "which cloud projects do I have?", "create a
+project called billing", "turn storage on for orders", "stop staging", "delete the old test
 project". It asks before it changes anything, and it never sees a password or an API key.
 
 A coding agent running in the app (Claude Code, Codex, opencode) gets the same abilities as tools,
@@ -160,12 +215,12 @@ and the app asks you before each change it makes.
 
 ## What is not in the app yet
 
-The control plane has no call for these yet, so the app cannot offer them:
-
-- renaming a project,
-- switching production on or off after the project is created,
-- sharing an existing project with a team (a new project can be shared from the dashboard when it
-  is created).
+- Renaming a cloud project, switching production on or off after it is created, and sharing an
+  existing project with a team: the control plane has no call for these yet. (A new project can be
+  shared from the dashboard when it is created.)
+- On a production cloud project, the dashboard asks you to confirm a change made from its SQL
+  sections; the app does not ask yet, so those changes are refused there and the section says so.
+- Push on a local project: the self-hosted stack does not run it.
 
 Every section is listed for every project. A section your plan does not include says so when you
 open it, rather than being hidden.

@@ -155,7 +155,7 @@ own session, and the database decides once.
 SnoutData Studio does the same from where you work with the data: create, start, stop and
 delete projects, copy keys, take backups and switch products on. Every database in your account
 appears in its Connections list on its own, marked with the SnoutData butterfly. See
-[Cloud projects in Studio](studio).
+[Projects in Studio](studio).
 
 ## More than a database
 

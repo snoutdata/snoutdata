@@ -24,10 +24,10 @@ The tools run in the live interface, so the window changes while the agent works
 - change settings
 - read recent logs
 - post notifications
-- create and populate a dashboard
+- create and populate a monitor
 
-Because these run in the real UI, "make me a dashboard of the slowest queries" opens the
-Dashboards view and creates the widgets in front of you, rather than printing SQL for you to
+Because these run in the real UI, "make me a monitor of the slowest queries" opens the
+Monitors view and creates the widgets in front of you, rather than printing SQL for you to
 paste somewhere.
 
 ## It draws real interface

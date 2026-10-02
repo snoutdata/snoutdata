@@ -187,7 +187,7 @@ any plan, with nothing to switch on first. See [Snout Functions](functions).
 
 **Auth, storage and the REST and GraphQL API can be switched on per project**: with the switch at
 the top of the dashboard's Auth and Storage tabs and in its Data API tab, in Studio's project tab
-([Cloud projects in Studio](studio)), and with `snoutdata products
+([Projects in Studio](studio)), and with `snoutdata products
 enable auth|storage|data-api`. The data API is on paid
 plans only. A switch asks for the change and it arrives within about a minute; the data API's
 container arrives when the project next restarts. Realtime needs no switch: it is on for every

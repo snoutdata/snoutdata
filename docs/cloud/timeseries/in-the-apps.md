@@ -111,12 +111,12 @@ function or a cast of it, such as `date(ts) = current_date`, which cannot prune.
 hands the statement to the assistant. Reads of sealed partitions by SnoutTime's own scans count as
 reads here too.
 
-### Open a series' rollups as a dashboard
+### Open a series' rollups as a monitor
 
-![The dashboard opened from a series' Rollups folder: per-host rollups as bar charts of the latest bucket's top ten hosts](/img/screenshots/snouttime-rollup-dashboard.png)
+![The monitor opened from a series' Rollups folder: per-host rollups as bar charts of the latest bucket's top ten hosts](/img/screenshots/snouttime-rollup-dashboard.png)
 
-In a series table's **Rollups** folder, **Open as a dashboard** makes (the first time) and opens a
-dashboard with a widget for each rollup:
+In a series table's **Rollups** folder, **Open as a monitor** makes (the first time) and opens a
+monitor with a widget for each rollup:
 
 - a rollup **without groups** becomes a line chart of its last 48 buckets, one line per numeric
   column;

@@ -23,6 +23,8 @@ after each update.
   bottom of the screen, where you clicked. The Data API log tab knows when the API is on. The
   heaviest-statements list says which role ran a statement whose text Postgres hides. From its
   next release, `snoutdata products` suggests enabling only a product that is off.
+- **A project's first tab is now Overview**, in the dashboard and in Studio: its state, size,
+  connections, keys and recent activity, where it said Dashboard before.
 - **API docs is now Data API** in the dashboard, under Services, with two tabs: Settings for the
   switch that turns REST and GraphQL on, and Docs for the reference to your own tables, whose
   snippets now use `@snoutdata/client`.
