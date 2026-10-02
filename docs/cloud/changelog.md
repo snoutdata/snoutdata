@@ -11,6 +11,14 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio has its own release notes, shown in the app
 after each update.
 
+## 2026-10-02
+
+- **The SQL editor shows large rows without stalling.** A result now stops at 500 rows or 8 MB,
+  whichever comes first, and still tells you how many rows there are in all. Selecting a table of
+  images or documents shows the first rows that fit instead of trying to bring back all of them.
+- **A function you deploy again answers as soon as its new build is ready.** It could keep
+  refusing with "has not been prepared yet" until the service restarted.
+
 ## 2026-10-01
 
 - **You choose what Ask AI may see of your data**: nothing from your databases, or the schema of
