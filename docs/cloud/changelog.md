@@ -13,6 +13,10 @@ after each update.
 
 ## 2026-10-01
 
+- **Rotating your API keys no longer breaks Storage or Realtime.** Uploads answered "signature
+  verification failed", and database changes stopped arriving, until the service was restarted.
+  Both now pick up the new keys on their own. Reset the password also asks before it runs, and
+  what the CLI does is filed under CLI in the activity log rather than under You.
 - **Tables anyone can reach are flagged.** A table in `public` with row-level security off is
   readable and writable with your anon key once the data API is on. The table browser now marks it
   RLS off, and the Data API tab lists every such table with a one-click switch to turn row-level
