@@ -21,6 +21,15 @@ after each update.
   readable and writable with your anon key once the data API is on. The table browser now marks it
   RLS off, and the Data API tab lists every such table with a one-click switch to turn row-level
   security on.
+- **Cron jobs delete.** Delete on a job answered "could not find valid entry" and left it
+  running; it now removes it. A schedule the database refuses is explained inside the dialog.
+- **The dashboard no longer goes blank after an update.** A page loaded during a deploy could keep
+  showing an empty screen for hours; it now loads the new version.
+- **The SQL tab waits for long queries.** A statement past ten seconds failed with "This function
+  could not be run"; it now runs to the 30-second limit and stops with the database's own message,
+  and a refusal says what is in the way ("column location of table places depends on type geometry").
+- Removing a push key or service account asks first, and Time series shows ranges, intervals and
+  run times in plain units.
 - **The SQL tab says what a write changed**: "10 rows deleted" rather than "0 rows".
 - **Smaller fixes.** The activity log names every action in words (turning a service on, rotating
   keys, deploying a function) instead of its internal name. A refused extension says so at the
