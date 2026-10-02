@@ -13,6 +13,16 @@ after each update.
 
 ## 2026-10-01
 
+- **Tables anyone can reach are flagged.** A table in `public` with row-level security off is
+  readable and writable with your anon key once the data API is on. The table browser now marks it
+  RLS off, and the Data API tab lists every such table with a one-click switch to turn row-level
+  security on.
+- **The SQL tab says what a write changed**: "10 rows deleted" rather than "0 rows".
+- **Smaller fixes.** The activity log names every action in words (turning a service on, rotating
+  keys, deploying a function) instead of its internal name. A refused extension says so at the
+  bottom of the screen, where you clicked. The Data API log tab knows when the API is on. The
+  heaviest-statements list says which role ran a statement whose text Postgres hides. From its
+  next release, `snoutdata products` suggests enabling only a product that is off.
 - **API docs is now Data API** in the dashboard, under Services, with two tabs: Settings for the
   switch that turns REST and GraphQL on, and Docs for the reference to your own tables, whose
   snippets now use `@snoutdata/client`.
