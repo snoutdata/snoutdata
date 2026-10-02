@@ -74,7 +74,7 @@ Operations tells you what the server is doing now, which is all a system table c
 there is no history in `system.metrics` or `system.parts`, so "when did the parts start piling up"
 is a question the panel cannot answer.
 
-**Monitor over time**, in the Operations header, turns the numbers it is showing into a dashboard
+**Monitor over time**, in the Operations header, turns the numbers it is showing into a monitor
 for that connection, sampled every minute and kept for a day:
 
 - **queries per second** and **failed queries per minute**, from `system.query_log`;
@@ -84,8 +84,8 @@ for that connection, sampled every minute and kept for a day:
 - **errors by name**, counted since the server started, so a flat line is a quiet server and the
   slope of a rising one is the rate.
 
-Click it again and it opens that dashboard rather than making a second one. Edit, add or remove
-widgets afterwards like any other dashboard; nothing here is fixed.
+Click it again and it opens that monitor rather than making a second one. Edit, add or remove
+widgets afterwards like any other monitor; nothing here is fixed.
 
 On a cluster each widget reads every replica, except the parts count: parts are replicated, so
 fanning that one out would count each part once per replica. SnoutData's own reads of the server
