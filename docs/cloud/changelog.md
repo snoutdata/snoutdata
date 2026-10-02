@@ -18,6 +18,10 @@ after each update.
   images or documents shows the first rows that fit instead of trying to bring back all of them.
 - **A function you deploy again answers as soon as its new build is ready.** It could keep
   refusing with "has not been prepared yet" until the service restarted.
+- **`snoutdata gen types typescript --ref` works without `psql` installed.** It reads your hosted
+  project's schema through your sign-in, so it runs on a machine with no Postgres tools.
+- **A function whose imports cannot be fetched says why in plain text**, without terminal colour
+  codes in the message.
 
 ## 2026-10-01
 
