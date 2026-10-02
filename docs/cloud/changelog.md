@@ -17,16 +17,32 @@ after each update.
   the project you are looking at (never its rows). Ask AI asks once; after that it is on your
   Account page, and a project can have its own setting on its Settings tab, for example nothing
   from production.
+- **Rotating your API keys no longer interrupts Storage or Realtime.** Uploads failed and database
+  changes stopped arriving after a rotation until the service restarted. Both now pick up the new
+  keys on their own.
+- **Production projects ask before every change.** The confirmation before a statement that
+  changes data now recognises every way a statement can do that, not only the ones that start with
+  the command's name. The same check guards Studio's read-only connections and its agent tools.
 - **Tables anyone can reach are flagged.** A table in `public` with row-level security off is
   readable and writable with your anon key once the data API is on. The table browser now marks it
   RLS off, and the Data API tab lists every such table with a one-click switch to turn row-level
-  security on.
-- **The SQL tab says what a write changed**: "10 rows deleted" rather than "0 rows".
-- **Smaller fixes.** The activity log names every action in words (turning a service on, rotating
-  keys, deploying a function) instead of its internal name. A refused extension says so at the
-  bottom of the screen, where you clicked. The Data API log tab knows when the API is on. The
-  heaviest-statements list says which role ran a statement whose text Postgres hides. From its
-  next release, `snoutdata products` suggests enabling only a product that is off.
+  security on, and an example policy to start from.
+- **The SQL tab handles long and large queries.** A statement is given its full 30 seconds and
+  stops with the database's own message, where one over ten seconds used to fail with "This
+  function could not be run". A very large result shows its first 500 rows and counts the rest
+  without slowing anything down. A write says what it changed ("10 rows deleted", not "0 rows"),
+  and a refusal says what is in the way, such as the table still using an extension you are
+  switching off.
+- **Cron jobs delete.** Delete on a job answered "could not find valid entry" and left it
+  running. A schedule the database refuses is now explained inside the dialog.
+- **The dashboard no longer goes blank after an update.** A page opened while a new version was
+  going out could stay empty for hours. It now loads the new version.
+- **Smaller fixes.** The activity log names every action in words, and what the CLI does is filed
+  under CLI rather than You. Resetting the password and removing a push key or service account ask
+  first. A refused extension says so where you clicked, and messages clear on their own. The Data
+  API log tab knows when the API is on. The heaviest-statements list says which role ran a
+  statement whose text is hidden. Time series shows dates, intervals and run times in plain units.
+  `snoutdata products` suggests enabling only a product that is off.
 - **A project's first tab is now Overview**, in the dashboard and in Studio: its state, size,
   connections, keys and recent activity, where it said Dashboard before.
 - **API docs is now Data API** in the dashboard, under Services, with two tabs: Settings for the
