@@ -139,11 +139,14 @@ A token cannot create another token. An account-wide token can revoke itself, or
 ```
 snoutdata projects list
 snoutdata projects create --name NAME [--region REGION] [--team NAME|ID] [--no-wait]
-snoutdata projects pause  [--ref REF]
-snoutdata projects resume [--ref REF]
-snoutdata projects delete [--ref REF]
+snoutdata projects pause  [--ref REF] [--no-wait]
+snoutdata projects resume [--ref REF] [--no-wait]
+snoutdata projects delete [--ref REF] [--no-wait]
 snoutdata projects show   [--ref REF]
 ```
+
+`pause`, `resume` and `delete` wait until the project is paused, ready or gone, printing each
+state it passes through; `--no-wait` returns as soon as the change is asked for.
 
 `show` is one project whole: its state, which products are on, the names of its functions and
 function secrets, and its custom domains. Never a password or a key.

@@ -13,6 +13,18 @@ after each update.
 
 ## 2026-10-03
 
+- **`snoutdata projects pause`, `resume` and `delete` wait until it is true.** They printed
+  "resumed." while the project was still paused; now they show each state and finish when the
+  project is paused, ready or gone. `--no-wait` returns at once.
+- **The MCP server serves local projects.** `list_projects` lists them under `local`, and
+  `get_connection_url`, `push_migrations`, `get_project` and the function tools act on them. A
+  Cloud-only tool asked about one says which tools work instead.
+- **The MCP server's `list_projects` and `get_project` no longer carry the export download link**
+  (or its role script) on every project; `export_status` has it. `reset_password` returns the new
+  URL, and `restore_window` says why a restore is not available.
+- **A `--file` or `--p8` that is not there says `no file at …`** and exits 2, instead of Node's
+  error.
+
 - **The CLI works against a self-hosted stack on your machine.** `snoutdata link --local` links a
   project you set up in Studio, or any stack folder, and then `db url`, `db psql`, `db push`,
   `gen types`, `keys`, `start`, `stop`, `status`, `functions` and `secrets` act on it, with no
