@@ -41,5 +41,5 @@ back to the page, signed in.
 - `index.html`: `db.identity.register`, `passwordSignIn`, `getSession` and `onSessionChange`, then
   `db.from('notes')` for the data. The session is kept in the browser's `localStorage`.
 
-Docs: [authentication](https://docs.snoutdata.com/cloud/auth) and
-[the project API](https://docs.snoutdata.com/cloud/api).
+Docs: [authentication](https://docs.snoutdata.com/stack/auth) and
+[the project API](https://docs.snoutdata.com/stack/api).

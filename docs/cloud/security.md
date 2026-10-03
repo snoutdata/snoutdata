@@ -20,7 +20,7 @@ otherwise. If what you need is a credential that never leaves your own machine, 
 
 | | |
 | --- | --- |
-| Your database | Postgres 17, in a container of its own on a machine we operate |
+| Your database | Postgres 18, in a container of its own on a machine we operate |
 | Its backups | Continuously, in object storage we operate |
 | Your project's password | Encrypted, so a signed-in client can fetch connection details without you copying a secret around |
 | Your uploaded files | If you use storage, in the same object store under your project's own prefix |
@@ -169,4 +169,4 @@ not yours.
 
 - [Backups and recovery](durability), for RPO, RTO, restore testing and the DR drill.
 - [Limits, and what is not built](limits), for what each plan gets and what pauses.
-- [The project API](api), for the keys, and which service is switched on how.
+- [The project API](/stack/api), for the keys, and which service is switched on how.

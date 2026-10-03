@@ -40,7 +40,7 @@ Per project, unless the row says otherwise.
 | Workers per function | 2 | 4 | 8 |
 | Seconds per function invocation | 10 | 30 | 55 |
 
-**Auth, storage, realtime, Snout Functions and [push notifications](push) are on every plan,
+**Auth, storage, realtime, Snout Functions and [push notifications](/stack/push) are on every plan,
 including free** (sending push at a later time is paid). The data API is
 the exception, and the reason is cost rather than packaging: it is a server per project that runs
 whether or not anyone calls it, and on a free project it would cost more per month than the
@@ -60,7 +60,7 @@ which one it was. "Connections" is your database's own sessions. "API requests a
 at the HTTPS door, counted per project across a minute and answered with `429` and a `retry-after`.
 There is a third, separate from both: how many API requests one project may hold open at the same
 instant (100 on free, 200 on Plus, 400 on Pro). Realtime websockets are not in it: they are counted
-by [Realtime](./realtime)'s own concurrent clients, so neither a long-lived subscription nor a burst
+by [Realtime](/stack/realtime)'s own concurrent clients, so neither a long-lived subscription nor a burst
 of requests can spend the allowance a `psql` connection needs. Going over any of them never
 touches your data.
 
@@ -74,11 +74,11 @@ instantly.
 
 A project also has an HTTPS door in front of it, serving a data API, auth, storage, realtime,
 Snout Functions and push. It is deployed and serving, and a real application has been driven through all of
-it, 27 checks of 27. See [the project API](api).
+it, 27 checks of 27. See [the project API](/stack/api).
 
 What is honest about it today, in one place:
 
-- **Realtime needs no switch**, and what each plan gets is on [Realtime](./realtime).
+- **Realtime needs no switch**, and what each plan gets is on [Realtime](/stack/realtime).
 - **Google is the only OAuth provider.** Email sign-up and sign-in work and really send mail, and
   Sign in with Google works with your own Google client; GitHub, Apple and the rest are not offered
   yet.
@@ -198,7 +198,7 @@ Named here so you do not go looking:
   who made it, which is right for a first version and wrong for a build server that only needs one
   database.
 - **A per-plan list of database extensions.** Anything the image ships can be installed on any
-  plan. [Extensions and cron jobs](./extensions) covers pg_cron and pg_net, including the two
+  plan. [Extensions and cron jobs](/stack/extensions) covers pg_cron and pg_net, including the two
   limits that matter: a paused project runs no scheduled jobs, and at most three run at once.
 - **Switching realtime on yourself.** Auth, storage and the data API are switches you throw
   (`snoutdata products enable`, or the project's tab in Studio); realtime is the one we
