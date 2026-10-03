@@ -100,9 +100,9 @@ A command that needs a project and cannot find one exits 2 saying so.
 | `snoutdata tokens revoke <id\|sdt_prefix>` | |
 | `snoutdata projects list` | |
 | `snoutdata projects create` | `--name NAME` (required) `--region REGION` `--team NAME\|ID` `--no-wait` |
-| `snoutdata projects pause` | `--ref REF` |
-| `snoutdata projects resume` | `--ref REF` |
-| `snoutdata projects delete` | `--ref REF` |
+| `snoutdata projects pause` | `--ref REF` `--no-wait` |
+| `snoutdata projects resume` | `--ref REF` `--no-wait` |
+| `snoutdata projects delete` | `--ref REF` `--no-wait` |
 | `snoutdata projects show` | `--ref REF` |
 | `snoutdata products` | `--ref REF`; `enable\|disable auth\|storage\|data-api\|push` |
 | `snoutdata push credentials` | `--ref REF`; `set apns --p8 FILE --key-id ID --team-id ID --topic BUNDLE [--environment E]`, `set fcm --file FILE`, `remove apns\|fcm`. Never prints a key |
@@ -366,16 +366,16 @@ turns that off.
 | Tool | Arguments | Does |
 | --- | --- | --- |
 | `whoami` | | Who this is signed in as, and how. |
-| `list_projects` | | Every database on the account, with ref, name, region, state, size, and whether it is read-only. |
+| `list_projects` | | Every database on the account, with ref, name, region, state, size, and whether it is read-only. Under `local`, the self-hosted projects on this machine. |
 | `create_project` | `name` (required), `region`, `teamId` | Makes a database and waits for it to be ready. |
 | `get_connection_url` | `ref` (required) | The `postgres://` URL. **It contains a live password.** |
-| `pause_project` | `ref` (required) | Stops a project. Its data is kept and the next connection wakes it. |
-| `resume_project` | `ref` (required) | Starts a paused project without waiting for a connection. |
+| `pause_project` | `ref` (required) | Stops a project and waits until it is paused. Its data is kept and the next connection wakes it. |
+| `resume_project` | `ref` (required) | Starts a paused project without waiting for a connection, and waits until it is ready. |
 | `push_migrations` | `ref` (required), `dir`, `dryRun` | Runs the `.sql` files in a folder. Needs `psql`. |
 | `usage` | `ref` (required), `days` | Storage and compute against the plan's limit. **Read it before a migration or a bulk insert**: a project that goes over is made read-only. |
 | `export_status` | `ref` (required) | Whether a copy is being taken, and a download link if there is a live one. Starts nothing. |
 | `start_export` | `ref` (required) | Starts a `pg_dump` and returns. Poll `export_status` for the link. |
-| `reset_password` | `ref` (required) | Rotates the database password. **The old one stops working immediately**, including any `DATABASE_URL` already written down. |
+| `reset_password` | `ref` (required) | Rotates the database password and returns the new URL. **The old one stops working within a few seconds**, including any `DATABASE_URL` already written down; connect with the new one after about five seconds. |
 | `list_teams` | | The teams this account is in, with the id `create_project` takes. |
 | `list_tokens` | | The `sdt_` access tokens: names, prefixes, when each was used. Never the token. |
 | `create_token` | `name` (required), `expires`, `project` | Mints an access token, limited to one project when `project` is a ref. **Returns it once and never again.** |
@@ -385,14 +385,18 @@ turns that off.
 | `size_function` | `ref`, `name` (both required), `memoryMb`, `concurrency`, `reset` | Sets one function's memory and workers within the plan. Memory × workers may not exceed the project's memory. |
 | `delete_function` | `ref`, `name` (both required) | Removes one. It stops answering within seconds. |
 | `list_function_secrets` | `ref` (required) | The **names** of the environment variables functions run with. Never the values. |
-| `get_project` | `ref` (required) | One project whole: state, products, function and secret names, domains. |
+| `get_project` | `ref` (required) | One project whole: state, products, function and secret names, domains. Never a password, a key or a download link. |
 | `list_products` | `ref` (required) | Whether auth, storage and the data API are on, and whether the plan allows the data API. |
 | `set_product` | `ref`, `product` (`auth`, `storage`, `data-api`), `enabled` (all required) | Turns one on or off; it starts within about a minute. |
 | `list_domains` | `ref` (required) | Custom domains, whether each is verified, and the DNS records each needs. |
 | `add_domain`, `verify_domain`, `remove_domain` | `ref`, `hostname` (both required) | Paid plans only. `add_domain` returns the records to publish. |
-| `restore_window` | `ref` (required) | How far back a point-in-time restore can go. Starts nothing. |
+| `restore_window` | `ref` (required) | How far back a point-in-time restore can go, or a `reason` it cannot. Starts nothing. |
 | `restore_to_point` | `ref`, `at` (both required), `name` | Rewinds to a moment into a NEW project beside this one. |
 | `delete_project` | `ref` (required) | **Destroys a database.** Off unless `--allow-delete`. |
+
+**A local project's ref** (from `list_projects`'s `local`, or `snoutdata link --local`) works with
+`get_connection_url`, `push_migrations`, `get_project` and the function tools, which act on the stack
+folder. The other tools are about SnoutData Cloud, and say so.
 
 Every tool carries MCP's `readOnlyHint` annotation, so a client can run the ones that only read
 without asking its own user first (Codex under `codex exec` refuses an unannotated tool outright).

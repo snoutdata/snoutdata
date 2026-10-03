@@ -139,6 +139,13 @@ abcdefghjkmnp is a local project (C:\Users\you\SnoutData\my-project), and this c
 Most of the Cloud-only list has a local counterpart in Studio's project tab, or in the stack's
 `.env`.
 
+## For a coding agent
+
+`snoutdata mcp` serves local projects too. `list_projects` lists them under `local`, and their refs
+work with `get_connection_url`, `push_migrations`, `get_project`, `list_functions`,
+`deploy_function`, `delete_function` and `list_function_secrets`. A Cloud-only tool asked about a
+local ref answers with one sentence naming those tools. See [MCP server](agent#mcp-server).
+
 ## Moving to SnoutData Cloud
 
 Linking is per folder, so switching is one command, and the commands above are the same:
