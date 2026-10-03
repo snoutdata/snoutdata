@@ -110,7 +110,7 @@ network with a web application firewall.
 A project's own two doors are served by our proxy, which:
 
 - admits only itself to your database,
-- caps how many API requests and websockets one project may hold open at once,
+- caps how many API requests one project may hold open at once (realtime caps its own websockets),
 - limits how many requests a minute it will carry for one project (the
   [plan table](limits#what-each-plan-gets) has the numbers),
 - counts failed authentication against the source address and rate limits the auth endpoints,
