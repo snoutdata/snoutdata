@@ -8,10 +8,10 @@ sidebar_label: Getting started
 
 **SnoutData Cloud gives you a project: a hosted Postgres database with auth, storage, realtime,
 functions and push notifications around it.** You create a project from a terminal, from
-[dashboard.snoutdata.com](https://dashboard.snoutdata.com) or from [Studio](studio), and you get a `postgres://` URL that
+[dashboard.snoutdata.com](https://dashboard.snoutdata.com) or from [Studio](/studio/projects), and you get a `postgres://` URL that
 any client can use: `psql`, your ORM, SnoutData Studio, or a coding agent.
 
-Each project is a Postgres 17 database with `pgvector` available, reachable at
+Each project is a [Postgres 18](/stack/postgres) database with `pgvector` available, reachable at
 `<ref>.db.snoutdata.com` over TLS on port 5432. Its data is continuously shipped to object
 storage, which is the only place it has to exist.
 
@@ -31,7 +31,7 @@ curl -fsSL https://snoutdata.com/install.sh | sh    # a binary, no Node needed
 npx snoutdata --version                            # or straight off npm
 ```
 
-Both doors give you the same tool. [Install the CLI](install-cli) has the detail: checksums,
+Both doors give you the same tool. [Install the CLI](/developers/install-cli) has the detail: checksums,
 where it puts things, Windows, and which one an agent should use.
 
 ## Sign in
@@ -155,13 +155,13 @@ own session, and the database decides once.
 SnoutData Studio does the same from where you work with the data: create, start, stop and
 delete projects, copy keys, take backups and switch products on. Every database in your account
 appears in its Connections list on its own, marked with the SnoutData butterfly. See
-[Projects in Studio](studio).
+[Projects in Studio](/studio/projects).
 
 ## More than a database
 
 A project is not only a Postgres port. In front of it is an HTTPS door serving a REST and GraphQL
 API over your tables, authentication, file storage, realtime subscriptions, your own functions
-on the edge and [push notifications](push), at `https://<ref>.api.snoutdata.com`. It is ordinary HTTP, so it needs nothing
+on the edge and [push notifications](/stack/push), at `https://<ref>.api.snoutdata.com`. It is ordinary HTTP, so it needs nothing
 installed, and an application already written against the same API shape works by changing one
 URL.
 
@@ -170,8 +170,8 @@ snoutdata keys                       # the anon and service_role keys
 snoutdata functions deploy hello     # your TypeScript, on the edge
 ```
 
-See [the project API](api) for what is behind each path and what is switched on today, and
-[Snout Functions](functions) to deploy your own code next to the database.
+See [the project API](/stack/api) for what is behind each path and what is switched on today, and
+[Snout Functions](/stack/functions) to deploy your own code next to the database.
 
 ## Develop against a database on your own machine
 
@@ -182,16 +182,16 @@ snoutdata stop
 ```
 
 Needs Podman and nothing else. The same migration planner, the same ledger, the same refusals as
-`db push`. See [local development](local).
+`db push`. See [local development](/stack/local).
 
 ## Next
 
-- [CLI reference](cli), for every command and flag.
+- [CLI reference](/developers/cli), for every command and flag.
 - [Limits and what is not built](limits), for what pauses, what a plan actually gets, and what
   we do not protect against.
 - [Security](security), for what we hold, how it is protected, what the backups are
   worth and where the compliance position stands. This is the page to send to whoever signs off.
-- [For an agent](agent), the whole CLI on one page, written to be read by a model.
+- [For an agent](/developers/agent), the whole CLI on one page, written to be read by a model.
 - [status.snoutdata.com](https://status.snoutdata.com), if something is not answering and you want
   to know whether it is us. It is never green unless we actually know, and a problem with one
   project is not reported there as an outage.

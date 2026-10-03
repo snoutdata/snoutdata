@@ -44,5 +44,5 @@ again after a few seconds.
   script on a server and wrong anywhere a user can read the code. For a browser, see
   [`../web-notes`](../web-notes), which uses the anon key and a policy instead.
 
-Docs: [the client](https://docs.snoutdata.com/cloud/api) and
-[the CLI](https://docs.snoutdata.com/cloud/cli).
+Docs: [the client](https://docs.snoutdata.com/stack/api) and
+[the CLI](https://docs.snoutdata.com/developers/cli).

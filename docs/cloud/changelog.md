@@ -13,6 +13,17 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-03
 
+- **Projects run Postgres 18.** Every Cloud project, every new self-hosted stack and every new
+  `snoutdata start` database. New to build with: `uuidv7()`, virtual generated columns, temporal
+  keys (`WITHOUT OVERLAPS`), `OLD` and `NEW` in `RETURNING`, and `NOT ENFORCED` constraints.
+  Asynchronous I/O and data checksums are on. A generated column written without `STORED` is now
+  virtual, so add `STORED` to DDL written for 17. A local or self-hosted database made on 17 keeps
+  running 17. See [Postgres 18](/stack/postgres).
+- **The front door accepts protocol 3.2.** A client that asks for it (libpq 18's
+  `max_protocol_version=3.2`) connects, and cancelling a query works with its longer cancel keys.
+- **SnoutTime is in the self-hosted stack and the local database.** The Postgres image the
+  stack's compose file and `snoutdata start` run now includes SnoutTime, the same as a hosted
+  project, so `create extension snouttime` works locally too.
 - **Realtime counts socket broadcasts against your plan's messages a second.** Only broadcasts sent
   over HTTP were counted, so one client on a socket could send without limit. Past the limit the
   channel is closed with "Too many messages per second".
@@ -66,11 +77,11 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 - **Requests through the data API have statement timeouts**: 3 seconds for `anon`, 8 for a signed-in
   user, as on other hosted Postgres services. A slow anonymous call used to hold a database
   connection for as long as it ran. A timeout you set on those roles yourself is kept.
-  [Data API](data-api) says how to change them.
+  [Data API](/stack/data-api) says how to change them.
 - **`snoutdata secrets set` and `unset` answer once your functions see the change**, and
   `functions delete` once the function has stopped. The old value used to be served for a few seconds.
 - **A two-factor code works once.** Using the same six digits again within its thirty seconds is
-  refused; the next code works. [Auth](auth) now covers two-factor sign-in.
+  refused; the next code works. [Auth](/stack/auth) now covers two-factor sign-in.
   Self-hosted: snout-auth 0.1.5.
 - **The Realtime docs say the publication is `snoutdata_realtime`**, for migrations written against
   another name.
@@ -90,7 +101,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 - **Realtime connections no longer count against your API's open-request limit**, so a Plus project
   can hold the 500 realtime clients its plan includes.
 - **A refused realtime connection says why**, for example "Too many connections from this address".
-  One address may hold 100 of a project's realtime clients; [Realtime](realtime) has the table.
+  One address may hold 100 of a project's realtime clients; [Realtime](/stack/realtime) has the table.
 - **The storage docs are corrected**: files have their own allowance beside your database's,
   resumable (tus) and signed uploads are documented, and the Cron tab says its run times are in your
   own time zone.
@@ -194,18 +205,18 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 - **Run the whole stack yourself.** Postgres, auth, the REST and GraphQL API, storage, Realtime and
   functions on one machine with Docker Compose, behind one gateway, from the same open-source
   servers Cloud runs. Three commands, keys made for your stack alone, and your client code works
-  unchanged. [Run the stack yourself](self-hosting), source at
+  unchanged. [Run the stack yourself](/stack/self-hosting), source at
   [snoutdata/snout-stack](https://github.com/snoutdata/snout-stack).
 - **The desktop app is now SnoutData Studio**, and the dashboard says so: your account, your plan
   and your team read Studio and Cloud. The `snoutdata` CLI says it too from its next release, in
   its help, its sign-in and the tools `snoutdata mcp` borrows. Nothing about either product
-  changes. See [Cloud projects in Studio](studio).
+  changes. See [Cloud projects in Studio](/studio/projects).
 
 ## 2026-09-30
 
 - **Every function is given `SNOUTDATA_URL`, `SNOUTDATA_ANON_KEY` and `SNOUTDATA_SERVICE_ROLE_KEY`**,
   so it can call its own project with no configuration. The variables functions were given before
-  are still set, so a deployed function keeps working. See [Snout Functions](functions#secrets).
+  are still set, so a deployed function keeps working. See [Snout Functions](/stack/functions#secrets).
 - **`snoutdata` CLI 0.9.0.** `functions deploy` reads a function from `functions/<name>/`, or from the
   folder `--dir` names. `gen types typescript` writes the schemas and the helper types and nothing
   else; `--data-api-version` is still accepted and does nothing.
@@ -214,7 +225,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   A function that runs out of memory, CPU or time is now told which one, and a changed secret
   reaches the very next request. It is our own, open source as
   [snout-functions](https://github.com/snoutdata/snout-functions). Nothing to change in your code:
-  [Snout Functions](functions).
+  [Snout Functions](/stack/functions).
 - **Your functions run in a process of their own.** Each project's functions now run apart from
   every other project's on the machine, confined to your project's code and secrets as a user of
   their own, so even code that escaped its sandbox could not reach another project. A first call
@@ -234,12 +245,12 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   take arguments, cap what one document may ask for, run only registered documents for the public
   key (with persisted queries), see the SQL and plan behind a request, and ask why a table is not in
   the schema. Each is off until a comment on the table or schema switches it on, so nothing changes
-  for a project that does not: [GraphQL](graphql#more-when-you-switch-it-on) lists them.
+  for a project that does not: [GraphQL](/stack/graphql#more-when-you-switch-it-on) lists them.
 - **GraphQL checks every request against the specification before running it**, with the same
   error sentences as GraphQL's reference implementation. A document it used to answer despite a
   mistake is now refused with the reason, most often an enum value written as a string
   (`{plan: {eq: "free"}}` instead of `{plan: {eq: free}}`) or a variable declared with the wrong
-  type. [GraphQL](graphql#requests-are-checked-before-they-run) shows the fixes, and how a schema
+  type. [GraphQL](/stack/graphql#requests-are-checked-before-they-run) shows the fixes, and how a schema
   can switch the checks off while a client catches up.
 - **GraphQL refuses a document that spreads fragments over a million times**, where it used to work
   through all of them before answering.
@@ -263,13 +274,13 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   is refused with a sentence saying which address and why, a header containing a line break is
   refused rather than sent, and `headers` now holds the final response's headers after a redirect.
   Same functions, same tables, nothing to migrate. See
-  [How a request is sent](extensions#how-a-request-is-sent).
+  [How a request is sent](/stack/extensions#how-a-request-is-sent).
 - **GraphQL is faster, and has its own page.** A query after a schema change answers several
   times sooner, a connection's memory no longer grows with every change it lives through, and
   creating a temporary table or refreshing a materialized view no longer makes the next GraphQL
   request read the whole schema again. A `BigInt` or `UUID` argument that is not one is now refused
   with a GraphQL error naming the type, instead of reaching the database. A role granted to a user
-  takes effect on their next request. [GraphQL](graphql) documents the whole API, including how to
+  takes effect on their next request. [GraphQL](/stack/graphql) documents the whole API, including how to
   switch introspection on for GraphiQL and code generators.
 - **Each Snout Function has its own memory and concurrency.** On the dashboard's **Functions**
   tab, choose the memory one worker may use and how many workers a function may run at once,
@@ -277,16 +288,16 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   project's memory, and the tab shows the total before you save. The same from the CLI
   (`snoutdata functions size <name> --memory 256 --concurrency 4`, and `functions list` shows each
   function's size), Studio's project tab, and the MCP tool `size_function`. See
-  [Memory and concurrency](functions#memory-and-concurrency).
+  [Memory and concurrency](/stack/functions#memory-and-concurrency).
 - **An access token can be limited to one project.** `snoutdata tokens create --project REF`, or
   the Project picker under Access tokens in the dashboard, makes a token that reaches that project
   and nothing else, so a leaked CI secret costs one project rather than the account. `tokens list`
-  and the dashboard show which project each token reaches. See [the CLI](cli#tokens).
+  and the dashboard show which project each token reaches. See [the CLI](/developers/cli#tokens).
 - **An expiry set through the MCP `create_token` tool is kept.** It was dropped, so those tokens
   never expired. Tokens made that way before today still do not; revoke and remake any that should.
 - **Updating an extension works.** `alter extension <name> update` on an extension the image
   carries (pgvector, pg_graphql, PostGIS and the rest) used to fail with `pgaudit stack is not
-  empty`; it now updates. See [Extensions](extensions).
+  empty`; it now updates. See [Extensions](/stack/extensions).
 - **Only the owner role manages extensions.** Other login roles you create follow Postgres's own
   rules and can no longer create or drop the extensions the image carries.
 
@@ -303,8 +314,8 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   open source. Nothing to change on your side. Table changes now arrive as they are committed
   rather than by polling, the first subscription on a quiet project is no longer dropped, and a
   policy that raises an error for one subscriber no longer stops changes for everyone else. See
-  [Realtime](realtime).
-- **Push has its own section in the docs.** [Push notifications](/cloud/push) is now a
+  [Realtime](/stack/realtime).
+- **Push has its own section in the docs.** [Push notifications](/stack/push) is now a
   page per job: switching it on, then browsers, iPhone and Android step by step (what you need,
   each step, how to tell it worked), devices, sending, the delivery log, and troubleshooting with
   every error each platform gives.
@@ -317,7 +328,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 ## 2026-09-27
 
 - **`@snoutdata/client` 0.3.0.** `db.push`: register a device, subscribe a browser, join a topic,
-  send, and report a notification received or opened. See [Push notifications](push).
+  send, and report a notification received or opened. See [Push notifications](/stack/push).
 - **CLI 0.6.0.** `snoutdata products enable push`, and `snoutdata push credentials` to set and
   check a project's Apple and Firebase keys from a terminal.
 - **Resizable dashboard sidebar.** Drag its right edge to adjust the width, just like the chat
@@ -330,7 +341,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 - **Push notifications.** A project can send notifications to iPhone, Android and the web, from
   SQL (`push.send`) and from `/push/v1`. Switch it on from the dashboard's Push tab, on every plan.
   The devices, the queue, the delivery log and your Apple and Firebase keys are tables in your own
-  database, and your row-level security decides who may send. See [Push notifications](push).
+  database, and your row-level security decides who may send. See [Push notifications](/stack/push).
 - **CLI 0.5.1.** The npm package carries its licence, the Apache License 2.0, with a NOTICE file.
 
 ## 2026-09-26
@@ -346,7 +357,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   `update`, `upsert`, `delete`) returns the table's rows. With a `Database` type from
   `snoutdata gen types typescript`, rows stay exact.
 - **`@snoutdata/client` 0.2.0.** A session can live in a cookie on your parent domain, so your
-  subdomains share one sign-in ([`cookieStorage`](auth#one-sign-in-across-your-subdomains)). Adds
+  subdomains share one sign-in ([`cookieStorage`](/stack/auth#one-sign-in-across-your-subdomains)). Adds
   `auth.signInWithIdToken` (Google One Tap and similar), `auth.signInWithSSO`,
   `auth.startAutoRefresh`, and a `debug` option that says why a session ended. Two tabs or two
   processes sharing one session no longer sign each other out when one refreshes it.
@@ -366,7 +377,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   to each value instead of scanning. A filter written as `ts >= '2026-09-26 12:00+00'::timestamptz
   - interval '1 hour'` now narrows to the partitions it reaches while the query is planned
   (`snouttime.plan_time_bounds`, on by default). Projects move onto it on their own; see
-  [Versions and upgrades](timeseries/limits#versions-and-upgrades).
+  [Versions and upgrades](/stack/snouttime/limits#versions-and-upgrades).
 
 ## 2026-09-25
 
@@ -388,7 +399,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 - **Dashboard.** A **Realtime** tab, and Snout Function calls charted from the project's own
   usage.
 - **Auth.** Write your own subject and HTML for any of the five auth emails, with a preview, from
-  the Auth tab or with `snoutdata auth template`. See [Auth](auth).
+  the Auth tab or with `snoutdata auth template`. See [Auth](/stack/auth).
 - **Auth.** Setting up **Sign in with Google** is now a step-by-step guide in the dashboard.
 - **CLI 0.5.0.** Knows about SnoutTime partition states.
 
@@ -399,7 +410,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 - **Time series.** **SnoutTime** is in every project: partitioned series tables, sealed columnar
   partitions, rollups, gap filling, as-of joins and tiering to S3. Switch it on from the
   dashboard's Time series tab or the desktop's table designer. See
-  [Time series](timeseries/overview).
+  [Time series](/stack/snouttime/overview).
 - **Products from the dashboard.** Auth, Storage and the data API each have an on/off switch on
   their tab, so none of them needs the CLI any more. A new project has its API keys and Realtime
   from the moment it is created.
@@ -415,7 +426,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 ## 2026-09-22
 
 - **pg_cron works.** Scheduled jobs run, and a **Cron** tab in the dashboard lists them and can
-  switch pg_cron off. See [Extensions](extensions).
+  switch pg_cron off. See [Extensions](/stack/extensions).
 - **pg_net** is available. Each project now gets short-lived storage credentials scoped to its own
   data, and its network cannot reach our infrastructure, which is what makes outbound HTTP safe
   to offer.
@@ -424,7 +435,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 - **CLI 0.4.0.** `products`, `domains`, `projects show` and point-in-time restore, the same
   operations `snoutdata mcp` gives an agent. No tool takes a secret as an argument.
 - **Agent Skill.** The CLI is published as an Agent Skill any coding agent can install:
-  `npx skills add https://snoutdata.com`. See [the SnoutData skill](agent-skill).
+  `npx skills add https://snoutdata.com`. See [the SnoutData skill](/developers/agent-skill).
 
 ## 2026-09-20
 
@@ -436,7 +447,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   anything destructive.
 - **Dashboard.** Plan and team pages redesigned; you can change plan in the billing portal.
 - **CLI 0.3.0** on npm, and as a native binary that does not need Node. See
-  [install the CLI](install-cli).
+  [install the CLI](/developers/install-cli).
 
 ## 2026-09-17
 
@@ -466,16 +477,16 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   connection limit is enforced at the front door. Plus now gets its full 100.
 - **Backups** are also copied to a second AWS region. See [Durability](durability).
 - **`snoutdata start`** runs a project on your own machine, Windows included, from a plain
-  install. See [local development](local).
+  install. See [local development](/stack/local).
 - **The data API** can be switched on by anyone on a paid plan, you can write your own storage
   policies, and Realtime `postgres_changes` delivers events.
 
 ## 2026-09-10
 
 - **The full stack is live**: Auth, Storage, Realtime, the REST and GraphQL data API and Snout
-  Functions, at `<ref>.api.snoutdata.com`. See [the API](api).
+  Functions, at `<ref>.api.snoutdata.com`. See [the API](/stack/api).
 - **Snout Functions.** Deploy your own TypeScript, with its own secrets. See
-  [Snout Functions](functions).
+  [Snout Functions](/stack/functions).
 - **Extensions.** An allowlist of extensions you can create yourself.
 - **CLI 0.2.0.** `start`, `stop`, `status`, `gen types typescript` and `keys`.
 
