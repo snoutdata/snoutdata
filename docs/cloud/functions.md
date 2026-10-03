@@ -49,6 +49,12 @@ A warm call takes about **2 ms**. A cold start takes about **30 ms** when many f
 function is arbitrary code with a network attached, and the cost of getting this wrong is a
 stranger running it.
 
+The `Authorization: Bearer` token is checked too: it must be signed by your project and not
+expired, so the anon key, the service key and a signed-in user's access token are accepted, and a
+token your project did not sign gets `401 Invalid JWT` before your code runs. With no
+`Authorization` header, the `apikey` header is used as the token. So a function can trust the
+claims in the token it is called with, such as the user's id in `sub`.
+
 `--no-verify-jwt` removes that check, which makes the URL callable by anybody who knows it. It is
 exactly what a webhook receiver needs, because Stripe and GitHub cannot send your API key, and it
 is a mistake anywhere else. A function deployed that way must check the sender's signature itself.
@@ -97,6 +103,12 @@ function, and the cap is really about the courier rather than your code: a bundl
 a JSON body and a database column on its way to object storage, and this is the number that keeps
 that path boring.
 
+The CPU figure is the work a request should fit in. A request that holds the CPU without ever
+yielding (a tight loop, a large synchronous parse) is stopped at one and a half times it plus half a
+second (3.5 s on Free, 12.5 s on Plus, 30.5 s on Pro) and answered 500 with "it reached its CPU
+limit"; the function's other requests carry on. Work that waits on the network is bounded by the
+wall clock instead.
+
 The wall clock cannot go past 59 seconds whatever the plan, because the front door gives up at 60.
 The limits are set a second under it deliberately, so a function that runs too long is refused by
 the runtime with a sentence you can act on, rather than by the proxy with a bad gateway.
@@ -142,6 +154,14 @@ V8 isolates of its own inside it: it may read its own code, and reach the networ
 of the machine or of anyone else's project. A request reaches it only through the front
 door, which proves itself with a secret the runtime checks before anything else, so no function can
 call another project's functions by going round it. [Security](security) says the same.
+
+## Not built yet
+
+- **WebSockets served by a function.** The front door answers an upgrade on `/functions/v1` with
+  400 and "This path does not accept a websocket." Use [Realtime](realtime) for a socket.
+- **`EdgeRuntime.waitUntil`.** There is no `EdgeRuntime` global, so code that calls it fails with
+  "EdgeRuntime is not defined". A promise you start and do not await keeps running while the
+  function's worker is up, but nothing waits for it, so it is not guaranteed to finish.
 
 ## For an agent
 

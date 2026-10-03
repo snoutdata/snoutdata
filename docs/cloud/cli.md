@@ -237,9 +237,22 @@ the reason, rather than hidden.
 
 ```
 snoutdata link --ref REF
+snoutdata link --local [NAME | REF | FOLDER]
 ```
 
 Writes `.snoutdata/project.json` in the current folder, so later commands here need no `--ref`.
+
+`--local` links a project running on this machine in the [self-hosted stack](self-hosting): one
+you set up in Studio (Projects, Local), named by its name or ref, or any stack folder you made by
+hand, named by its path. With no name it takes the folder you are in when that is a stack, or
+Studio's only local project. The link records the folder; the keys and the database password are
+read from that folder's `.env` on every command and never copied, and no sign-in is needed.
+
+Once linked, these commands act on the local project: `db url`, `db psql`, `db push`,
+`gen types typescript`, `keys`, `projects show`, `start`, `stop`, `status` (the stack's containers,
+with `docker compose`), `functions deploy/list/delete` (a folder in the stack's `functions/`) and
+`secrets set/list/unset` (the stack's `functions/.env`). The rest are about SnoutData Cloud and say so.
+[Use the CLI with a local stack](cli-local-stack) is the walkthrough.
 
 ### `db url`
 
@@ -273,8 +286,9 @@ This is also how the CLI manages scheduled jobs, which are SQL:
 snoutdata db reset-password [--ref REF]
 ```
 
-Prints a new password for the project's role. It applies when the project restarts with it, which
-the command says out loud rather than implying the change is instant.
+Prints a new password for the project's role. It applies within a few seconds, without restarting
+the database: connections already open keep working, and the next one needs the new password. The
+command says so rather than implying the change is instant.
 
 ### `db export`
 
@@ -351,9 +365,14 @@ It refuses a database that already has tables, because the overwhelmingly likely
 wrong `--ref`. `--force` is for when you mean it. It also refuses a project that is over its
 storage limit, and `--force` does not get past that one: every write would fail anyway.
 
-Restoring an export of ours into a project of ours produces errors about not owning
-`pg_stat_statements`. Those are expected, nothing is missing, and the command says so instead of
-failing. Any other error is still a failure.
+**An export of ours restores into a project of ours as a move.** The export carries the platform's
+own schemas as well as yours, and the new project already has them, so the command restores only
+your objects and the ROWS of Auth, Storage and Push, into the tables those products made. If the
+dump has users, files or devices, switch the same products on in the new project first; the command
+names the ones it needs. Scheduled jobs (they name the old project) and push
+credentials (sealed for the old project) are not carried over, and Storage files are not part of an
+export, only their rows; the command says each of these when it applies. Any error that is left is
+a real one.
 
 Needs `psql`, and `pg_restore` as well for an archive.
 
@@ -391,6 +410,9 @@ Podman; does not need `psql`. The connection URI is the only thing on stdout, so
 `stop` keeps the data. `status` answers plainly when there is no local database for this folder
 rather than failing. The full story is [local development](local).
 
+In a folder linked with `link --local`, the three act on that self-hosted stack instead: `start`
+is `docker compose up -d --wait`, `stop` keeps its data, `status` lists its services.
+
 ### `gen types typescript`
 
 ```
@@ -416,8 +438,9 @@ The two API keys the project's HTTP stack is reached with. `anon` is for a brows
 **`service_role` bypasses row-level security entirely** and belongs only on a server you control.
 The command says which is which every time, because in a terminal they look identical.
 
-`rotate` invalidates every key already issued, including any shipped to a browser and any session
-a user is holding, which is why it insists on `--force`.
+`rotate` invalidates every key already issued, including any shipped to a browser, which is why it
+insists on `--force`. Users' access tokens stop too, but their sessions refresh with the new `anon`
+key, so nobody is signed out. It answers once the new keys work on the project.
 
 ### `functions`
 

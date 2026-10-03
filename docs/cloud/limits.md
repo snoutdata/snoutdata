@@ -58,9 +58,10 @@ is the free project.
 **The three numbers above that look alike are three different budgets**, and a refusal always says
 which one it was. "Connections" is your database's own sessions. "API requests a minute" is a rate
 at the HTTPS door, counted per project across a minute and answered with `429` and a `retry-after`.
-There is a third, separate from both: how many API requests and websockets one project may hold
-open at the same instant (100 on free, 200 on Plus, 400 on Pro), so a long-lived realtime
-subscription cannot spend the allowance a `psql` connection needs. Going over any of them never
+There is a third, separate from both: how many API requests one project may hold open at the same
+instant (100 on free, 200 on Plus, 400 on Pro). Realtime websockets are not in it: they are counted
+by [Realtime](./realtime)'s own concurrent clients, so neither a long-lived subscription nor a burst
+of requests can spend the allowance a `psql` connection needs. Going over any of them never
 touches your data.
 
 Memory and CPU are **caps, not reservations**: they are what the container is limited to, so a

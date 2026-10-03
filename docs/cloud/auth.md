@@ -199,8 +199,22 @@ project's own container, next to your database, as one static binary using about
 memory. It keeps your users, sessions and factors in your database's `auth` schema, so nothing
 about them lives anywhere else.
 
+## Two-factor sign-in
+
+Users can add an authenticator app (TOTP) as a second factor. The endpoints are the standard ones
+under `/auth/v1/factors`: `POST /factors` with `{"factor_type": "totp"}` enrols one and returns
+its secret and QR code, `POST /factors/<id>/challenge` starts a check, and
+`POST /factors/<id>/verify` with the challenge id and the six-digit code returns a session at
+`aal2`. A password sign-in by a user with a verified factor is `aal1` until they verify, so a
+policy can require the second factor with `auth.jwt() ->> 'aal' = 'aal2'`.
+
+**A code is accepted once.** Verifying the same six digits again, on a new challenge within the
+same thirty seconds, is refused with `422` `mfa_verification_rejected`; the next code works.
+
 ## Not built yet
 
+- **Two-factor helpers in `@snoutdata/client`.** Call the endpoints above with the user's access
+  token until they are added.
 - **Other sign-in providers.** Google is the first; GitHub, Apple and the rest are not offered yet.
 - **Your own mail server.** Mail is sent from our sending domain, in your templates or ours.
 - **Phone, SMS and magic-link-only flows.**

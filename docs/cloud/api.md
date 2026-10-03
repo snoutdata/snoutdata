@@ -126,9 +126,11 @@ snoutdata keys rotate --force     # new ones
 The two look identical in a terminal and the difference between them is your entire dataset, so
 the CLI says which is which every time it prints them.
 
-**Rotating breaks every key already issued**, including any client shipped to a browser and any
-session a user is holding, which is why `rotate` requires `--force`. Do it when a key has leaked,
-not on a schedule.
+**Rotating breaks every key already issued**, including any client shipped to a browser, which is
+why `rotate` requires `--force`. Every access token a user holds stops too, but signed-in users are
+not signed out: their session refreshes into a token signed with the new secret, so once your app
+carries the new `anon` key nobody has to sign in again. The command answers once the new keys
+work. Do it when a key has leaked, not on a schedule.
 
 Row-level security is the thing that actually decides what the `anon` key can see. A table with no
 policy returns nothing to it, which is the safe default and is also the commonest reason a new
@@ -147,8 +149,8 @@ the rate limits, and what is missing.
 ## Storage
 
 `/storage/v1` holds files in buckets, with policies you write yourself as SQL on `storage.objects`
-and signed URLs for handing out a private file temporarily. Bytes go direct to the object store on
-a presigned URL rather than through our CPU.
+and signed URLs for handing out a private file temporarily. Bytes are streamed through the storage
+service, never held whole in memory.
 
 **[File storage](storage) is the page**: buckets, a policy worth copying, image transforms, the
 per-plan sizes, and the storage-policy defect that was fixed on 2026-09-11.

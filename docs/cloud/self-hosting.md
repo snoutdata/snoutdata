@@ -21,7 +21,7 @@ You need Docker with the Compose plugin (2.24 or later), on Linux, macOS or Wind
 
 ```bash
 git clone https://github.com/snoutdata/snout-stack && cd snout-stack
-docker run --rm ghcr.io/snoutdata/snout-stack:0.1.0 init > .env
+docker run --rm ghcr.io/snoutdata/snout-stack:0.1.3 init > .env
 docker compose up -d --wait
 ```
 
@@ -84,6 +84,21 @@ docker compose run --rm functions-deploy
 Run it after any change; the runtime picks the change up on the next request. Every function gets
 `SNOUTDATA_URL`, `SNOUTDATA_ANON_KEY` and `SNOUTDATA_SERVICE_ROLE_KEY`, and your own secrets go in
 `functions/.env`. A function reaches the internet and this stack's API, and not the databases.
+
+## From the CLI
+
+The `snoutdata` CLI works against a stack on this machine with no sign-in:
+
+```bash
+snoutdata link --local my-project   # a Studio local project by name, or the stack's folder
+snoutdata db push                   # your migrations, into the local database
+snoutdata gen types typescript --out db.ts
+snoutdata functions deploy hello    # copies functions/hello into the stack and deploys it
+snoutdata status
+```
+
+The keys and the database password stay in the stack's `.env`. [Use the CLI with a local
+stack](cli-local-stack) walks through it, step by step.
 
 ## Production
 

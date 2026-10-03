@@ -16,6 +16,9 @@ It runs a container, applies your migrations, runs your seed, and prints a conne
 Nothing about it touches your account or costs anything, so it is where you develop and where
 tests run; the hosted project is where you deploy.
 
+For the WHOLE stack (auth, the data API, storage, Realtime and functions as well) in Docker, see
+[Use the CLI with a local stack](cli-local-stack) instead.
+
 **It needs [Podman](https://podman.io/) and nothing else.** The image is public and is pulled on
 first use. You do not need `psql` installed: when the machine has none, the container's own is
 used instead, which is what makes this work on a default Windows install.
@@ -102,5 +105,6 @@ Podman runs on Windows, macOS and Linux, and installs alongside Docker Desktop.
 
 ## Also read
 
+- [Use the CLI with a local stack](cli-local-stack), for the whole stack in Docker.
 - [CLI reference](cli#start-stop-status), for every flag.
 - [The project API](api), for what is in front of the hosted database.

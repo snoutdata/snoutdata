@@ -34,6 +34,15 @@ const { data: link } = await db.storage
 A bucket is either public (anyone with the URL) or private (a policy decides, and a signed URL is
 how you make an exception). Create them from the client, from the dashboard, or in SQL.
 
+A signed **upload** URL works the same way in the other direction: `createSignedUploadUrl` gives a
+URL that takes one `PUT` of the file with no key and no session, so a server can hand it to a
+browser or a device and let it upload that one file.
+
+**Resumable uploads** use the tus protocol at `/storage/v1/upload/resumable`, the same endpoint and
+metadata (`bucketName`, `objectName`, `contentType`) any tus client such as `tus-js-client` already
+sends, so a large file on a poor connection picks up from the last chunk that arrived instead of
+starting again.
+
 ## Access is decided the same way your rows are
 
 There is no second permissions system to learn. A file's metadata is a row in `storage.objects`,
@@ -77,8 +86,9 @@ const { data } = db.storage.from('avatars').getPublicUrl('ada.png', {
 | Files, in total | 500 MB | 8 GB | 20 GB |
 | One upload, at most | 50 MB | 500 MB | 5 GB |
 
-The total is the same allowance your database's storage row describes: files and data share the
-plan's space rather than each having their own.
+Files have their own allowance, the same size as the database's storage row: a project on Plus may
+hold 8 GB of data **and** 8 GB of files. The files total is measured every fifteen minutes, and a
+project over either one is made read-only until it is back under, the same as for its database.
 
 ## Where the bytes actually go
 
@@ -86,9 +96,10 @@ Into object storage we operate, under **your project's own prefix**, which is th
 backups live and is fenced the same way: a project is handed credentials scoped to its own prefix,
 minted an hour at a time, so nothing running inside one project can reach another's files.
 
-Uploads and downloads go **direct to the object store on a presigned URL**, so your files are not
-streamed through our CPU. That is why a large upload is not slower for everybody else on the
-machine.
+Uploads and downloads pass through the storage service on their way to and from the object store,
+**streamed**: a file is never held whole in memory, so a 1 GB upload costs the machine a few
+buffers rather than a gigabyte, and a large upload is not slower for everybody else on it. A
+signed URL is a URL on your project's own address, and the token in it is the credential.
 
 The storage service itself is one of the three that run **shared per machine** rather than inside
 your project's container. [Security](security) says what that means for the tenant
@@ -97,7 +108,6 @@ boundary, in the same words we would use to a reviewer.
 ## Not built
 
 - **A per-bucket transfer or bandwidth quota.** The plan's total size is the only cap.
-- **Resumable uploads** for very large files.
 - **Your own object store.** Files go to ours.
 
 ## Also read

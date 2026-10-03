@@ -337,8 +337,9 @@ credentials that rotate every few hours, and asking again signs a fresh one agai
 
 `db restore` sniffs the format from the file's first bytes rather than its name. It refuses a
 database that already has tables (`--force` overrides) and a project over its storage limit
-(`--force` does not). Errors about not owning `pg_stat_statements` when restoring one of our own
-exports are expected, are named as such, and do not fail the command.
+(`--force` does not). An export of ours restores into a project of ours as a move: only your
+objects and the rows of Auth, Storage and Push, and if the dump holds any of those it refuses with
+`refusal: "products-off"` (or `"products-starting"`) and the `products` to switch on first.
 
 ## MCP server
 

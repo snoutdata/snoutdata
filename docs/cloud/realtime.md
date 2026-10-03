@@ -166,6 +166,10 @@ alter publication snoutdata_realtime add table public.todos;
 It is empty on purpose. A publication covering every table would have started streaming every row
 of every table the day your project was created, including the ones you never meant to expose.
 
+Migrations written for another hosted Postgres often add tables to a publication of that host's
+own name. That one does not exist here, so the statement fails with "publication does not exist":
+change the name to `snoutdata_realtime` in those migrations.
+
 **2. The row must be visible to the subscriber, under your policies.** A change is filtered by the
 same row-level security that governs a `select`, evaluated as the user whose token opened the
 socket. A table with no policy sends nothing to an `anon` subscriber, which is the safe default
@@ -206,12 +210,20 @@ What you can rely on:
 | Concurrent clients | 100 | 500 | 2,000 |
 | Channels per client | 100 | 100 | 100 |
 | Messages a second | 100 | 500 | 2,000 |
+| Clients from one address | 100 | 100 | 100 |
+
+**One address holds at most 100 of a project's clients**, on every plan, so a single machine
+cannot take every connection the plan allows. Past it, a new connection is refused with HTTP 429
+and the sentence "Too many connections from this address". Many users behind one office or
+mobile-carrier address count together, and a load test from one machine stops at 100: spread it
+across machines to go further.
 
 **Why table changes are the paid half**, stated rather than left to look arbitrary: broadcast and
 presence cost a socket on a server we already run, while a table subscription consumes a
-replication slot and a walsender inside your own database, for as long as it is open. A free
-project asking for it is refused with a sentence about the plan, not an error that reads like a
-fault. Private channels and broadcast from the database read your database too, so they come with
+replication slot and a walsender inside your own database, for as long as it is open. On a free
+project the channel's subscribe callback gets `CHANNEL_ERROR` with "postgres_changes is not
+enabled for this project", which is the plan and not a fault; broadcast and presence on the same
+project work. Private channels and broadcast from the database read your database too, so they come with
 it. Downgrading takes effect the next time your project's tenant is registered, not instantly.
 
 ## How it runs

@@ -89,6 +89,22 @@ The ones in the schemas the API is exposed on (`public` by default). A table you
 API does not have to be there: keep it in a schema the API does not serve, and it is reachable from
 your own connection and nothing else.
 
+## How long a request may run
+
+A request through the data API runs as `anon` or `authenticated`, and each has a statement timeout:
+**3 seconds for `anon`, 8 seconds for a signed-in user**, the same as other hosted Postgres
+services. Past it the request answers `500` with code `57014` ("canceling statement due to
+statement timeout") and the database connection is free again. A function that needs longer can
+say so for itself (`create function ... set statement_timeout = '30s'`), or you can change a role's
+for the whole project, which we then leave alone:
+
+```sql
+alter role authenticated set statement_timeout = '15s';
+notify pgrst, 'reload config';
+```
+
+Your own connections (`DATABASE_URL`, `psql`, the SQL editor) are not limited by these.
+
 ## Types for your codebase
 
 ```bash
