@@ -13,6 +13,9 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-03
 
+- **Pairing a terminal ends on a clearer screen.** Once you approve a `snoutdata login --device`
+  request, the dashboard shows what was issued in one box (the token's prefix, its name and when it
+  expires), with **Pair another** and a link to **Access tokens** below it.
 - **Projects run Postgres 18.** Every Cloud project, every new self-hosted stack and every new
   `snoutdata start` database. New to build with: `uuidv7()`, virtual generated columns, temporal
   keys (`WITHOUT OVERLAPS`), `OLD` and `NEW` in `RETURNING`, and `NOT ENFORCED` constraints.
