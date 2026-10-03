@@ -8,8 +8,8 @@ description: What changed in SnoutData Cloud, dated and newest first. The dashbo
 # SnoutData Cloud changelog
 
 What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snoutdata` CLI and
-`@snoutdata/client`. Newest first. Studio has its own release notes, shown in the app
-after each update.
+`@snoutdata/client`. Newest first. Studio, the desktop app, has
+[its own changelog](../changelog).
 
 ## 2026-10-03
 
