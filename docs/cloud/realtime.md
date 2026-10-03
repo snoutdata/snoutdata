@@ -221,8 +221,9 @@ across machines to go further.
 **Why table changes are the paid half**, stated rather than left to look arbitrary: broadcast and
 presence cost a socket on a server we already run, while a table subscription consumes a
 replication slot and a walsender inside your own database, for as long as it is open. On a free
-project the channel's subscribe callback gets `CHANNEL_ERROR` with "postgres_changes is not
-enabled for this project", which is the plan and not a fault; broadcast and presence on the same
+project the channel's subscribe callback gets `CHANNEL_ERROR` with "Table changes
+(postgres_changes) are part of the Plus and Pro plans, and this project is not on one of them.
+Broadcast and presence work on every plan.", which is the plan and not a fault; broadcast and presence on the same
 project work. Private channels and broadcast from the database read your database too, so they come with
 it. Downgrading takes effect the next time your project's tenant is registered, not instantly.
 
