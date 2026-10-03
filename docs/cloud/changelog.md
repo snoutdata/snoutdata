@@ -13,6 +13,14 @@ after each update.
 
 ## 2026-10-03
 
+- **Realtime counts socket broadcasts against your plan's messages a second.** Only broadcasts sent
+  over HTTP were counted, so one client on a socket could send without limit. Past the limit the
+  channel is closed with "Too many messages per second".
+- **A free project's table-changes refusal names the plan**: "Table changes (postgres_changes) are
+  part of the Plus and Pro plans, and this project is not on one of them." It said "not enabled
+  for this project", which read as a fault.
+- **Self-hosted: snout-realtime 0.1.3** in the stack's `compose.yaml`, with the same broadcast limit.
+
 - **`snoutdata projects pause`, `resume` and `delete` wait until it is true.** They printed
   "resumed." while the project was still paused; now they show each state and finish when the
   project is paused, ready or gone. `--no-wait` returns at once.
