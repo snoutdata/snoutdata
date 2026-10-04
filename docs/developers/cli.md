@@ -349,6 +349,25 @@ Prints a new password for the project's role. It applies within a few seconds, w
 the database: connections already open keep working, and the next one needs the new password. The
 command says so rather than implying the change is instant.
 
+### `db access`
+
+```
+snoutdata db access [list] [--ref REF]
+snoutdata db access grant EMAIL [--level full|read] [--ref REF]
+snoutdata db access revoke EMAIL|ROLE [--ref REF]
+```
+
+Who signs in to the project's database as themselves, with their SnoutData account, instead of
+with the project password (Postgres 18 projects; see
+[Sign in to the database as yourself](/cloud/database-sign-in)).
+
+`grant` is the project owner's, and prints the person's connection string alone on stdout, so
+`psql "$(snoutdata db access grant you@example.com --level full)"` works. `read` is the default
+level: it reads the project's own tables, including rows row-level security would hide, and writes
+nothing, and never the `auth`, `storage` or internal schemas. `revoke` says, every time and under
+`--quiet` too, that a token already issued can keep working for up to an hour while the database
+still has the role.
+
 ### `db export`
 
 ```

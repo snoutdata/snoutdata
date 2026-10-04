@@ -13,6 +13,16 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-04
 
+- **Sign in to the database as yourself.** On a Postgres 18 project, the owner gives a person
+  access in the dashboard (Settings, Database access) or with `snoutdata db access grant`, and that
+  person opens the database with psql 18 and their own SnoutData account: psql prints a code, they
+  approve it at dashboard.snoutdata.com, and the database lets them in as their own role, with
+  their name in its logs. No shared password, a sign-in lasts at most an hour, and taking access
+  away is one click or `snoutdata db access revoke`. Two levels: `full`, and `read` (the project's
+  own tables, including rows row-level security would hide, never the `auth` or `storage`
+  schemas). psql 18 and other libpq 18 programs only for now; node-postgres, JDBC and most BI
+  tools keep using the password, and a project on 17 keeps working as it does. Every plan, free
+  included. See [Sign in to the database as yourself](/cloud/database-sign-in).
 - **SnoutTime 0.1.7, a security fix.** Background jobs, and two of SnoutTime's triggers, now
   always run with the privileges of the table's owner and nothing more. Every running project
   was restarted onto it today (a few seconds each), and projects that had SnoutTime installed

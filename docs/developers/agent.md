@@ -118,6 +118,9 @@ A command that needs a project and cannot find one exits 2 saying so.
 | `snoutdata db url` | `--ref REF` |
 | `snoutdata db psql` | `--ref REF` `-- PSQL ARGS...` |
 | `snoutdata db reset-password` | `--ref REF` |
+| `snoutdata db access` | `--ref REF` |
+| `snoutdata db access grant EMAIL` | `--level full\|read` (default `read`) `--ref REF` |
+| `snoutdata db access revoke EMAIL\|ROLE` | `--ref REF` |
 | `snoutdata db export` | `--ref REF` `--out FILE` `--status` |
 | `snoutdata db push` | `--dir DIR` (default `migrations`) `--dry-run` `--out-of-order` |
 | `snoutdata db restore` | `--file DUMP` `--ref REF` `--force`; or `--window`; or `--at TIME` `--name NAME` |
