@@ -23,6 +23,10 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   schemas). psql 18 and other libpq 18 programs only for now; node-postgres, JDBC and most BI
   tools keep using the password, and a project on 17 keeps working as it does. Every plan, free
   included. See [Sign in to the database as yourself](/cloud/database-sign-in).
+- **status.snoutdata.com checks from outside us too.** Every minute, from Cloudflare as well as
+  from our own systems, so an outage of our sign-in service shows even when that service cannot
+  report it, and the database port is checked as well as the APIs. An incident now runs from the
+  first failed check to the first passing one, so its times are the real ones.
 - **SnoutTime 0.1.7, a security fix.** Background jobs, and two of SnoutTime's triggers, now
   always run with the privileges of the table's owner and nothing more. Every running project
   was restarted onto it today (a few seconds each), and projects that had SnoutTime installed
