@@ -75,6 +75,12 @@ upgrade for you, in your database, keeping your series tables, sealed partitions
 as they are. Every upgrade we ship is tested first from every earlier version, and must leave the
 catalog exactly as a fresh install of the new version would.
 
+On your own machine it works the same way: the database image runs that upgrade in every database
+each time it starts on a newer release, and logs one line per database it updated. What brings the
+newer release is the image. [`snoutdata start`](/stack/local) checks for it on each start; a
+[self-hosted stack](/stack/self-hosting) fetches it with `docker compose pull` before
+`docker compose up -d`.
+
 The two queries above can differ for a moment while that happens. If you ever want to move the
 catalog yourself, the owner role can:
 

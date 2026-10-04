@@ -27,6 +27,14 @@ used instead, which is what makes this work on a default Windows install.
 starting on 17: `snoutdata start` reads the version from the data directory and runs the matching
 image, because 18 cannot open files 17 wrote.
 
+**It keeps itself current.** Each `start` asks whether a newer image of the same Postgres version
+has been published, which takes a second or so when nothing has changed, and fetches it when one
+has. A stopped database is started on the new image over the same data; a running one keeps
+running, and `start` says to stop and start it to move. Every time the database starts, it updates
+our own extensions ([SnoutTime](/stack/snouttime/overview)) to the image's versions, as a hosted
+project does. Offline, `start` says it could not check and carries on with the image you have. An
+image you built yourself, or named with `SNOUTPOD_IMAGE`, is never replaced.
+
 ## Start, stop, status
 
 ```bash
