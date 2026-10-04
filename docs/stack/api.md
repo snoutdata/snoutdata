@@ -27,8 +27,8 @@ product by product, which is worth reading before you design around one.
 
 | Path | What it is | Plan | Its page |
 | --- | --- | --- | --- |
-| `/rest/v1` | REST over your tables and functions, generated from the schema | Plus, Pro and Business | [REST and GraphQL](/stack/data-api) |
-| `/graphql/v1` | The same data over GraphQL, the same policies | Plus, Pro and Business | [REST and GraphQL](/stack/data-api) |
+| `/rest/v1` | REST over your tables and functions, generated from the schema | every plan | [REST and GraphQL](/stack/data-api) |
+| `/graphql/v1` | The same data over GraphQL, the same policies | every plan | [REST and GraphQL](/stack/data-api) |
 | `/auth/v1` | Sign-up, sign-in and sessions, signed with your project's own secret | every plan | [Authentication](/stack/auth) |
 | `/storage/v1` | Files in buckets, in object storage | every plan | [File storage](/stack/storage) |
 | `/realtime/v1` | Broadcast, presence and table changes, over a websocket | broadcast and presence every plan; table changes paid | [Realtime](/stack/realtime) |
@@ -39,10 +39,8 @@ product by product, which is worth reading before you design around one.
 and what is not built. This page is the door they share, the keys that open it, and which of them
 is switched on how.
 
-**The data API is the one that costs money**, and the reason is running cost rather than
-packaging. `/rest/v1` is a server per project that runs whether or not anybody calls it, and on a
-free project it would cost more per month than the database does. A free project asking for it is
-refused with a sentence about the plan, never an error that reads like a fault.
+**Every path is on every plan, including free.** Two parts of them are paid: table changes in
+realtime, and a push sent at a later time.
 
 ## It is ordinary HTTP, and you need nothing installed
 
@@ -219,8 +217,7 @@ any plan, with nothing to switch on first. See [Snout Functions](/stack/function
 **Auth, storage and the REST and GraphQL API can be switched on per project**: with the switch at
 the top of the dashboard's Auth and Storage tabs and in its Data API tab, in Studio's project tab
 ([Projects in Studio](/studio/projects)), and with `snoutdata products
-enable auth|storage|data-api`. The data API is on paid
-plans only. A switch asks for the change and it arrives within about a minute; the data API's
+enable auth|storage|data-api`, on every plan. A switch asks for the change and it arrives within about a minute; the data API's
 container arrives when the project next restarts. Realtime needs no switch: it is on for every
 project from the start. Each product's tab in the dashboard says whether it is off, starting or on
 for your project right now, and "not on this plan" where that is the reason.

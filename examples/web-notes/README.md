@@ -4,8 +4,8 @@ One HTML page with no build step. People sign up with email and password, and ea
 writes only their own notes. It uses [`@snoutdata/client`](https://github.com/snoutdata/snout-client)
 from a CDN, the project's **anon** key, and row-level security.
 
-You need a SnoutData account on a paid plan (the data API, which the client's `from()` calls go
-through, is a paid feature).
+You need a SnoutData account, on any plan including free (the data API, which the client's
+`from()` calls go through, is on every plan).
 
 ## Run it
 

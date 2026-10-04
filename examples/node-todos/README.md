@@ -4,8 +4,8 @@ A Node script that talks to a SnoutData Cloud project with
 [`@snoutdata/client`](https://github.com/snoutdata/snout-client): it inserts three rows, updates
 one, and reads back the ones still open.
 
-You need Node 22 or newer and a SnoutData account on a paid plan (the data API, which the client's
-`from()` calls go through, is a paid feature).
+You need Node 22 or newer and a SnoutData account, on any plan including free (the data API, which
+the client's `from()` calls go through, is on every plan).
 
 ## Run it
 

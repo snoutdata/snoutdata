@@ -151,8 +151,8 @@ Buckets and files: create and delete buckets, upload and download files. A cloud
 
 ### Data API
 
-Two tabs. **Settings** has the switch that turns REST and GraphQL on (paid plans on Cloud; on Free
-the switch is off and the section says why). **Docs** is the reference for your own tables, with
+Two tabs. **Settings** has the switch that turns REST and GraphQL on (every plan on Cloud,
+including Free). **Docs** is the reference for your own tables, with
 `@snoutdata/client` snippets.
 
 ### Functions

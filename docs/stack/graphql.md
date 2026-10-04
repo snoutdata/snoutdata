@@ -9,8 +9,8 @@ description: The GraphQL API every SnoutData Cloud project has at /graphql/v1. R
 
 `https://<ref>.api.snoutdata.com/graphql/v1` answers GraphQL over your own tables, views and
 functions. There is no schema to write: it is read from the database, and it follows the database
-when you change it. It is part of the [data API](/stack/data-api), so it is on the plans the data API is
-on, and it runs as the caller's role like every other read and write, so **row-level security
+when you change it. It is part of the [data API](/stack/data-api), so it is on every plan, including free,
+and it runs as the caller's role like every other read and write, so **row-level security
 decides what a query sees**, exactly as it does for REST.
 
 ```bash

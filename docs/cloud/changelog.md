@@ -13,6 +13,10 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-04
 
+- **The REST and GraphQL data API is on every plan, including Free.** Switch it on with
+  `snoutdata products enable data-api`, in the dashboard's Data API tab or in Studio's project tab,
+  and `/rest/v1` and `/graphql/v1` answer for a free project the way they do for a paid one. See
+  [REST and GraphQL](/stack/data-api) and [what each plan gets](/cloud/limits#what-each-plan-gets).
 - **Guest sign-in.** Switch it on with `snoutdata auth anonymous on` or on the dashboard's Auth tab,
   and `signInAnonymously()` gives a browser a real session with no email or password, so
   `auth.uid()` works in your policies and the token says `is_anonymous`. A guest who adds an email
