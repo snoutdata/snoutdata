@@ -114,7 +114,7 @@ release never changes a page that is already live:
 
 ```html
 <script type="module">
-  import { snout } from 'https://cdn.jsdelivr.net/npm/@snoutdata/client@0.3.1/dist/index.js'
+  import { snout } from 'https://cdn.jsdelivr.net/npm/@snoutdata/client@0.3.2/dist/index.js'
 
   const db = snout('https://<ref>.api.snoutdata.com', '<your app key>')
 
@@ -129,7 +129,7 @@ release never changes a page that is already live:
 </script>
 ```
 
-`https://unpkg.com/@snoutdata/client@0.3.1/dist/index.js` serves the same files. The app key
+`https://unpkg.com/@snoutdata/client@0.3.2/dist/index.js` serves the same files. The app key
 belongs in a page; the server key never does (see [your two keys](#your-two-keys)).
 The Realtime connection underneath is documented in
 [the Realtime wire protocol](/stack/realtime#the-wire-protocol), for a client written by hand.
