@@ -10,7 +10,7 @@ description: On a Postgres 18 project, the people who work on it open the databa
 On a Postgres 18 project, the people who work on it can open the **database itself** (psql, a
 migration script, anything built on libpq 18) with their own SnoutData account instead of the
 project password. Nobody hands a password around, a sign-in lasts at most an hour, taking someone's
-access away is one click, and the database records who connected.
+access away takes a click and a confirmation, and the database records who connected.
 
 It uses Postgres 18's OAuth authentication: psql asks SnoutData for a token, you approve the
 request in your browser, and the database checks the token itself before letting you in. It is on
