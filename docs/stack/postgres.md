@@ -121,16 +121,21 @@ A self-hosted stack chooses its image in `.env`. One set up on 17 pins it there:
 SNOUT_POD_IMAGE=ghcr.io/snoutdata/snoutpod-postgres:17
 ```
 
-## Coming soon: OAuth 2.0 sign-in to the database
+## Sign in to the database as yourself (SnoutData Cloud)
 
-Postgres 18 can authenticate a database login with OAuth 2.0 instead of a password: the client
-gets a token from an identity provider, and the server checks it. We are building the part that
-checks it, so a member of your team connects to a project's database with the same single sign-on
-identity they use for SnoutData, with no database password to hand out, share or rotate.
+Postgres 18 can authenticate a database login with an OAuth token instead of a password. On a
+SnoutData Cloud project made on 18, the people who work on it use that to open the database itself
+with their own SnoutData account: psql 18 prints a code, they approve it in the browser, and the
+database checks the token and lets them in as their own role. No shared password, a sign-in lasts
+at most an hour, and taking someone's access away is one click.
+[Sign in to the database as yourself](/cloud/database-sign-in) has the whole of it: who can give
+access, the two levels, the connection string, and the limits (psql 18 and other libpq 18 programs
+only, for now).
 
-It is not available yet. Until it is, a database login is a role and a password, as it is today.
-This is a different thing from [Auth](/stack/auth), which signs your application's users in to your
-application; OAuth providers there (Google, GitHub and the rest) work now.
+A project made on 17 keeps working exactly as it does, with its password. A self-hosted stack or a
+local project has no SnoutData sign-in in front of its database, so this is Cloud only. It is a
+different thing from [Auth](/stack/auth), which signs your application's users in to your
+application.
 
 ## In Studio
 

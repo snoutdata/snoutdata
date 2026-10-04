@@ -125,7 +125,7 @@ function callable with no key, for a webhook's receiver.
 | --- | --- |
 | `db url`, `db psql`, `db push` | `projects create/pause/resume/delete`, `usage` |
 | `gen types typescript` | `domains`, `products`, `auth` |
-| `keys` | `db export`, `db restore`, `db reset-password` |
+| `keys` | `db export`, `db restore`, `db reset-password`, `db access` |
 | `status`, `start`, `stop`, `projects show` | `keys rotate`, `tokens`, `teams` |
 | `functions deploy/list/delete` | `push credentials` |
 | `secrets set/list/unset` | |
