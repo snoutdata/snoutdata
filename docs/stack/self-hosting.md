@@ -114,8 +114,20 @@ stack](/stack/cli-local-stack) walks through it, step by step.
 - **Backups.** The data is in Docker volumes: `db-data` (the project), `metadata-data` and
   `objects-data` (the files). Back up `.env` with them. A dump while it runs:
   `docker compose exec db pg_dump -U snoutpod_admin -Fc <SNOUT_REF> > project.dump`.
-- **Upgrades.** `git pull`, then `docker compose up -d`. The servers bring their schemas up to date
-  as they start.
+- **Upgrades.** In the stack's folder:
+
+  ```bash
+  git pull
+  docker compose pull
+  docker compose up -d --wait
+  ```
+
+  Without `docker compose pull`, `up` keeps the images already on the machine, the database's
+  included, since its tag (`:18`) moves with each release. The servers bring their schemas up to
+  date as they start, and the database brings our own extensions ([SnoutTime](/stack/snouttime/overview))
+  up to the image's version in every database, one line per update in `docker compose logs db`.
+  A stack set up on Postgres 17 keeps `SNOUT_POD_IMAGE=ghcr.io/snoutdata/snoutpod-postgres:17` in
+  `.env`: a data directory opens only on the major that wrote it.
 
 Every setting is in the repository's [README](https://github.com/snoutdata/snout-stack#configuration).
 

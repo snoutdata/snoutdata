@@ -17,6 +17,11 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   always run with the privileges of the table's owner and nothing more. Every running project
   was restarted onto it today (a few seconds each), and projects that had SnoutTime installed
   were updated in place. Nothing to do on your side.
+- **Local and self-hosted databases keep SnoutTime current too.** The database image now updates
+  SnoutTime to its own version in every database each time it starts, as hosted projects always
+  have. `snoutdata start` checks for a newer database image of the same Postgres version and moves
+  a stopped local database onto it, keeping its data. A self-hosted stack gets the new image with
+  `docker compose pull` before `docker compose up -d` (see [upgrades](/stack/self-hosting)).
 - **The REST and GraphQL data API is on every plan, including Free.** Switch it on with
   `snoutdata products enable data-api`, in the dashboard's Data API tab or in Studio's project tab,
   and `/rest/v1` and `/graphql/v1` answer for a free project the way they do for a paid one. See
