@@ -218,6 +218,36 @@ and the sentence "Too many connections from this address". Many users behind one
 mobile-carrier address count together, and a load test from one machine stops at 100: spread it
 across machines to go further.
 
+### How messages a second are counted
+
+- **Once per message sent, however many receive it.** One broadcast on a channel of five clients
+  is one message, not five. A batch sent over HTTP counts each message in it.
+- **For the whole project, not per client.** Every client of the project shares the one
+  allowance, over one-second windows. Five players each sending 25 position updates a second is
+  125 a second, which is over the free plan's 100.
+- **Presence is not counted against it**, but each channel may call `track` or `untrack` at most
+  5 times in 30 seconds. Track when something changes, not on a timer.
+- **Broadcasts from your database** (`realtime.send`) are not counted against it.
+
+**Past the limit, nothing is dropped silently.** The broadcast that went over is not delivered,
+and the channel it was sent on is closed: the sending client receives a `system` message
+`{ "status": "error", "extension": "system", "message": "Too many messages per second" }` on that
+channel, then `phx_close`. The socket stays open and its other channels are untouched. With
+`@snoutdata/client`, `on('system', ...)` hears the sentence, the subscribe callback hears
+`CLOSED`, and the channel rejoins by itself after a short backoff. Closing the channel takes the
+client out of presence, so the others on it see a leave until it rejoins. Since
+`@snoutdata/client` 0.3.2 the rejoin announces whatever the client last tracked, so it comes back
+on its own; with an older client, or a client of your own, track again when the rejoin is
+answered. A send with `broadcast: { ack: true }` is not answered when it is the
+one that went over, so it times out.
+
+The HTTP door answers 429 instead: "You have exceeded your rate limit" for one message, and "Too
+many messages to broadcast, please reduce the batch size" for a batch, none of which is sent.
+
+A game should send positions at a fixed rate that fits (a few a second per player, not one per
+frame), and treat a `Too many messages per second` closure as the signal to slow down.
+`snoutdata realtime inspect` shows each channel's busiest second over the last minute.
+
 **Why table changes are the paid half**, stated rather than left to look arbitrary: broadcast and
 presence cost a socket on a server we already run, while a table subscription consumes a
 replication slot and a walsender inside your own database, for as long as it is open. On a free
@@ -226,6 +256,47 @@ project the channel's subscribe callback gets `CHANNEL_ERROR` with "Table change
 Broadcast and presence work on every plan.", which is the plan and not a fault; broadcast and presence on the same
 project work. Private channels and broadcast from the database read your database too, so they come with
 it. Downgrading takes effect the next time your project's tenant is registered, not instantly.
+
+## Seeing what Realtime is doing
+
+The server keeps, for each project, the channels open now and a log of connections coming and
+going with the reason each one ended. Two ways to read it, both for the project's owner only:
+
+```sh
+snoutdata realtime inspect                  # every channel: who is on it, their presence, the last minute
+snoutdata realtime inspect --channel room:42 --watch   # one channel, then joins and leaves as they happen
+snoutdata realtime logs --since 10m         # connects, joins, leaves and disconnects, with why
+snoutdata realtime logs --channel room:42 --json
+```
+
+In the dashboard it is **Realtime → Live channels** on the project, refreshed every ten seconds.
+
+What you see for each client is its socket number, its presence key, when it joined and **when it
+was last heard from**. A client sends a heartbeat every 25 seconds, so one that has been silent
+for more than a minute has almost certainly gone without closing (a phone losing signal, a laptop
+lid shut). The server does not time a socket out for a missed heartbeat; the client does, and a
+client that vanishes without closing stays on its channels, and in presence, until the network
+reports the connection dead. "Last heard" is how to tell that apart from a player who is there.
+
+The log says why each socket and channel ended:
+
+| Reason | What happened |
+| --- | --- |
+| `client closed (1000: ...)` | The client closed the socket on purpose, with that code and reason. |
+| `client closed (4000: heartbeat timeout)` | The client gave up after a heartbeat went unanswered, and reconnects. |
+| `connection lost (no close frame)` | The connection ended without a goodbye: a network change, a killed tab. |
+| `Too many messages per second` | The project went over its messages a second; that channel was closed. |
+| `Client presence rate limit exceeded` | More than 5 `track` calls in 30 seconds on one channel. |
+| A join refused with a reason | The key, the plan's limits, or a private channel's policy said no. |
+| `closed by the server ...` | The project's Realtime settings changed (a key rotation), so every socket was closed to reconnect. |
+
+The log keeps the newest thousand events, in memory, and starts again when the machine your
+project runs on restarts. It is the server's side of the story; it does not record message
+contents.
+
+Over HTTP it is `GET https://<ref>.api.snoutdata.com/realtime/v1/inspect` (`?channel=`) and
+`/realtime/v1/events` (`?since=<epoch ms>&channel=`), with the **service_role** key as `apikey`.
+The anon key is refused: this is every player's presence, which is not a web page's to read.
 
 ## How it runs
 
@@ -245,6 +316,178 @@ each change within about 0.2 seconds at the 99th percentile.
 
 A project with no connected client costs almost nothing, so every project is registered whether
 or not it ever subscribes. That is why there is no switch to throw.
+
+## The wire protocol
+
+`@snoutdata/client` is the easy way in, but the protocol underneath is small, documented here,
+and **a stable interface**: a client written against this section keeps working. Anything added
+later is additive (a new event, a new field), and a change that would break a hand-written client
+would come as a new `vsn`, with this one still served. The frames are Phoenix-channel-shaped.
+
+### Connecting
+
+```
+wss://<ref>.api.snoutdata.com/realtime/v1/websocket?apikey=<anon key>&vsn=1.0.0
+```
+
+The key can also be sent as an `x-api-key` header where the platform allows one (browsers do
+not). A bad key is refused before the upgrade with HTTP 403, and more than 100 sockets from one
+address with 429.
+
+With `vsn=1.0.0` every frame is a text frame holding one JSON object:
+
+```json
+{ "topic": "realtime:room:42", "event": "phx_join", "payload": { }, "ref": "1", "join_ref": "1" }
+```
+
+- `topic` is `realtime:` followed by the channel name, or `phoenix` for the socket itself.
+- `ref` is any string you choose, unique per frame you send. The answer to that frame is a
+  `phx_reply` carrying the same `ref`. Frames the server pushes on its own carry `"ref": null`.
+- `join_ref` is the `ref` of the join that opened the channel. Send it on the frames of that
+  channel; the server's frames under `vsn=1.0.0` do not carry it.
+
+`vsn=2.0.0` is the same messages as a JSON array `[join_ref, ref, topic, event, payload]`, plus
+binary frames for broadcasts whose payload is bytes. Use `1.0.0` for a hand-written client.
+
+### Heartbeat
+
+```json
+{ "topic": "phoenix", "event": "heartbeat", "payload": {}, "ref": "7" }
+```
+
+answered by `{ "topic": "phoenix", "event": "phx_reply", "payload": { "status": "ok", "response": {} }, "ref": "7" }`.
+Send one every 25 seconds. If the previous one has not been answered when the next is due, the
+connection is dead even if it looks open: close it and reconnect. The server never closes a
+socket for a missed heartbeat (see [Seeing what Realtime is doing](#seeing-what-realtime-is-doing)),
+so this is the client's job, and it is what keeps a phone that changed networks from staying
+connected to nothing.
+
+### Joining a channel
+
+```json
+{ "topic": "realtime:room:42", "event": "phx_join", "ref": "1", "join_ref": "1",
+  "payload": {
+    "config": {
+      "broadcast": { "self": false, "ack": false },
+      "presence": { "key": "ada", "enabled": true },
+      "private": false
+    },
+    "access_token": "<a signed-in user's JWT, optional>"
+  } }
+```
+
+- `broadcast.self`: also receive your own broadcasts. `broadcast.ack`: have each broadcast you
+  send answered with a `phx_reply`.
+- `presence.key`: the key you are tracked under; a random one when omitted. Two sockets may track
+  the same key (two tabs of one player), and each is its own entry under it.
+- `presence.enabled`: send presence to this client from the join. Tracking turns it on anyway.
+- `private`: a channel your [policies](#private-channels) decide about, as the user in `access_token`.
+- `access_token`: who the client is, for private channels and table changes. Without it the
+  socket's key is used. A refreshed token is sent later as
+  `{ "event": "access_token", "payload": { "access_token": "<new JWT>" } }` on the channel.
+
+The answer is `{ "event": "phx_reply", "payload": { "status": "ok", "response": { "postgres_changes": [] } } }`,
+or `"status": "error"` with `"response": { "reason": "<why>" }`. With presence on, the server then
+pushes the whole presence set:
+
+```json
+{ "topic": "realtime:room:42", "event": "presence_state", "ref": null,
+  "payload": { "ada": { "metas": [ { "phx_ref": "F5q2kV0", "name": "Ada" } ] } } }
+```
+
+### Broadcast
+
+Send:
+
+```json
+{ "topic": "realtime:room:42", "event": "broadcast", "ref": "8", "join_ref": "1",
+  "payload": { "type": "broadcast", "event": "move", "payload": { "x": 12, "y": 30 } } }
+```
+
+Everyone else on the channel receives the same `payload` with `"ref": null`. The inner `event` is
+yours to name; the outer one is always `broadcast`.
+
+### Presence
+
+Track (a second track under the same key replaces what you published):
+
+```json
+{ "topic": "realtime:room:42", "event": "presence", "ref": "9", "join_ref": "1",
+  "payload": { "type": "presence", "event": "track", "payload": { "name": "Ada" } } }
+```
+
+`"event": "untrack"` (with no inner payload) stops. Every client on the channel, the sender
+included, receives the change:
+
+```json
+{ "topic": "realtime:room:42", "event": "presence_diff", "ref": null,
+  "payload": {
+    "joins":  { "ada": { "metas": [ { "phx_ref": "F5q2kW1", "phx_ref_prev": "F5q2kV0", "name": "Ada (renamed)" } ] } },
+    "leaves": { "ada": { "metas": [ { "phx_ref": "F5q2kV0", "name": "Ada" } ] } }
+  } }
+```
+
+Apply `leaves` before `joins`, matching metas by `phx_ref`. An update is a leave of the old meta
+and a join of the new one, which carries `phx_ref_prev`. A client leaving the channel or losing its
+socket appears as a leave of all its metas.
+
+### Leaving, and what the server may push
+
+`phx_leave` (empty payload) is answered with `phx_reply` and then `phx_close`. The server may also
+push, on a channel you joined:
+
+- `system`, `{ "status": "error" | "ok", "extension": "system" | "postgres_changes", "message": "<sentence>", "channel": "room:42" }`:
+  a sentence about the channel. With `"status": "error"` and `"extension": "system"` it is
+  followed by `phx_close`.
+- `phx_close`: the channel is closed (you left, or the server closed it with a `system` message
+  first: a rate limit, an expired token). Join again if you still want it.
+- `phx_error`: not sent today; treat it like `phx_close`.
+- `postgres_changes`: a [table change](#table-changes), `{ "ids": [...], "data": { ... } }`.
+
+A frame on a channel you have not joined is answered with
+`{ "status": "error", "response": { "reason": "unmatched topic" } }`.
+
+### A client in 40 lines
+
+```js
+const url = `wss://${ref}.api.snoutdata.com/realtime/v1/websocket?apikey=${anonKey}&vsn=1.0.0`
+const topic = 'realtime:room:42'
+let ref = 0
+let joinRef = null
+let unanswered = null
+const ws = new WebSocket(url)
+const send = (frameTopic, event, payload) => {
+  const r = String(++ref)
+  ws.send(JSON.stringify({ topic: frameTopic, event, payload, ref: r, join_ref: frameTopic === topic ? joinRef : null }))
+  return r
+}
+
+ws.onopen = () => {
+  joinRef = String(ref + 1)
+  send(topic, 'phx_join', { config: { presence: { key: myId, enabled: true }, broadcast: { self: false } } })
+  setInterval(() => {
+    if (unanswered) { ws.close(4000, 'heartbeat timeout'); return } // reconnect from onclose
+    unanswered = send('phoenix', 'heartbeat', {})
+  }, 25_000)
+}
+
+ws.onmessage = ({ data }) => {
+  const m = JSON.parse(data)
+  if (m.topic === 'phoenix' && m.ref === unanswered) { unanswered = null; return }
+  if (m.event === 'phx_reply' && m.ref === joinRef && m.payload.status === 'ok') {
+    send(topic, 'presence', { type: 'presence', event: 'track', payload: { name: 'Ada' } })
+  }
+  if (m.event === 'presence_state') replacePlayers(m.payload)
+  if (m.event === 'presence_diff') applyDiff(m.payload.leaves, m.payload.joins)
+  if (m.event === 'broadcast') onBroadcast(m.payload.event, m.payload.payload)
+  if (m.event === 'system') console.warn(m.payload.message)
+  if (m.event === 'phx_close') { /* join again, and track again once it is answered */ }
+}
+
+function move(x, y) {
+  send(topic, 'broadcast', { type: 'broadcast', event: 'move', payload: { id: myId, x, y } })
+}
+```
 
 ## Not built
 
