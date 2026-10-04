@@ -31,7 +31,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 - **The Realtime wire protocol is documented**, as a stable interface, with a hand-written client
   in 40 lines. See [the wire protocol](/stack/realtime#the-wire-protocol).
 - **`@snoutdata/client` from a CDN, with no build step.** A page can import it from
-  `https://cdn.jsdelivr.net/npm/@snoutdata/client@0.3.1/dist/index.js` in a
+  `https://cdn.jsdelivr.net/npm/@snoutdata/client@0.3.2/dist/index.js` in a
   `<script type="module">`. See [the client library](/stack/api#in-a-page-with-no-build-step).
 - **`@snoutdata/client` 0.3.2: a rejoined channel announces its presence again.** When a channel
   was closed and rejoined (the message limit, a dropped connection), the others saw that client
@@ -53,6 +53,9 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   on every plan, table changes on Plus and Pro.
 - **`snoutdata <command> --help` explains each flag**, one line each, and `--help --json` carries
   them as `flagHelp`.
+- **Self-hosted: snout-auth 0.1.6 and snout-realtime 0.1.4** in the stack's `compose.yaml`, with
+  guest sign-in behind `AUTH_ANONYMOUS_USERS_ENABLED` (off by default) and Realtime's inspect and
+  connection log. Pull the new `compose.yaml` and `docker compose up -d`.
 
 ## 2026-10-03
 
