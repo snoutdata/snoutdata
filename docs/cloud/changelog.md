@@ -18,7 +18,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   person opens the database with psql 18 and their own SnoutData account: psql prints a code, they
   approve it at dashboard.snoutdata.com, and the database lets them in as their own role, with
   their name in its logs. No shared password, a sign-in lasts at most an hour, and taking access
-  away is one click or `snoutdata db access revoke`. Two levels: `full`, and `read` (the project's
+  away is a click in the dashboard or `snoutdata db access revoke`. Two levels: `full`, and `read` (the project's
   own tables, including rows row-level security would hide, never the `auth` or `storage`
   schemas). psql 18 and other libpq 18 programs only for now; node-postgres, JDBC and most BI
   tools keep using the password, and a project on 17 keeps working as it does. Every plan, free
