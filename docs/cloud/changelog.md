@@ -70,13 +70,12 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
     cold bitmap scan over a tenth of a 2.6 GB table was 4.3x faster on 18 (from larger reads, not
     from asynchronous I/O), a sequential scan was the same, and vacuum was slower, consistent with
     the checksums. The numbers and the method are in
-    [the research note](https://snoutdata.com/research/postgres-18-on-a-small-cloud-host).
+    [the research note](https://snoutdata.com/research/what-made-postgres-18-faster).
   - **One thing to check in DDL written for 17:** a generated column with neither `STORED` nor
     `VIRTUAL` is now virtual, so add `STORED` where you meant it.
   - **Existing databases keep the version they were made with**: a Cloud project, a self-hosted
-    stack or a local database made on 17 stays on 17 and needs nothing. To move one to 18, copy
-    it into a new project with Studio's [Move a database](/cloud/move-database) or a dump and
-    restore; in-place major upgrades are not offered.
+    stack or a local database made on 17 keeps running on 17, supported like any other, and needs
+    nothing from you.
   - **The front door speaks 18's protocol 3.2** too (below), and `snoutdata` 0.10.1 starts a local
     database on the major its files were written by.
 
