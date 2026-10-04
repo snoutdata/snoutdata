@@ -13,6 +13,10 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-04
 
+- **SnoutTime 0.1.7, a security fix.** Background jobs, and two of SnoutTime's triggers, now
+  always run with the privileges of the table's owner and nothing more. Every running project
+  was restarted onto it today (a few seconds each), and projects that had SnoutTime installed
+  were updated in place. Nothing to do on your side.
 - **The REST and GraphQL data API is on every plan, including Free.** Switch it on with
   `snoutdata products enable data-api`, in the dashboard's Data API tab or in Studio's project tab,
   and `/rest/v1` and `/graphql/v1` answer for a free project the way they do for a paid one. See
