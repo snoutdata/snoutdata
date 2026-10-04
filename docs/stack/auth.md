@@ -7,7 +7,8 @@ sidebar_label: Authentication
 # Authentication
 
 Sign-up, sign-in and sessions for your app's users, at `https://<ref>.api.snoutdata.com/auth/v1`.
-It is on every plan. Your users sign in with an email and a password, or with their Google account.
+It is on every plan. Your users sign in with an email and a password, with their Google account,
+or as a guest with no account at all.
 
 ## How it works
 
@@ -116,6 +117,73 @@ const { error } = await db.auth.signInWithOAuth({
 The browser goes to Google, then back to your project, then to `redirectTo` with a session. That
 address must be your site URL or on the allowed list.
 
+## Guest sign-in
+
+A guest is a real user with no email and no password: someone who opens your app and starts using
+it before they make an account. Each guest gets a session, so `auth.uid()` works in your policies
+from the first request, and a guest can add an email address later without losing anything.
+
+### Turn it on
+
+Guest sign-in is off until you switch it on, on the dashboard's Auth tab under **Guest sign-in**,
+or from a terminal:
+
+```bash
+snoutdata auth anonymous on
+```
+
+It takes effect when your auth service restarts, which takes about a minute.
+
+### Sign a guest in
+
+```js
+const { data: { session } } = await db.auth.getSession()
+if (!session) {
+  await db.auth.signInAnonymously({ options: { data: { name: 'Sleepy Otter' } } })
+}
+```
+
+Check for a session first. Every call to `signInAnonymously()` makes a **new** guest, so calling it
+on every page load gives the same person a new user id each time. The client keeps the session in
+the browser, so the guest is the same user when they come back.
+
+`data` is optional and lands in the user's `user_metadata`, where a display name for a guest is
+easy to keep and to change with `db.auth.updateUser({ data: { name } })`.
+
+### Guests in your policies
+
+A guest's token has `role` `authenticated`, like any signed-in user, so policies written for
+`auth.uid()` apply to guests as they are. Its `is_anonymous` claim is `true`, for the places a
+guest should not go:
+
+```sql
+create policy "only real accounts post to the leaderboard"
+  on public.scores for insert
+  with check (
+    player_id = auth.uid()
+    and (auth.jwt() ->> 'is_anonymous')::boolean is false
+  );
+```
+
+The user row says the same thing in `auth.users.is_anonymous`.
+
+### Turning a guest into an account
+
+```js
+await db.auth.updateUser({ email: 'pat@example.com' })
+```
+
+The address gets a confirmation email, and once it is confirmed the guest is a full account: the
+same user id, the same rows, and `is_anonymous` false in the next token. A password can be set in
+the same call (`{ email, password }`), but not before the guest has an address. If your project
+confirms sign-ups without an email, the address is confirmed at once.
+
+### Limits
+
+At most 30 guests an hour from one address, so a script cannot fill your `auth.users` table. Each
+guest is a row in your database, and a guest who never comes back stays there until you delete
+it, for example with a scheduled job that removes old rows where `is_anonymous` is true.
+
 ## Using the session
 
 ```js
@@ -185,6 +253,7 @@ Two layers, so an attacker cannot spend your mail:
 - **An emailed code is spent after five wrong guesses**, however many addresses they come from.
   After that the code answers as an expired one does (`otp_expired`), and the person asks for a new
   code, which starts the count again.
+- **Guests are limited to 30 an hour from one address**, since each one is a row in your database.
 - **Mail that succeeds has its own ceiling per project**, because the attack that matters there is
   a script signing up a thousand addresses and getting a thousand real emails sent.
 
