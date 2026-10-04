@@ -56,6 +56,7 @@ end in 21 seconds.
 | `8` | The plan's allowance is used up. | Tell the user. Retrying will not help. |
 | `9` | The network did not answer. | Retry with a delay. |
 | `10` | It answered too slowly and the wait was given up. | Retry, or raise `--timeout`. |
+| `11` | This CLI is out of date and no longer served (`"code":"outdated"`). | Run `snoutdata upgrade` (or the command the message names), then retry. |
 | `127` | `psql`, or `pg_restore` for an archive, is not installed. | Install it, or use a path that does not need it. |
 
 In `--json` mode a failure is one object on stdout: `{"ok":false,"code":"...","error":"..."}`.
@@ -69,7 +70,7 @@ The environment wins deliberately. Two kinds of credential go in that variable:
 
 | | Lasts | Use it for |
 | --- | --- | --- |
-| A session, written by `login` | one hour, refreshed automatically | a person at a terminal |
+| A session, written by `login` | renews itself as it is used | a person at a terminal |
 | An `sdt_…` access token | does not expire unless asked to; revocable | CI, cron, an agent |
 
 The control plane exchanges an `sdt_` token for a short-lived JWT on its side, so row-level
@@ -92,20 +93,24 @@ A command that needs a project and cannot find one exits 2 saying so.
 | Command | Flags |
 | --- | --- |
 | `snoutdata init` | `--name NAME` `--region REGION` `--env` `--ref REF` |
-| `snoutdata login` | `--provider github` (default `google`) `--device` `--no-browser` |
+| `snoutdata login` | `--email ADDRESS` `--provider github` (default `google`) `--device` `--no-browser` |
 | `snoutdata logout` | |
 | `snoutdata whoami` | |
+| `snoutdata upgrade` | `--check` |
 | `snoutdata tokens list` | |
 | `snoutdata tokens create` | `--name NAME` (required) `--expires DAYS` `--project REF` |
 | `snoutdata tokens revoke <id\|sdt_prefix>` | |
 | `snoutdata projects list` | |
-| `snoutdata projects create` | `--name NAME` (required) `--region REGION` `--team NAME\|ID` `--no-wait` |
+| `snoutdata projects create` | `--name NAME` (required) `--region REGION` `--team NAME\|ID` `--no-wait` `--show-url` (prints the connection string, which holds the password; otherwise `db url` does) |
 | `snoutdata projects pause` | `--ref REF` `--no-wait` |
 | `snoutdata projects resume` | `--ref REF` `--no-wait` |
 | `snoutdata projects delete` | `--ref REF` `--no-wait` |
 | `snoutdata projects show` | `--ref REF` |
 | `snoutdata products` | `--ref REF`; `enable\|disable auth\|storage\|data-api\|push` |
 | `snoutdata push credentials` | `--ref REF`; `set apns --p8 FILE --key-id ID --team-id ID --topic BUNDLE [--environment E]`, `set fcm --file FILE`, `remove apns\|fcm`. Never prints a key |
+| `snoutdata auth anonymous on\|off` | `--ref REF` |
+| `snoutdata realtime inspect` | `--channel C` `--watch` (not with `--json`) `--ref REF` |
+| `snoutdata realtime logs` | `--since 10m` `--channel C` `--ref REF` |
 | `snoutdata domains` | `--ref REF`; `add\|verify\|remove HOSTNAME` |
 | `snoutdata teams` | |
 | `snoutdata link` | `--ref REF` (required) |
@@ -150,13 +155,15 @@ Created x8x3sb2hcx4xn.
 Waiting for it to start…
   creating
   ready
-Ready. x8x3sb2hcx4xn in us-west-2.
-The password is stored for you: `snoutdata db url` prints this again.
+Ready. x8x3sb2hcx4xn in us-west-2, at x8x3sb2hcx4xn.db.snoutdata.com.
+`snoutdata db url` prints the connection string (it holds the password, so it is not shown here).
 Wrote DATABASE_URL in /work/analytics/.env.
 ```
 
-The connection URL is the one thing on stdout. With `--json` you get the project, its password and
-the URI as one object.
+With `--env` the project's ref is the one thing on stdout, and the connection URL, which holds the
+password, goes only into `.env`. Without `--env` the URL is the one thing on stdout. With `--json`
+you get the project as one object, with the password and the URI in it only when the URL is
+printed.
 
 ### `whoami`
 

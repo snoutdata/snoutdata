@@ -83,8 +83,8 @@ snoutdata login --device     # prints a code to type into a browser anywhere
 snoutdata login --no-browser # prints the URL instead of opening one
 ```
 
-The session lasts an hour and is refreshed while you are at the machine. For CI, a cron job or an
-agent, make an access token instead: see
+The session renews itself as it is used, so it does not run out while you work. For CI, a cron
+job or an agent, make an access token instead: see
 [access tokens](/cloud/getting-started#access-tokens-for-ci-and-agents).
 
 ## Next

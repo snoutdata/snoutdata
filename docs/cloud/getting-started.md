@@ -43,7 +43,7 @@ snoutdata login
 This opens your browser, signs you in with the same account as Studio and
 snoutdata.com, and writes a session to `~/.snoutdata/auth.json` (mode 0600).
 
-The session lasts an hour and the CLI refreshes it while you are at the machine. For CI or an
+The session renews itself as the CLI uses it, so it does not run out while you work. For CI or an
 agent, use a long-lived access token instead. See [access tokens](#access-tokens-for-ci-and-agents).
 
 ## Create a database

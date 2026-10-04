@@ -42,10 +42,16 @@ A star on either helps other people find them.
 | `8` | The plan's allowance is used up. |
 | `9` | The network did not answer. |
 | `10` | It answered too slowly and the wait was given up. |
+| `11` | This version of the CLI is out of date and no longer served (`"code":"outdated"`). Run `snoutdata upgrade`. |
 | `127` | A program this command needs is not installed (`psql`, or `pg_restore` for an archive). |
 
 In `--json` mode a failure is `{"ok":false,"code":"...","error":"..."}` on stdout, and the exit
 code says the same thing more coarsely.
+
+An out-of-date CLI is told so in words it can act on: the version installed, the version
+required, and the exact command, `snoutdata upgrade` or the installer itself. A version that is
+deprecated but still served prints a warning on stderr on every command until it is upgraded, so
+the refusal is never the first you hear of it.
 
 ## Where things come from
 
@@ -75,7 +81,7 @@ environment, never on a command line.
 | `--json` | JSON on stdout, nothing else. |
 | `--quiet` | Drop the progress lines on stderr. Errors still print. |
 | `--timeout SECONDS` | How long anything that waits will wait. |
-| `--help` | Print the usage summary. |
+| `--help` | Print the usage summary. After a command (`snoutdata init --help`), that command's flags, one line each. |
 | `--version` | Print the version. |
 
 ## Every command
@@ -87,23 +93,33 @@ snoutdata init [--name NAME] [--region REGION] [--env] [--ref REF]
 ```
 
 From nothing to a working `DATABASE_URL`. Creates a project (named after the current folder
-unless `--name` says otherwise), waits until it is serving, writes `.snoutdata/project.json`, and
-with `--env` writes `DATABASE_URL` into `.env`.
+unless `--name` says otherwise), waits until it is serving, and writes `.snoutdata/project.json`.
 
-Idempotent: a folder that is already linked prints that project's URL instead of creating a
-second one. The `.env` line is rewritten in place rather than appended, so you never end up with
+Without `--env` it prints the `DATABASE_URL` on stdout. With `--env` it writes it into `.env` in
+the current folder instead, and prints nothing that holds the password. The URL contains the
+database password, so `--env` also adds `.env` to `.gitignore` when it is not already there.
+
+Idempotent: a folder that is already linked prints that project's URL (or, with `--env`, writes
+it) instead of creating a second one. The `.env` line is rewritten in place rather than appended, so you never end up with
 two `DATABASE_URL`s.
 
 ### `login`, `logout`, `whoami`
 
 ```
-snoutdata login [--provider github] [--device] [--no-browser]
+snoutdata login [--email you@example.com] [--provider github] [--device] [--no-browser]
 snoutdata logout
 snoutdata whoami
+snoutdata upgrade [--check]
 ```
 
 `login` opens a browser and completes a PKCE flow against a loopback callback. The provider
-defaults to `google`. The session it writes lasts an hour and is refreshed automatically.
+defaults to `google`. The session it writes renews itself as it is used, so it does not run out
+after an hour; `logout` ends it. CI, which has no browser, wants `tokens create` instead.
+
+`--email` names the account to sign in as. Google offers that account in its chooser, `--sso`
+takes the company domain from it, and whichever way you sign in, a different account coming back
+is reported at once. `whoami` keeps reporting it (and `--json` carries `expectedEmail` and
+`matchesExpected`) until you sign in as the account you asked for.
 
 `--device` prints a short code to type into a browser anywhere, which is what you want over SSH
 or on a machine with no desktop. `--no-browser` keeps the ordinary flow but prints the URL instead
@@ -115,6 +131,12 @@ not a terminal, or `--json`, or `CI`, or `SNOUTDATA_NO_INTERACTIVE`) nothing is 
 
 `whoami` says who the credential belongs to and which door it came in by, a session or an access
 token.
+
+`upgrade` installs the newest CLI the way this one was installed. A binary from the installer
+downloads the release for this platform, checks it against the release's SHA-256 sums (and refuses
+on a mismatch), and replaces itself. An npm install runs `npm install -g snoutdata@latest`. Under
+`npx` there is nothing to replace: `npx snoutdata@latest` is already the newest. `--check` only
+says whether a newer version exists.
 
 ### `tokens`
 
@@ -138,7 +160,7 @@ A token cannot create another token. An account-wide token can revoke itself, or
 
 ```
 snoutdata projects list
-snoutdata projects create --name NAME [--region REGION] [--team NAME|ID] [--no-wait]
+snoutdata projects create --name NAME [--region REGION] [--team NAME|ID] [--no-wait] [--show-url]
 snoutdata projects pause  [--ref REF] [--no-wait]
 snoutdata projects resume [--ref REF] [--no-wait]
 snoutdata projects delete [--ref REF] [--no-wait]
@@ -153,7 +175,10 @@ function secrets, and its custom domains. Never a password or a key.
 
 `create` waits for the project to be ready unless you pass `--no-wait`, because a connection
 string handed over before the database exists is a string that does not work yet. It prints the
-connection URL once; `snoutdata db url` prints it again any time.
+project's ref on stdout and its host on stderr, and not the connection string, because that holds
+the database password and stdout is what ends up in transcripts and CI logs. `snoutdata db url`
+prints the connection string when you want it; `--show-url` prints it here instead, as `create`
+did before 0.10.2.
 
 `--team` takes a team name or a team id. A name that matches more than one team is refused rather
 than guessed at.
@@ -174,7 +199,8 @@ GraphQL over its tables) and [push notifications](/stack/push) are on, and switc
 on or off restarts the database once. A switch asks for the change and the host
 makes it within about a minute, so `products` may show `waiting for the host` for a moment. The
 data API is on paid plans only; a free project is refused with a sentence about the plan. Realtime
-needs no switch: it is on for every project from the start.
+needs no switch: it is on for every project from the start, and `products` and `projects show`
+list it as on (broadcast and presence on every plan, table changes on Plus and Pro).
 
 ### `push credentials`
 
@@ -214,6 +240,36 @@ site URL and the other addresses a sign-in may return to (`--allow=` with nothin
 `reset` goes back to ours. The variables are on [Authentication](/stack/auth#the-emails-your-users-get).
 Saving restarts the project's auth service, which takes about a minute. The full setup is on
 [Authentication](/stack/auth#sign-in-with-google).
+
+### `realtime`
+
+```
+snoutdata realtime inspect [--channel C] [--watch] [--ref REF]
+snoutdata realtime logs [--since 10m] [--channel C] [--ref REF]
+```
+
+`inspect` shows every open broadcast and presence channel: each client's socket, its presence key,
+when it joined and when it was last heard from (a client silent for over a minute has most likely
+gone without closing), the presence state, and the last minute's broadcasts sent and delivered with
+the busiest second. `--watch` then prints joins, leaves and disconnects as they happen. `--watch`
+is for a person; with `--json`, poll `inspect --json` or `logs --since 1m --json` instead.
+
+`logs` is the server's log of the newest thousand connection events, each with the reason it ended:
+a client's heartbeat timeout, a lost connection, "Too many messages per second", a refused join.
+It is kept in memory, so it starts again if the project's host restarts. `--since` takes `30s`,
+`10m`, `2h`, `1d` or a time. Both read through your sign-in; the project's service_role key never
+leaves the control plane. See [seeing what Realtime is doing](/stack/realtime#seeing-what-realtime-is-doing).
+
+### `auth anonymous`
+
+```
+snoutdata auth anonymous on|off [--ref REF]
+```
+
+Turns guest sign-in on or off for the project. With it on, `signInAnonymously()` in your app signs
+a person in with no email or password, `auth.uid()` works in your policies, and the token carries
+`is_anonymous`. `snoutdata auth` shows whether it is on (`guests`). Changing it restarts the
+project's auth service, which takes about a minute. See [guest sign-in](/stack/auth#guest-sign-in).
 
 ### `domains`
 

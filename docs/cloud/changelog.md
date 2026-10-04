@@ -11,17 +11,73 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-10-04
+
+- **Guest sign-in.** Switch it on with `snoutdata auth anonymous on` or on the dashboard's Auth tab,
+  and `signInAnonymously()` gives a browser a real session with no email or password, so
+  `auth.uid()` works in your policies and the token says `is_anonymous`. A guest who adds an email
+  address with `updateUser` becomes a full account with the same user id. At most 30 guests an hour
+  from one address. See [guest sign-in](/stack/auth#guest-sign-in).
+- **See what Realtime is doing.** `snoutdata realtime inspect` shows the channels open now, who is
+  on each, their presence, when each client was last heard from, and the last minute of messages
+  (`--watch` follows joins and leaves as they happen). `snoutdata realtime logs --since 10m` lists
+  connections, joins, leaves and disconnects with the reason each ended, such as a client's
+  heartbeat timeout, a lost connection or "Too many messages per second". The dashboard's Realtime
+  page has the same under **Live channels**.
+- **The Realtime limit, stated exactly.** A broadcast counts once however many clients receive it,
+  against the whole project's messages a second; presence and broadcasts sent from the database do
+  not count. Past the limit the sending channel gets "Too many messages per second" and is closed,
+  and nothing is dropped silently. See [Realtime](/stack/realtime).
+- **The Realtime wire protocol is documented**, as a stable interface, with a hand-written client
+  in 40 lines. See [the wire protocol](/stack/realtime#the-wire-protocol).
+- **`@snoutdata/client` from a CDN, with no build step.** A page can import it from
+  `https://cdn.jsdelivr.net/npm/@snoutdata/client@0.3.1/dist/index.js` in a
+  `<script type="module">`. See [the client library](/stack/api#in-a-page-with-no-build-step).
+- **`@snoutdata/client` 0.3.2: a rejoined channel announces its presence again.** When a channel
+  was closed and rejoined (the message limit, a dropped connection), the others saw that client
+  leave and never come back. The rejoin now tracks whatever it last tracked. And
+  `signInAnonymously({ options: { data } })` keeps the metadata, which 0.3.1 dropped.
+- **`snoutdata upgrade`** installs the newest CLI the way it was installed: a binary downloads the
+  release, checks its SHA-256 and replaces itself; an npm install runs npm. `--check` only looks.
+- **An out-of-date CLI says what to do.** It exits 11 with `"code":"outdated"`, naming the version
+  installed, the version required and the command to run. A version that is deprecated but still
+  works warns on every command first. A CLI too old to have `upgrade` is now told the install
+  commands themselves rather than "download the latest from snoutdata.com".
+- **`snoutdata projects create` no longer prints the database password.** It prints the ref, and
+  `snoutdata db url` prints the connection string when you want it; `--show-url` brings back the
+  old output. `snoutdata init --env` writes the URL to `.env` without printing it.
+- **`snoutdata login --email you@example.com`** signs in as that account: Google offers it, SSO
+  takes the domain from it, and a different account coming back is reported at once and by every
+  `whoami` after.
+- **`snoutdata products` and `projects show` list Realtime**, as always on: broadcast and presence
+  on every plan, table changes on Plus and Pro.
+- **`snoutdata <command> --help` explains each flag**, one line each, and `--help --json` carries
+  them as `flagHelp`.
+
 ## 2026-10-03
 
 - **Pairing a terminal ends on a clearer screen.** Once you approve a `snoutdata login --device`
   request, the dashboard shows what was issued in one box (the token's prefix, its name and when it
   expires), with **Pair another** and a link to **Access tokens** below it.
-- **Projects run Postgres 18.** Every Cloud project, every new self-hosted stack and every new
-  `snoutdata start` database. New to build with: `uuidv7()`, virtual generated columns, temporal
-  keys (`WITHOUT OVERLAPS`), `OLD` and `NEW` in `RETURNING`, and `NOT ENFORCED` constraints.
-  Asynchronous I/O and data checksums are on. A generated column written without `STORED` is now
-  virtual, so add `STORED` to DDL written for 17. A local or self-hosted database made on 17 keeps
-  running 17. See [Postgres 18](/stack/postgres).
+- **Projects run Postgres 18.** Every project created from today runs 18: on SnoutData Cloud, in
+  a new self-hosted stack, and from `snoutdata start` or a new Local project in Studio.
+  - **New to build with:** `uuidv7()`, virtual generated columns, temporal keys
+    (`WITHOUT OVERLAPS`), `OLD` and `NEW` in `RETURNING`, and `NOT ENFORCED` constraints.
+  - **On without asking:** asynchronous I/O and data checksums. Measured on a host like ours, a
+    cold bitmap scan over a tenth of a 2.6 GB table was 4.3x faster on 18 (from larger reads, not
+    from asynchronous I/O), a sequential scan was the same, and vacuum was slower, consistent with
+    the checksums. The numbers and the method are in
+    [the research note](https://snoutdata.com/research/postgres-18-on-a-small-cloud-host).
+  - **One thing to check in DDL written for 17:** a generated column with neither `STORED` nor
+    `VIRTUAL` is now virtual, so add `STORED` where you meant it.
+  - **Existing databases keep the version they were made with**: a Cloud project, a self-hosted
+    stack or a local database made on 17 stays on 17 and needs nothing. To move one to 18, copy
+    it into a new project with Studio's [Move a database](/cloud/move-database) or a dump and
+    restore; in-place major upgrades are not offered.
+  - **The front door speaks 18's protocol 3.2** too (below), and `snoutdata` 0.10.1 starts a local
+    database on the major its files were written by.
+
+  See [Postgres 18](/stack/postgres).
 - **The front door accepts protocol 3.2.** A client that asks for it (libpq 18's
   `max_protocol_version=3.2`) connects, and cancelling a query works with its longer cancel keys.
 - **SnoutTime is in the self-hosted stack and the local database.** The Postgres image the

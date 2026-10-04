@@ -105,6 +105,35 @@ const { data, error } = await db.from('todos').select('id, title').eq('done', fa
 Once somebody signs in with `db.auth`, every request carries their token for you, so your policies
 see them. A refusal is an `error` in the result, never a throw.
 
+### In a page with no build step
+
+A static site with no bundler can load the client straight from a CDN. The files are the ones
+published to npm, unchanged: `@snoutdata/client` is plain ES modules with no dependencies, so
+jsDelivr serves `dist/index.js` and its siblings exactly as built. Pin the exact version, so a
+release never changes a page that is already live:
+
+```html
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@snoutdata/client@0.3.1/dist/index.js'
+
+  const db = createClient('https://<ref>.api.snoutdata.com', '<your anon key>')
+
+  const room = db.channel('room:42', { config: { presence: { key: crypto.randomUUID() } } })
+  room
+    .on('presence', { event: 'sync' }, () => console.log(room.presenceState()))
+    .subscribe(async (status) => {
+      if (status === 'SUBSCRIBED') {
+        await room.track({ name: 'Purple Otter' })
+      }
+    })
+</script>
+```
+
+`https://unpkg.com/@snoutdata/client@0.3.1/dist/index.js` serves the same files. The anon key
+belongs in a page; the service_role key never does (see [your two keys](#your-two-keys)).
+The Realtime connection underneath is documented in
+[the Realtime wire protocol](/stack/realtime#the-wire-protocol), for a client written by hand.
+
 **It is checked rather than believed.** A harness drives a real application through the client
 against a real project: sign-up, sign-in, an insert under row-level security and a read-back, the
 signed-out refusal, broadcast, `postgres_changes`, a file up and down, a signed URL, a Snout
