@@ -97,7 +97,8 @@ new project or in a fresh `snoutdata start`.
 
 | | Version |
 | --- | --- |
-| A project on SnoutData Cloud | 18 |
+| A new project on SnoutData Cloud | 18 |
+| A Cloud project created before 2026-10-03 | stays on 17 |
 | A new self-hosted stack | 18 |
 | A self-hosted stack set up on 17 | stays on 17 |
 | A new `snoutdata start` database, or a new Local project in Studio | 18 |
@@ -134,5 +135,7 @@ application; OAuth providers there (Google, GitHub and the rest) work now.
 
 - The plan advisor knows about 18's skip scan and its rewriting of `OR` into `= ANY`, and does not
   warn about a query 18 already plans well.
-- The table designer writes `stored` explicitly for a stored generated column, and on 18 offers
-  virtual columns and `NOT ENFORCED` constraints.
+- The table designer and schema sync write `stored` explicitly for a stored generated column, so
+  DDL Studio writes means the same on 17 and 18, and the DDL view says `VIRTUAL` or `STORED` for
+  each generated column it reads.
+- EXPLAIN reads 18's plans, which include buffer counts by default.

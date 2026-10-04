@@ -14,6 +14,24 @@ the notes for the version you just got the first time it opens after an update. 
 
 Downloads for every version are on [GitHub](https://github.com/snoutdata/app/releases).
 
+## 1.0.50 (2026-10-04)
+
+**Postgres 18**
+
+- **The plan advisor knows 18.** It no longer warns about a query 18 already plans well with its
+  skip scan or by rewriting `OR` into `= ANY`, and the assistant's index advice says the same.
+- **EXPLAIN reads 18's plans**, which carry buffer counts by default.
+- **Stored generated columns stay stored.** The table designer and schema sync write `STORED`
+  explicitly, because on 18 a generated column without it is virtual. The DDL view says `VIRTUAL`
+  or `STORED` for each one.
+
+**Cloud and Local projects**
+
+- Users and files have small icon actions on one line, instead of stacked buttons, and every action
+  button on a project's tab has an icon.
+- The New project menu reads down one edge.
+- An empty results pane has a drawing and the shortcut to run a query.
+
 ## 1.0.49 (2026-10-03)
 
 **Cloud projects**
