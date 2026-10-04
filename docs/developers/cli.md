@@ -198,7 +198,7 @@ Whether a project's auth (user sign-up and sign-in), storage (files), data API (
 GraphQL over its tables) and [push notifications](/stack/push) are on, and switching them. Switching push
 on or off restarts the database once. A switch asks for the change and the host
 makes it within about a minute, so `products` may show `waiting for the host` for a moment. The
-data API is on paid plans only; a free project is refused with a sentence about the plan. Realtime
+data API is on every plan, including free. Realtime
 needs no switch: it is on for every project from the start, and `products` and `projects show`
 list it as on (broadcast and presence on every plan, table changes on Plus and Pro).
 

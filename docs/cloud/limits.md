@@ -34,18 +34,15 @@ Per project, unless the row says otherwise.
 | Point-in-time restore | no | no | 7 days |
 | Deleted projects kept | 7 days | 7 days | 7 days |
 | Mark a project production | no | yes | yes |
-| REST and GraphQL data API | no | yes | yes |
+| REST and GraphQL data API | yes | yes | yes |
 | Snout Functions | 5 | 25 | 100 |
 | Memory per function worker | 128 MB | 256 MB | 512 MB |
 | Workers per function | 2 | 4 | 8 |
 | Seconds per function invocation | 10 | 30 | 55 |
 
-**Auth, storage, realtime, Snout Functions and [push notifications](/stack/push) are on every plan,
-including free** (sending push at a later time is paid). The data API is
-the exception, and the reason is cost rather than packaging: it is a server per project that runs
-whether or not anyone calls it, and on a free project it would cost more per month than the
-database does. A free project asking for it is refused with a sentence about the plan, not an
-error.
+**The [data API](/stack/data-api) (REST and GraphQL), auth, storage, realtime, Snout Functions and
+[push notifications](/stack/push) are on every plan, including free.** Two parts of them are on the
+paid plans only: subscribing to table changes in realtime, and sending push at a later time.
 
 Every plan also keeps at least two full backups whatever the retention row says, plus the
 continuous write-ahead log stream between them. A full backup is taken at most every 24 hours.
