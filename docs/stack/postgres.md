@@ -2,13 +2,14 @@
 id: postgres
 title: Postgres 18
 sidebar_label: Postgres 18
-description: Every SnoutData project runs Postgres 18, hosted or in your own Docker. What 18 gives you to build with (uuidv7, virtual generated columns, temporal constraints, OLD and NEW in RETURNING), what it does for you (asynchronous I/O, data checksums), what to watch for in DDL written for 17, and which version an existing local or self-hosted database keeps.
+description: A new SnoutData project runs Postgres 18, hosted or in your own Docker, and a project made on 17 keeps running on 17. What 18 gives you to build with (uuidv7, virtual generated columns, temporal constraints, OLD and NEW in RETURNING), what it does for you (larger reads, data checksums), and what to watch for in DDL written for 17.
 ---
 
 # Postgres 18
 
-Every project runs **Postgres 18**: a project on SnoutData Cloud, a new
-[self-hosted stack](/stack/self-hosting), and a new `snoutdata start` database. It is upstream
+A new project runs **Postgres 18**: a project on SnoutData Cloud, a new
+[self-hosted stack](/stack/self-hosting), and a new `snoutdata start` database. A project made on
+17 keeps running on 17, supported like any other, and there is nothing you need to do. It is upstream
 Postgres, unmodified, with the extensions on the [extensions](/stack/extensions) page and
 [SnoutTime](/stack/snouttime/overview) in the image.
 
@@ -65,11 +66,16 @@ being checked, for data you load from somewhere that already guarantees it.
 
 ## What it does without asking
 
-- **Asynchronous I/O.** Postgres reads ahead with a pool of I/O workers, so sequential scans,
-  bitmap scans and vacuum spend less time waiting on the disk. It matters most on a project that
-  has just woken up, whose data is not in memory yet.
+- **Fewer, larger reads.** A bitmap heap scan now reads neighbouring pages together, and reads
+  further ahead by default. On a host shaped like our fleet, with a cold cache, we measured one 4.3 times faster
+  on 18 than on 17. A sequential scan, already limited by the disk, took the same time on both.
+  Asynchronous I/O (`io_method=worker`) is on, but turning it off did not slow that scan: the larger
+  reads are what made it faster. [The research note](https://snoutdata.com/research/what-made-postgres-18-faster)
+  has the method and every run.
 - **Data checksums are on.** Every page is checksummed when it is written and checked when it is
-  read, so corruption is reported as an error instead of being returned as data.
+  read, so corruption is reported as an error instead of being returned as data. It costs some
+  write-ahead log: in the same measurement a vacuum after a large update wrote about seven times as
+  much on 18 and took 18 to 45% longer, which fits checksums, though we have not separated the two.
 - **Skip scan.** A multicolumn index can be used when the query does not constrain its first
   column, if that column has few distinct values. Some queries that needed a second index no longer
   do.
@@ -104,21 +110,16 @@ new project or in a fresh `snoutdata start`.
 | A new `snoutdata start` database, or a new Local project in Studio | 18 |
 | A `snoutdata start` database or Local project made on 17 | stays on 17 |
 
-A database's files belong to the major version that wrote them, and a Postgres of another major
-will not open them. So an existing database on your own machine keeps starting on the version it
-was made with: `snoutdata start` and Studio read the version from the data directory and run the
-matching image.
+A database's files belong to the major version that wrote them, so every database keeps running
+on the version it was made with, and nothing about it changed when 18 arrived. On Cloud each project
+runs the image of its own version; on your own machine `snoutdata start` and Studio read the version
+from the data directory and run the matching image.
 
 A self-hosted stack chooses its image in `.env`. One set up on 17 pins it there:
 
 ```bash
 SNOUT_POD_IMAGE=ghcr.io/snoutdata/snoutpod-postgres:17
 ```
-
-**Moving a 17 database to 18** is a copy into a new database, not an in-place upgrade: dump it and
-restore it into an 18 one, or use Studio's [Move a database](/cloud/move-database), which keeps
-stored generated columns stored on the way. In-place upgrades between major versions are not
-offered today.
 
 ## Coming soon: OAuth 2.0 sign-in to the database
 

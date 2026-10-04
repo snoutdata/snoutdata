@@ -68,10 +68,10 @@ plan written down on [limits](limits), along with what is not built. Plans and b
 
 Postgres 18, upstream and unmodified, with pgvector, pg_cron, pg_net, pg_graphql and SnoutTime in
 the image ([extensions](/stack/extensions)). Data checksums are on, so corruption is reported
-rather than returned. Every Cloud project runs 18. A database on your own machine (`snoutdata
-start`, a Local project in Studio, a self-hosted stack) keeps the major version it was made with,
-and moving between majors is a copy into a new database: in-place major upgrades are not offered
-today. [Postgres 18](/stack/postgres) has the detail.
+rather than returned. A new Cloud project runs 18. A project made on 17 keeps running on 17,
+supported like any other, with nothing for you to do; the same holds for a database on your own
+machine (`snoutdata start`, a Local project in Studio, a self-hosted stack).
+[Postgres 18](/stack/postgres) has the detail.
 
 ## Is it moving, and in which direction?
 
