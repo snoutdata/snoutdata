@@ -121,3 +121,10 @@ What you wait for is the approval in your browser.
   cannot verify the factor.
 - **The project password keeps working** for everyone who has it, and for any role you made
   yourself. Once everybody signs in as themselves, rotate it with `snoutdata db reset-password`.
+
+## Source
+
+The part inside Postgres that checks the token is open source:
+[snout_oauth](https://github.com/snoutdata/snout-oauth), a Postgres 18 extension under the Apache
+License 2.0. The tokens it accepts are issued by
+[snout-auth](https://github.com/snoutdata/snout-auth).
