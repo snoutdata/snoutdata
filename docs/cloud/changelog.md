@@ -24,7 +24,9 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   too instead of doing nothing; "New project" and "New access token" from the quick search now
   also work from the page they open on. An extension that can't be switched on or off says why on
   its own row, once. Recent activity no longer fills up with the host's hourly "fetched what it
-  needs to run it", which is still in the log and found by searching "podspec".
+  needs to run it", which is still in the log and found by searching "podspec". A cron schedule the
+  database refuses is said once, in the dialog, and goes as soon as you change it. The SQL tab's
+  warning before a delete no longer offers a point-in-time restore on a plan that has none.
 - **A full region says so.** When a region has no room for a new project, the refusal now says
   the region is full right now, that nothing was created, and that we have been told. It said "No
   host capacity in us-west-2 yet", which read like a region that had not opened.
