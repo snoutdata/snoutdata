@@ -26,6 +26,16 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
     else is told the address is already registered.
   - **Google, GitHub or SAML sign-in joins an existing account only on a verified address.** An
     address the provider has not verified signs in as a new account instead.
+- **Storage: three security fixes.** Every host's storage service is now snout-storage 0.2.3.
+  - **One upload can no longer take storage down for everyone on a host.** A form field other than
+    the file is limited to 1 MiB, and a form to 32 fields before the file; the form our client
+    libraries send has four at most.
+  - **Uploaded HTML, SVG and XML can't run script on your project's API address.** HTML is served
+    as plain text whatever the capitalisation of its type, and SVG and XML keep their type but
+    are served with a policy that blocks script, so an SVG still shows in an `<img>`. Copying an
+    object is now held to the destination bucket's allowed types, as an upload is.
+  - **A signed download URL can't be used to upload, and a signed upload URL can't be used to
+    download.** Signed URLs you have already handed out keep working for what they were made for.
 
 ## 2026-10-04
 
