@@ -40,6 +40,10 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   - **Wrong passwords no longer lock a project out for everyone.** Failed sign-ins count against
     the address they come from, not against the project, and a failed attempt no longer keeps a
     paused project awake.
+  - **Functions and database extensions hardened.** A function's CPU limit now covers its whole
+    run, not only the time a request is open, and function code can no longer write files on the
+    host. The database extensions that run with elevated rights now resolve every name from the
+    system catalog only. Nothing your code relies on changes.
   - **Email templates are kept as text.** A template's HTML is never served as a page on our
     sign-in domain.
 - **Storage: three security fixes.** Every host's storage service is now snout-storage 0.2.3.
