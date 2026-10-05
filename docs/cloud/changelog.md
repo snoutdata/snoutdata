@@ -13,6 +13,18 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-05
 
+- **Teams work again.** Earlier today, everyone on a team lost their team in the dashboard and the
+  CLI: Members offered to set up a new team, Billing showed no subscription, account activity
+  showed "permission denied for table accounts", and a new project could not be shared with the
+  team. Fixed; nothing was lost, and team projects stayed reachable.
+- **Point-in-time restore works again.** Earlier today, reading a project's restore window, and
+  so every restore, failed with "permission denied for function effective_tier". Fixed.
+- **Dashboard.** A project's overview shows which Postgres it runs. At your plan's project limit,
+  the Projects page says so and links to the plans, and "New project" in the quick search says so
+  too instead of doing nothing; "New project" and "New access token" from the quick search now
+  also work from the page they open on. An extension that can't be switched on or off says why on
+  its own row, once. Recent activity no longer fills up with the host's hourly "fetched what it
+  needs to run it", which is still in the log and found by searching "podspec".
 - **Auth: four security fixes.** Every project's auth server is now snout-auth 0.1.8, from a
   review of its code against a checklist of how sign-in gets broken.
   - **Emailed links can't be worked out from the code.** The token in a confirmation, recovery,
