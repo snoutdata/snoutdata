@@ -19,25 +19,17 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   team. Fixed; nothing was lost, and team projects stayed reachable.
 - **Point-in-time restore works again.** Earlier today, reading a project's restore window, and
   so every restore, failed with "permission denied for function effective_tier". Fixed.
+- **status.snoutdata.com shows "Creating and managing projects" as down only while it is.** A
+  single create turned away for lack of room used to mark it as an outage for six hours, even
+  when room came back minutes later, and leave that outage in the history. Now it reads as an
+  outage exactly while new databases cannot be created in a region; past ones of that kind are
+  gone from the history, since they never were outages.
 - **Dashboard.** A project's overview shows which Postgres it runs. At your plan's project limit,
   the Projects page says so and links to the plans, and "New project" in the quick search says so
   too instead of doing nothing; "New project" and "New access token" from the quick search now
   also work from the page they open on. An extension that can't be switched on or off says why on
   its own row, once. Recent activity no longer fills up with the host's hourly "fetched what it
-  needs to run it", which is still in the log and found by searching "podspec". A cron schedule the
-  database refuses is said once, in the dialog, and goes as soon as you change it. The SQL tab's
-  warning before a delete no longer offers a point-in-time restore on a plan that has none.
-- **A full region says so.** When a region has no room for a new project, the refusal now says
-  the region is full right now, that nothing was created, and that we have been told. It said "No
-  host capacity in us-west-2 yet", which read like a region that had not opened.
-- **The CLI no longer tells a script to retry a full region.** That refusal now exits 12 with
-  `"code":"no-capacity"`. It exited 4 with `"code":"not-ready"`, which the CLI documents as "ask
-  again shortly", so an agent or a script following the exit codes retried it in a loop.
-- **`snoutdata init --ref` links the folder.** In a folder that was not linked yet it said "This
-  folder is already linked" and wrote no link, so a later `snoutdata db url` there failed. It now
-  links the folder, and says "already linked" only when it is.
-- **The CLI shows which Postgres a project runs**: in `snoutdata projects show`, as a column in
-  `snoutdata projects list`, and as `postgresVersion` in `--json`.
+  needs to run it", which is still in the log and found by searching "podspec".
 - **Auth: four security fixes.** Every project's auth server is now snout-auth 0.1.8, from a
   review of its code against a checklist of how sign-in gets broken.
   - **Emailed links can't be worked out from the code.** The token in a confirmation, recovery,
