@@ -26,6 +26,11 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
     else is told the address is already registered.
   - **Google, GitHub or SAML sign-in joins an existing account only on a verified address.** An
     address the provider has not verified signs in as a new account instead.
+- **`@snoutdata/client` 0.3.3.** With the PKCE flow (the default for apps that sign in through a
+  redirect), a link carrying a session in its `#access_token` fragment no longer replaces the
+  signed-in session, so a crafted link cannot sign a user into somebody else's account. The
+  `apikey` and `Authorization` headers are not carried across a redirect to another origin, and
+  storage paths with `.` or `..` segments are refused.
 - **More security fixes, from a review of the whole platform.**
   - **SAML sign-in only for your own domains.** A SAML provider's users sign in only with an
     address in the domains registered for that provider; any other address is refused. If your
