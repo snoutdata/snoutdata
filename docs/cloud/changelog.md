@@ -29,7 +29,20 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   too instead of doing nothing; "New project" and "New access token" from the quick search now
   also work from the page they open on. An extension that can't be switched on or off says why on
   its own row, once. Recent activity no longer fills up with the host's hourly "fetched what it
-  needs to run it", which is still in the log and found by searching "podspec".
+  needs to run it", which is still in the log and found by searching "podspec". A cron schedule the
+  database refuses is said once, in the dialog, and goes as soon as you change it. The SQL tab's
+  warning before a delete no longer offers a point-in-time restore on a plan that has none.
+- **A full region says so.** When a region has no room for a new project, the refusal now says
+  the region is full right now, that nothing was created, and that we have been told. It said "No
+  host capacity in us-west-2 yet", which read like a region that had not opened.
+- **The CLI no longer tells a script to retry a full region.** That refusal now exits 12 with
+  `"code":"no-capacity"`. It exited 4 with `"code":"not-ready"`, which the CLI documents as "ask
+  again shortly", so an agent or a script following the exit codes retried it in a loop.
+- **`snoutdata init --ref` links the folder.** In a folder that was not linked yet it said "This
+  folder is already linked" and wrote no link, so a later `snoutdata db url` there failed. It now
+  links the folder, and says "already linked" only when it is.
+- **The CLI shows which Postgres a project runs**: in `snoutdata projects show`, as a column in
+  `snoutdata projects list`, and as `postgresVersion` in `--json`.
 - **Auth: four security fixes.** Every project's auth server is now snout-auth 0.1.8, from a
   review of its code against a checklist of how sign-in gets broken.
   - **Emailed links can't be worked out from the code.** The token in a confirmation, recovery,
