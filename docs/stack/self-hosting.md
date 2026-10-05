@@ -22,7 +22,7 @@ You need Docker with the Compose plugin (2.24 or later), on Linux, macOS or Wind
 
 ```bash
 git clone https://github.com/snoutdata/snout-stack && cd snout-stack
-docker run --rm ghcr.io/snoutdata/snout-stack:0.1.3 init > .env
+docker run --rm ghcr.io/snoutdata/snout-stack:0.1.4 init > .env
 docker compose up -d --wait
 ```
 
