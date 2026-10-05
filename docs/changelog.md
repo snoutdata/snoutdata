@@ -14,7 +14,7 @@ the notes for the version you just got the first time it opens after an update. 
 
 Downloads for every version are on [GitHub](https://github.com/snoutdata/app/releases).
 
-## 1.0.50 (2026-10-04)
+## 1.0.50 (2026-10-05)
 
 **Postgres 18**
 
@@ -31,6 +31,20 @@ Downloads for every version are on [GitHub](https://github.com/snoutdata/app/rel
   button on a project's tab has an icon.
 - The New project menu reads down one edge.
 - An empty results pane has a drawing and the shortcut to run a query.
+
+**Faster updates on Windows**
+
+- An update is unpacked in the background once it has downloaded, so **Restart to update takes
+  seconds** instead of running the full installer.
+
+**Menus and look**
+
+- The menu bar on Windows and Linux has an icon on every item and a new **Data** menu (data flows,
+  cloud accounts, Move Database, local projects). The Help links open again.
+- Themes are listed darks first, then lights: **Gold is now Dark Gold**, Warm Dark is Dark Warm,
+  and Warm is Light Warm. Your choice is kept.
+- The Start button in the coding agent panel shows its icon again, and About has a drawing.
+- **AI: Fix Last Error** says why when there is nothing to fix.
 
 ## 1.0.49 (2026-10-03)
 
