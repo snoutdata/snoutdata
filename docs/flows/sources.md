@@ -8,6 +8,8 @@ sidebar_label: Sources
 
 There are six ways data gets into a flow.
 
+![A web page as a source: its address typed into the source step](/screenshots/flows-web-source.png)
+
 ## Files and PDFs
 
 CSV, TSV, JSON, NDJSON, log files and PDFs. Drop them in any number and any mix.

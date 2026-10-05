@@ -13,7 +13,7 @@ actually deals with: parts and merges, the sort key, what a query read, mutation
 and ClickHouse Cloud's routing of every request to any replica. It works with self-managed
 servers, replicated clusters and ClickHouse Cloud.
 
-![ClickHouse Operations: health cards, and each replica's disks read in one view](/img/screenshots/clickhouse-operations.png)
+![ClickHouse Operations: health cards, and each replica's disks read in one view](/screenshots/clickhouse-operations.png)
 
 ## What is built for ClickHouse rather than adapted to it
 

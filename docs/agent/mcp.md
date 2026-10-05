@@ -11,7 +11,7 @@ app** over the Model Context Protocol (MCP). The agent talks to a small local se
 SnoutData runs; your connection passwords and keys never leave this computer and never touch
 the agent or a repo.
 
-![The Agent access settings: local server, per-connection access, and the MCP config](/img/screenshots/agent-mcp.png)
+![The Agent access settings: local server, per-connection access, and the MCP config](/screenshots/agent-mcp.png)
 
 ## Turn it on
 

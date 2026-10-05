@@ -32,7 +32,7 @@ or vector query. On MongoDB you can also write a native pipeline directly. See
 [querying beyond SQL](../databases/overview).
 :::
 
-![The editor with a query, the results grid below, and the AI assistant alongside](/img/screenshots/agent-build-query.png)
+![The editor with a query, the results grid below, and the AI assistant alongside](/screenshots/agent-build-query.png)
 
 ## Work with the results
 

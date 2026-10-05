@@ -11,6 +11,8 @@ SnoutData works with three kinds of database: **relational** (SQL), **document**
 a query on top of it. There are three ways, and they all run as what the database actually
 executes.
 
+![SQL against a MongoDB collection, with the editor's SQL and Pipeline switch in the toolbar](/screenshots/mongodb-sql.png)
+
 ## SQL, everywhere
 
 SQL is the common language. On a relational database it runs as SQL. On a document or vector

@@ -10,7 +10,7 @@ Turn a result set into a chart without leaving SnoutData. Run a query, then buil
 from its columns, or ask the [AI assistant](../ai-assistant/overview) to chart a result for
 you.
 
-![A bar chart built from a query result, next to the SQL and the AI assistant](/img/screenshots/chart-builder.png)
+![A bar chart built from a query result, next to the SQL and the AI assistant](/screenshots/chart-builder.png)
 
 ## Build a chart
 

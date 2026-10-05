@@ -14,6 +14,8 @@ driver, and the assistant is told which engine it is writing for. Connections fa
 **vector**, and **cloud logs**. Files in cloud storage, such as an S3 bucket, are read by a
 [data flow](#files-in-cloud-storage) rather than a connection.
 
+![The driver picker in the new connection form: file-based engines (SQLite, DuckDB), then the relational ones from MySQL and PostgreSQL to Snowflake and Redshift](/screenshots/connection-drivers.png)
+
 ## Relational
 
 Classic SQL databases. You write SQL and it runs as SQL.

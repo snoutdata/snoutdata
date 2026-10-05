@@ -17,7 +17,7 @@ your operating system's keychain and never leave the app.
 4. Fill in the connection details. Most databases ask for a host, port, database, username, and password. (For SQLite or DuckDB, choose a local database file instead. For Snowflake, enter your account identifier, username, password, and a warehouse/role. For SAP HANA, leave **Database** blank unless you want to name a specific tenant database. For MongoDB you can paste a `mongodb://` connection string. For Pinecone, enter an API key.)
 5. Click **Test** to verify, then **Save**.
 
-![The new connection form: driver, host, database, credentials, with Test Connection](/img/screenshots/connection-settings-v2.png)
+![The new connection form: driver, host, database, credentials, with Test Connection](/screenshots/connection-settings-v2.png)
 
 Once saved, expand the connection to browse its contents: databases, tables, and columns, or
 collections (MongoDB) and indexes (Pinecone).

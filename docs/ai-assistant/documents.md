@@ -10,7 +10,7 @@ You can attach a file to the AI chat as context, so the assistant can answer que
 data you have on hand, not just what is in the database. Attach a CSV, an Excel sheet, or a
 PDF and ask about it.
 
-![The assistant describing an attached CSV file](/img/screenshots/pdf-document-excel-analyzer.png)
+![The assistant describing an attached CSV file](/screenshots/pdf-document-excel-analyzer.png)
 
 ## How it works
 

@@ -11,6 +11,8 @@ Every database keeps a record of its own heaviest queries. Postgres keeps it in
 `sys.dm_exec_query_stats`, ClickHouse in `system.query_log`. Same idea, nine different table names
 and nine different column names, and you are expected to remember which.
 
+![A slow query on Postgres: the advice above its results names the full scan, with Ask AI to fix](/screenshots/query-performance.png)
+
 **Query Performance** asks whichever one your connection has, and shows the answer the same way
 every time.
 

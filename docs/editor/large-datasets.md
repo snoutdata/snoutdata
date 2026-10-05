@@ -23,7 +23,7 @@ Before SnoutData runs a query, it asks the database's own query planner how much
 you are about to scan a large table with no usable index, it stops and tells you first, with the
 estimated row count.
 
-![The large scan warning: the planner estimates about 116.9M rows with no index, with Run anyway and Cancel](/img/screenshots/large-scan.png)
+![The large scan warning: the planner estimates the query reads about 3.0M rows of events with no index to narrow them, with Run anyway and Cancel](/screenshots/large-scan.png)
 
 You stay in control: choose **Run anyway** or **Cancel**. Nothing runs behind your back.
 

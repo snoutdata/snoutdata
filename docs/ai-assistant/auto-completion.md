@@ -10,12 +10,12 @@ Beyond the deterministic, schema-aware suggestions, SnoutData offers **AI auto-c
 inline "ghost text" that predicts the rest of what you are typing, the way a code assistant
 does. Press Tab to accept it.
 
-![Ghost-text completion suggesting the rest of a SELECT statement](/img/screenshots/fim-auto-complete-img1.png)
+![Ghost-text completion suggesting the rest of a SELECT statement](/screenshots/fim-auto-complete-img1.png)
 
 It completes whole clauses, not just single tokens, using fill-in-the-middle so it respects
 the code on both sides of your cursor.
 
-![Ghost-text completing a multi-line query with WHERE and ORDER BY](/img/screenshots/fim-auto-complete-img2.png)
+![Ghost-text completing a multi-line query: the join, the GROUP BY and the ORDER BY](/screenshots/fim-auto-complete-img2.png)
 
 ## The completion model
 
@@ -31,7 +31,7 @@ Open **Settings, AI Settings, Auto-completion** to:
 - Choose the **trigger**: automatic as you type, or manual.
 - Pick the **completion model**.
 
-![The Auto-completion settings: enable, trigger, and completion model](/img/screenshots/ai-auto-completion-settings.png)
+![The Auto-completion settings: enable, trigger, and completion model](/screenshots/ai-auto-completion-settings.png)
 
 :::note
 This is different from the plain schema-aware completion described in

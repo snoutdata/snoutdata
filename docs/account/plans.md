@@ -20,7 +20,7 @@ assistant features, and, on Business, single sign-on for a team.
 
 The exact allowances and prices are on the [pricing page](https://snoutdata.com/?view=account).
 
-![The account settings panel: plan badge, AI usage for the billing period, and credits](/img/screenshots/accounts-plan-settings.png)
+![The account settings panel: plan badge, AI usage for the billing period, and credits](/screenshots/accounts-plan-settings.png)
 
 ## Managing your plan
 

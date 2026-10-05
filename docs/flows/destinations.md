@@ -8,6 +8,8 @@ sidebar_label: Destinations
 
 Where the data lands. The same flow can be pointed at any of these.
 
+![The last step before a flow runs: what it will do to the real destination, a warning about an ambiguous date, and the rows as they will be written](/screenshots/flows-review.png)
+
 ## A SQL table
 
 Created for you, or matched to a table you already have, in any relational connection.

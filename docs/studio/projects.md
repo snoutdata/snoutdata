@@ -36,7 +36,7 @@ refresh the Dashboard panel. It never slows the app's startup.
 A SnoutData database, cloud or local, is marked with the SnoutData butterfly instead of the
 Postgres icon, so you can tell it from the databases on your own servers at a glance.
 
-![The Connections list with three SnoutData Cloud databases, analytics (marked prod), orders and staging, each marked with the butterfly](/img/screenshots/cloud-connections-butterfly.png)
+![The Connections list with three SnoutData Cloud databases, analytics (marked prod), orders and staging, each marked with the butterfly](/screenshots/cloud-connections-butterfly.png)
 
 A few details worth knowing:
 
@@ -59,7 +59,7 @@ Click **+** in the Dashboard header and choose where it runs.
 
 **In SnoutData Cloud:**
 
-![The New project dialog: a name, the region, and a switch to treat the project as production](/img/screenshots/cloud-new-project.png)
+![The New project dialog: a name, the region, and a switch to treat the project as production](/screenshots/cloud-new-project.png)
 
 - **Name**: 1 to 60 characters.
 - **Region**: where the database lives.
@@ -78,7 +78,7 @@ in the `.env` in its folder, which is their only copy.
 
 ## The Dashboard panel
 
-![The Dashboard panel with Local and Cloud groups, the orders project expanded into its menu with Overview open in place, and the project's tab on Overview: status with Start and Stop, storage against the plan, and the last 30 days](/img/screenshots/studio-projects-overview.png)
+![The Dashboard panel with Local and Cloud groups, the orders project expanded into its menu with Overview open in place, and the project's tab on Overview: status with Start and Stop, storage against the plan, and the last 30 days](/screenshots/studio-projects-overview.png)
 
 Each project is a row with a status dot: green when it is running or ready, amber while it is
 starting or stopping, grey when it is stopped or paused, red if something is wrong. Expand it and
@@ -117,7 +117,7 @@ A project opens as a tab in the editor area, one tab per project, with the menu 
 
 ### Database
 
-![A project's Database section: Open in Connections, then the host, port, database and user, with Copy connection string, Copy password and Reset password](/img/screenshots/studio-project-database.png)
+![A project's Database section: Open in Connections, then the host, port, database and user, with Copy connection string, Copy password and Reset password](/screenshots/studio-project-database.png)
 
 - **Open in Connections**: the database is already a connection; browse it and query it there.
 - **Host, port, database and user**, to paste into any Postgres client. A cloud project requires

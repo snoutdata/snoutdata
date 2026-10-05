@@ -9,6 +9,8 @@ sidebar_label: Editor basics
 SnoutData's editor is a multi-tab workspace with schema-aware assistance. It is built around
 SQL, and on a MongoDB connection the same editor also writes [native aggregation pipelines](../databases/mongodb#write-a-native-pipeline).
 
+![The editor: a query in a tab, the connection it runs on in the toolbar, and its rows in the grid below](/screenshots/editor-basics.png)
+
 ## Tabs and files
 
 | Action | Shortcut |

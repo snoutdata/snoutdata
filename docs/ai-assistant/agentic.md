@@ -16,21 +16,21 @@ chat composer.
 Ask for an analysis and the assistant runs the queries it needs, reads the rows, and
 assembles a written answer grounded in the real data.
 
-![The assistant building a report from query results](/img/screenshots/agent-build-report.png)
+![The assistant building a report from query results](/screenshots/agent-build-report.png)
 
 ## Fix a failing query
 
 Paste or run a query that errors and ask the assistant to fix it. It inspects the schema and
 the error, then proposes a corrected query.
 
-![The assistant diagnosing and fixing a query](/img/screenshots/agent-query-fixing.png)
+![The assistant diagnosing and fixing a query](/screenshots/agent-query-fixing.png)
 
 ## Suggest schema improvements
 
 Ask the assistant to review a table and it can suggest indexes and other improvements based
 on the table's structure and how it is queried.
 
-![The assistant suggesting indexes and table improvements](/img/screenshots/agent-table-improvments-indexes.png)
+![The assistant suggesting indexes and table improvements](/screenshots/agent-table-improvments-indexes.png)
 
 ## Safety
 

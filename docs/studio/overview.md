@@ -16,7 +16,7 @@ or plain language. Bring data in from files, PDFs, web pages and other databases
 Codex or opencode inside the app with your databases already connected. Free to download, AI
 included.
 
-![SnoutData Studio: editor, results grid, charts, and the AI assistant in one window](/img/screenshots/chart-builder.png)
+![SnoutData Studio: editor, results grid, charts, and the AI assistant in one window](/screenshots/chart-builder.png)
 
 ## Find your way
 

@@ -11,6 +11,8 @@ holds, a column that really means "soft deleted", a rule like "an active custome
 an order in the last 90 days". Without help, you end up pasting the same explanations into
 every chat.
 
+![What the assistant knows about a database: a box to teach it a fact, and whether the fact applies to every database](/screenshots/knowledge-base.png)
+
 SnoutData keeps a **knowledge base** of facts about your database. Teach it a fact once and it
 applies to every future question on that connection, so you stop repeating yourself.
 
