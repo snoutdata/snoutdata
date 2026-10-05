@@ -56,6 +56,9 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
     system catalog only. Nothing your code relies on changes.
   - **Email templates are kept as text.** A template's HTML is never served as a page on our
     sign-in domain.
+- **The self-hosted stack has the same fixes.** [snout-stack](https://github.com/snoutdata/snout-stack)
+  0.1.4 carries every fix above, for Intel and Arm, with push notifications included. Its README's
+  Changelog lists what changed and Upgrades says how to take it.
 - **Storage: three security fixes.** Every host's storage service is now snout-storage 0.2.3.
   - **One upload can no longer take storage down for everyone on a host.** A form field other than
     the file is limited to 1 MiB, and a form to 32 fields before the file; the form our client
