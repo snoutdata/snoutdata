@@ -26,6 +26,22 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
     else is told the address is already registered.
   - **Google, GitHub or SAML sign-in joins an existing account only on a verified address.** An
     address the provider has not verified signs in as a new account instead.
+- **More security fixes, from a review of the whole platform.**
+  - **SAML sign-in only for your own domains.** A SAML provider's users sign in only with an
+    address in the domains registered for that provider; any other address is refused. If your
+    provider sends addresses outside them, add those domains to the provider first.
+  - **Realtime stays up when one client misbehaves.** A connection that stops reading is closed
+    after 30 seconds instead of queueing without end, one that sends nothing for 60 seconds is
+    closed (client libraries send a heartbeat well inside that), and presence and message sizes
+    have the same limits as the protocol's reference server. Presence on a private channel only
+    reaches members your policies let read it.
+  - **Your project's API address never sees our sign-in cookie,** so a function or file on
+    `<ref>.api.snoutdata.com` cannot read a dashboard session.
+  - **Wrong passwords no longer lock a project out for everyone.** Failed sign-ins count against
+    the address they come from, not against the project, and a failed attempt no longer keeps a
+    paused project awake.
+  - **Email templates are kept as text.** A template's HTML is never served as a page on our
+    sign-in domain.
 - **Storage: three security fixes.** Every host's storage service is now snout-storage 0.2.3.
   - **One upload can no longer take storage down for everyone on a host.** A form field other than
     the file is limited to 1 MiB, and a form to 32 fields before the file; the form our client
