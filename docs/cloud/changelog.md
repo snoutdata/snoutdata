@@ -26,6 +26,11 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
     else is told the address is already registered.
   - **Google, GitHub or SAML sign-in joins an existing account only on a verified address.** An
     address the provider has not verified signs in as a new account instead.
+- **`snoutdata` CLI 0.10.5.** `psql`, `pg_dump` and `pg_restore` started by the CLI now check the
+  database's certificate (`sslmode=verify-full`), so nothing between you and the database can
+  stand in for it; set `SNOUTDATA_DB_SSLMODE=require` to go back to encryption without the check.
+  The CLI only hands Studio's access token to a Studio running as you on this machine, and a
+  `.env` it creates is readable by you alone.
 - **`@snoutdata/client` 0.3.3.** With the PKCE flow (the default for apps that sign in through a
   redirect), a link carrying a session in its `#access_token` fragment no longer replaces the
   signed-in session, so a crafted link cannot sign a user into somebody else's account. The
