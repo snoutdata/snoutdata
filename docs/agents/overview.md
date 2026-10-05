@@ -9,6 +9,8 @@ sidebar_label: Overview
 SnoutData can run **your own coding agent inside the app**, in a panel, in your workspace
 folder, with your database connections handed to it the moment it starts.
 
+![Claude Code running in a console at the bottom of Studio, and what it showed in its own tab above: a finding and a SQL card with Run](/screenshots/agent-console.png)
+
 That last part is the point. Normally, giving an agent access to a database means putting a
 connection string in a `.env` file or a repo and hoping it stays there. Here the app is already
 connected, and it lends the agent that access without ever handing over the credentials

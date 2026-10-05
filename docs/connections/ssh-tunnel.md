@@ -9,6 +9,8 @@ sidebar_label: SSH tunnels
 When a database is not directly reachable, for example it sits in a private network behind a
 bastion host, SnoutData can open an **SSH tunnel** and connect through it.
 
+![The SSH Tunnel tab of a connection: the SSH host and port, the user, a private key file or password, and Keep tunnel alive](/screenshots/ssh-tunnel.png)
+
 ## Set it up
 
 On the connection form, enable SSH and provide:

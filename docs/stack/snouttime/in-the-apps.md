@@ -20,7 +20,7 @@ SnoutTime installed.
 
 ### The explorer
 
-![The explorer: the metrics series with its Partitions folder, sealed days at 3.3 MB to 440 KB, and its Rollups folder, beside the hourly rollup's rows](/img/screenshots/snouttime-explorer.png)
+![The explorer: the metrics series with its Partitions folder, sealed days at 3.3 MB to 440 KB, and its Rollups folder, beside the hourly rollup's rows](/screenshots/snouttime-explorer.png)
 
 - **A series table is marked as one.** Beside its name the explorer shows `series`, how many of its
   partitions are sealed, and how much smaller they are, in the form
@@ -46,7 +46,7 @@ storage as well as its columns.
 
 ### Make a table a series in the table designer
 
-![The table designer's Time series section on a new table, with Make this a series table on and the Partitioning card filled in](/img/screenshots/snouttime-make-series.png)
+![The table designer's Time series section on a new table, with Make this a series table on and the Partitioning card filled in](/screenshots/snouttime-make-series.png)
 
 On a Postgres connection with SnoutTime installed, the table designer has a **Time series**
 section. Switch on **Make this a series table**, then fill in the **Partitioning** card:
@@ -70,13 +70,13 @@ number of partitions and what sealing saved) and lets you change **Keep rows for
 column and partition size are fixed once a series exists. The section is not offered on a
 partition, or on a table you partitioned by hand.
 
-![The Time series section on an existing series: its shape, what sealing saved, and Keep rows for](/img/screenshots/snouttime-designer.png)
+![The Time series section on an existing series: its shape, what sealing saved, and Keep rows for](/screenshots/snouttime-designer.png)
 
 Where SnoutTime is not switched on in the database yet, the section says so and offers **Switch on
 SnoutTime**, which shows you `CREATE EXTENSION IF NOT EXISTS snouttime;` in the same review sheet
 before it runs. It takes effect at once, only in that database, with no restart.
 
-![The Time series section in a database where SnoutTime is off, with Switch on SnoutTime](/img/screenshots/snouttime-switch-on.png)
+![The Time series section in a database where SnoutTime is off, with Switch on SnoutTime](/screenshots/snouttime-switch-on.png)
 
 ### The AI assistant and coding agents
 
@@ -96,7 +96,7 @@ series is listed once, as a series.
 
 ### A warning when a query reads every partition
 
-![A query with no time filter: the advisory above its results says it reads all 16 partitions of metrics](/img/screenshots/snouttime-partition-warning.png)
+![A query with no time filter: the advisory above its results says it reads all 16 partitions of metrics](/screenshots/snouttime-partition-warning.png)
 
 After a query that took a while, the app reads its plan and can show an advisory strip above the
 results (the **Advise on index and scans** setting, see
@@ -113,7 +113,7 @@ reads here too.
 
 ### Open a series' rollups as a monitor
 
-![The monitor opened from a series' Rollups folder: per-host rollups as bar charts of the latest bucket's top ten hosts](/img/screenshots/snouttime-rollup-dashboard.png)
+![The monitor opened from a series' Rollups folder: per-host rollups as bar charts of the latest bucket's top ten hosts](/screenshots/snouttime-rollup-dashboard.png)
 
 In a series table's **Rollups** folder, **Open as a monitor** makes (the first time) and opens a
 monitor with a widget for each rollup:
@@ -130,7 +130,7 @@ series loaded with history, or one that has stopped receiving writes, still show
 
 ## The dashboard's Time series tab
 
-![The dashboard's Time series tab: the metrics series card with its time column, partition size and 90 days' retention, 9 partitions with sealed days at 3.5 MiB down to 512 KiB (6.9x), its hourly rollup, and its four jobs, each ok](/img/screenshots/cloud-timeseries-tab.png)
+![The dashboard's Time series tab: the metrics series card with its time column, partition size and 90 days' retention, 9 partitions with sealed days at 3.5 MiB down to 512 KiB (6.9x), its hourly rollup, and its four jobs, each ok](/screenshots/cloud-timeseries-tab.png)
 
 On [dashboard.snoutdata.com](https://dashboard.snoutdata.com), open a project and choose the
 **Time series** tab.

@@ -9,6 +9,8 @@ sidebar_label: Schedules and runs
 A flow you can only run by hand is a script with a nicer interface. These are the parts that
 make it something you can rely on.
 
+![The Data flows panel: a saved flow, what it reads and writes, and how many rows its last run moved](/screenshots/flows-ledger.png)
+
 ## Schedules
 
 Put a flow on a schedule and it runs without you. If the computer was asleep or the app was

@@ -10,6 +10,8 @@ Reading a spreadsheet and reading a contract are not the same job, so SnoutData 
 for you. Right after you add a file, you choose how it gets read, and each option tells you
 **where your data goes** before you pick it.
 
+![Choosing what reads the files: four options, each saying whether your data stays on this computer](/screenshots/flows-reader-choice.png)
+
 That is a fact about the route, not a reassurance: the option you choose determines which
 machines see the content.
 

@@ -10,7 +10,7 @@ SnoutData keeps a local **audit log** of AI activity, so you can see exactly wha
 a model and what came back. Every chat, completion, and edit round-trip is recorded on your
 machine. It is available on every plan, including Free.
 
-![The AI Audit settings panel listing recorded LLM round-trips](/img/screenshots/ai-audit-settings-logs.png)
+![The AI Audit settings panel listing recorded LLM round-trips](/screenshots/ai-audit-settings-logs.png)
 
 ## What it records
 

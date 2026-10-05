@@ -9,7 +9,7 @@ sidebar_label: Pay-as-you-go credits
 Each plan includes a monthly amount of AI usage. If you need more, **Plus** and **Pro** users
 can buy **pay-as-you-go credits** to keep going past the monthly balance.
 
-![The account panel showing AI usage and the Extra credits section](/img/screenshots/accounts-plan-settings.png)
+![The account panel showing AI usage and the Extra credits section](/screenshots/accounts-plan-settings.png)
 
 ## How credits work
 

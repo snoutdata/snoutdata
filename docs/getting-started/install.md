@@ -14,7 +14,7 @@ platform from the [download page](https://snoutdata.com/download).
 SnoutData ships through the **Microsoft Store**. Open the
 [SnoutData listing](https://apps.microsoft.com/detail/xp8ljcvlpkqz73) and choose **Install**.
 
-![The SnoutData listing in the Microsoft Store, with the Install button](/img/screenshots/microsoft-store-listing.png)
+![The SnoutData listing in the Microsoft Store, with the Install button](/screenshots/microsoft-store-listing.png)
 
 Installing from the Store means no Microsoft Defender SmartScreen prompt, and Windows keeps the
 app in your library across machines. The app still updates itself (see **Updates** below).

@@ -16,7 +16,7 @@ run it and read an error about argument four.
 SnoutData gives it a form. Open a ClickHouse connection in the sidebar and click **Remote data**,
 under Operations.
 
-![Remote data: a public S3 file filled into the S3 form, the statement it builds, and the 45 columns ClickHouse inferred from the file](/img/screenshots/clickhouse-remote-data.png)
+![Remote data: a public S3 file filled into the S3 form, the statement it builds, and the 15 columns ClickHouse inferred from the file](/screenshots/clickhouse-remote-data.png)
 
 ## What you can point it at
 

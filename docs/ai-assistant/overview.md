@@ -10,7 +10,7 @@ SnoutData's AI assistant is a chat panel that understands your schema and propos
 a question in plain language and it replies with an explanation and a query you can drop straight
 into the editor: SQL on a relational database, or a native aggregation pipeline on MongoDB.
 
-![The AI assistant answering in plain language, running a query, and charting the result](/img/screenshots/ai-full-mode.png)
+![The AI assistant answering in plain language, running a query, and charting the result](/screenshots/ai-full-mode.png)
 
 ## Schema grounding
 

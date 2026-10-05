@@ -9,6 +9,8 @@ sidebar_label: Transforms
 Between the source and the destination, a flow can reshape what it read. Every stage is
 optional, and every stage is shown to you before it runs.
 
+![The columns a flow will create: each one with its type and the reason it was proposed, and the clean-up options below](/screenshots/flows-columns.png)
+
 ## Typed columns, proposed for you
 
 SnoutData reads a sample and proposes the columns and their types, with a reason for each. You

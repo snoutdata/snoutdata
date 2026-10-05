@@ -8,6 +8,8 @@ sidebar_label: Results grid
 
 Query results appear in a fast data grid below the editor.
 
+![A table opened from the explorer: its rows in the grid, with Add row, Revert and Save for editing in place](/screenshots/results-grid.png)
+
 ## Explore results
 
 - **Sort** by clicking a column header.

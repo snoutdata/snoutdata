@@ -10,6 +10,8 @@ A **flow** moves data from somewhere into somewhere useful. You point it at a so
 the shape SnoutData proposes, choose a destination, and run it. The flow is saved, so you can
 run it again, put it on a schedule, and see what every run did.
 
+![A new data flow: a CSV, a log file and a JSON file ready to read, and an image recognised and left out](/screenshots/flows-source-bin.png)
+
 Flows are how data gets *into* your databases. The rest of SnoutData is about working with data
 you already have; this is the way in.
 

@@ -11,6 +11,8 @@ The first time you open SnoutData Studio, it offers to look for databases you al
 do not have to type in connections you have typed into other tools before. It looks on your own
 computer, and nothing it reads leaves it.
 
+![Find your databases: what it will search, a switch to include the local network, and Find databases](/screenshots/find-databases.png)
+
 You can run it again at any time: open the command palette (Ctrl+Shift+P, or Cmd+Shift+P on a Mac)
 and choose **Find Databases…**, or pick **Find databases** at the top of **Import connections**.
 

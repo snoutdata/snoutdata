@@ -36,7 +36,7 @@ palette and choose **Move Database**.
 
 Pick the source and the target, and the app checks both before anything runs.
 
-![Move a database: a database on this computer going into a new SnoutData Cloud project named orders, with what to move and what happens to the source chosen below](/img/screenshots/move-database.png)
+![Move a database: a database on this computer going into a new SnoutData Cloud project named orders, with what to move and what happens to the source chosen below](/screenshots/move-database.png)
 
 The first time, the check tells you the Postgres tools a move runs are not installed yet, and
 offers to download them. It is a one-time download of a few megabytes.

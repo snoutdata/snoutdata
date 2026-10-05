@@ -10,6 +10,8 @@ SnoutData publishes what it can do as tools, and the agent in the console picks 
 automatically. The result is that the agent operates the product rather than describing it to
 you.
 
+![The agent console moved to the right-hand dock, with what it showed above its terminal](/screenshots/agent-console-right.png)
+
 ## It queries your databases
 
 Over the connections you allow, read-only by default. Writes and DDL require you to allow them

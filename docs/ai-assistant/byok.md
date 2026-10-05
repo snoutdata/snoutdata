@@ -10,7 +10,7 @@ On **Plus** and **Pro**, you can point the SnoutData assistant at your own OpenA
 OpenRouter, or Anthropic key. Requests go straight from your machine to that provider. The
 key and your prompts never pass through SnoutData's servers.
 
-![The BYOK provider settings: pick a provider, paste a key, add a model, optional base URL](/img/screenshots/bring-you-own-key.png)
+![The BYOK provider settings: pick a provider, paste a key, add a model, optional base URL](/screenshots/bring-you-own-key.png)
 
 ## How it works
 

@@ -10,6 +10,8 @@ MongoDB is a **document** database. SnoutData connects to it like any other data
 collections show up in the explorer, you can query them with SQL or a native aggregation
 pipeline, edit documents in the results grid, and manage collections and indexes.
 
+![SQL against a MongoDB collection: the editor switched to SQL beside Pipeline, and the matching documents in the grid](/screenshots/mongodb-sql.png)
+
 ## Connect
 
 1. Open the **connections sidebar** and choose **New connection**.

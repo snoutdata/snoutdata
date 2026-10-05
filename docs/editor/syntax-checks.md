@@ -10,7 +10,7 @@ On a MongoDB, vector, or log connection, SnoutData reads your SQL itself and und
 statement that will not parse, before you run it. Where the mistake is one it recognises, it names
 the fix.
 
-![The editor underlining `=>` with the message: "=>" is not a SQL comparison. Did you mean ">="?](/img/screenshots/sql-syntax-hint.png)
+![The editor underlining `=>` with the message: "=>" is not a SQL comparison. Did you mean ">="?](/screenshots/sql-syntax-hint.png)
 
 ## Why only those connections
 
@@ -67,4 +67,4 @@ That is separate from [valid SQL the offline compiler cannot
 represent](../databases/overview#when-sql-is-too-complex-to-translate-offline), which is where the
 assistant genuinely can help and is offered.
 
-![The corrected query running, returning three rows](/img/screenshots/sql-syntax-fixed.png)
+![The corrected query running, returning three rows](/screenshots/sql-syntax-fixed.png)
