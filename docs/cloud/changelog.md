@@ -11,6 +11,22 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-10-05
+
+- **Auth: four security fixes.** Every project's auth server is now snout-auth 0.1.8, from a
+  review of its code against a checklist of how sign-in gets broken.
+  - **Emailed links can't be worked out from the code.** The token in a confirmation, recovery,
+    invite or magic link is now keyed with your project's secret, so knowing an address no longer
+    lets anyone compute a link for it, and the limit of five wrong guesses at a code now covers
+    links as well. Links mailed before the update stop working: the user asks for another.
+  - **A redirect only goes where your allow list says.** A `redirect_to` that holds a user name, a
+    backslash or a control character is refused, and the user is sent to your site URL instead.
+  - **With email confirmation off, signing up again doesn't open someone else's account.** For the
+    address of an invited or unconfirmed user, only that account's own password signs in; anyone
+    else is told the address is already registered.
+  - **Google, GitHub or SAML sign-in joins an existing account only on a verified address.** An
+    address the provider has not verified signs in as a new account instead.
+
 ## 2026-10-04
 
 - **Sign in to the database as yourself.** On a Postgres 18 project, the owner gives a person
