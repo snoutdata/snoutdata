@@ -14,6 +14,28 @@ the notes for the version you just got the first time it opens after an update. 
 
 Downloads for every version are on [GitHub](https://github.com/snoutdata/app/releases).
 
+## 1.0.51 (2026-10-05)
+
+**Security**
+
+A security release, from a review of the whole app. Updating is recommended.
+
+- **Links in the assistant and agent output open in your browser, never inside the app.** The app
+  window only ever shows the app itself, and the app only answers requests from its own page.
+- **Rendered output loads nothing from the internet.** Images in AI or agent replies show as
+  links instead of loading, and the app runs under a strict content security policy.
+- **The production guard is stricter.** It understands each database's own comment, quoting
+  and block syntax, and on a production connection anything it cannot positively recognise as
+  a read asks you first. You may see a confirmation for statements such as `VACUUM` that ran
+  straight through before.
+- **"Always allow" covers reads only.** Functions with side effects, and anything on a
+  production connection, still ask.
+- **SSH tunnels remember the server's key.** The first connection saves it; if it ever changes,
+  the connection is refused with a clear message, and the connection form can forget it.
+- **Web pages a data flow reads are rendered in a sealed session**, with every permission denied
+  and nothing shared with your signed-in browser session.
+- **Windows updates are checked against our code signature** before they install.
+
 ## 1.0.50 (2026-10-05)
 
 **Postgres 18**
