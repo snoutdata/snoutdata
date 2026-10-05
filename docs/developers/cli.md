@@ -43,7 +43,6 @@ A star on either helps other people find them.
 | `9` | The network did not answer. |
 | `10` | It answered too slowly and the wait was given up. |
 | `11` | This version of the CLI is out of date and no longer served (`"code":"outdated"`). Run `snoutdata upgrade`. |
-| `12` | The region is full right now and nothing was created (`"code":"no-capacity"`). We have been told. Retrying in a loop will not help; try again later. |
 | `127` | A program this command needs is not installed (`psql`, or `pg_restore` for an archive). |
 
 In `--json` mode a failure is `{"ok":false,"code":"...","error":"..."}` on stdout, and the exit
@@ -99,10 +98,6 @@ unless `--name` says otherwise), waits until it is serving, and writes `.snoutda
 Without `--env` it prints the `DATABASE_URL` on stdout. With `--env` it writes it into `.env` in
 the current folder instead, and prints nothing that holds the password. The URL contains the
 database password, so `--env` also adds `.env` to `.gitignore` when it is not already there.
-
-With `--ref` it creates nothing: it links the folder to that project and prints its URL (or,
-with `--env`, writes it). The link is written only once the project has answered, so a mistyped
-ref leaves the folder as it was.
 
 Idempotent: a folder that is already linked prints that project's URL (or, with `--env`, writes
 it) instead of creating a second one. The `.env` line is rewritten in place rather than appended, so you never end up with
@@ -175,12 +170,8 @@ snoutdata projects show   [--ref REF]
 `pause`, `resume` and `delete` wait until the project is paused, ready or gone, printing each
 state it passes through; `--no-wait` returns as soon as the change is asked for.
 
-`show` is one project whole: its state, the Postgres version it runs, which products are on, the
-names of its functions and function secrets, and its custom domains. Never a password or a key.
-`list` has the Postgres version as a column, and both carry it as `postgresVersion` in `--json`.
-
-When a region is full, `create` (and `init`) is refused with exit 12 and `"code":"no-capacity"`,
-and nothing is created.
+`show` is one project whole: its state, which products are on, the names of its functions and
+function secrets, and its custom domains. Never a password or a key.
 
 `create` waits for the project to be ready unless you pass `--no-wait`, because a connection
 string handed over before the database exists is a string that does not work yet. It prints the

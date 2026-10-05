@@ -57,7 +57,6 @@ end in 21 seconds.
 | `9` | The network did not answer. | Retry with a delay. |
 | `10` | It answered too slowly and the wait was given up. | Retry, or raise `--timeout`. |
 | `11` | This CLI is out of date and no longer served (`"code":"outdated"`). | Run `snoutdata upgrade` (or the command the message names), then retry. |
-| `12` | The region is full right now and nothing was created (`"code":"no-capacity"`). We have been told. | Do not retry in a loop. Tell the user; it is worth trying again later, not in a minute. |
 | `127` | `psql`, or `pg_restore` for an archive, is not installed. | Install it, or use a path that does not need it. |
 
 In `--json` mode a failure is one object on stdout: `{"ok":false,"code":"...","error":"..."}`.
@@ -185,12 +184,10 @@ printed.
 ### `projects list`
 
 ```
-REF            NAME         STATE   REGION     POSTGRES  LAST CONNECTION
-x8x3sb2hcx4xn  first light  ready   us-west-2  18        2 hours ago
-ztwxsybkhpfee  scratch      paused  us-west-2  17        9 days ago
+REF            NAME         STATE   REGION     LAST CONNECTION
+x8x3sb2hcx4xn  first light  ready   us-west-2  2 hours ago
+ztwxsybkhpfee  scratch      paused  us-west-2  9 days ago
 ```
-
-POSTGRES is the major version the project runs. A project keeps the version it was made on.
 
 A project over its storage limit shows `read-only` in the STATE column rather than `ready`,
 because that is the state that matters to whoever reads it.
@@ -216,7 +213,6 @@ With `--json`:
       "host": "x8x3sb2hcx4xn.db.snoutdata.com",
       "database": "x8x3sb2hcx4xn",
       "user": "x8x3sb2hcx4xn_owner",
-      "postgresVersion": 18,
       "createdAt": "2026-09-04T11:02:19.417Z",
       "lastConnectionAt": "2026-09-06T09:41:00.000Z",
       "pausedAt": null
