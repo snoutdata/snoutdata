@@ -11,6 +11,29 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-10-08
+
+- **`curl -fsSL https://snoutdata.com/install.sh | sh` installs the newest CLI again.** Since
+  2026-10-02 it installed 0.9.1, which has no `snoutdata upgrade`, while npm had moved on to 0.11.0.
+  It now reads the newest version from npm, as `snoutdata upgrade` does.
+- **A CLI older than 0.10.2 is refused, with the command that fixes it.** Those versions have no
+  `snoutdata upgrade` and cannot read the warning newer ones get, so every command now fails with
+  "This version of the snoutdata CLI (…) is out of date: 0.10.2 or later is required" and the
+  install command. 0.10.2 and later are unaffected.
+- **CLI 0.11.1: `snoutdata <command> <subcommand> --help` is about that subcommand.**
+  `snoutdata auth anonymous --help` printed the help for all of `auth` and never showed that it takes `on` or `off`. It now
+  prints just that command with its arguments, and `--help --json` carries them as `args`.
+- **Realtime (snout-realtime 0.1.6): a channel's close says which join it belongs to.** With
+  `vsn=1.0.0`, a client that sends no `join_ref` now finds its join's `ref` on the server's `phx_close` and `system` messages,
+  so the close of a channel it already replaced can be told from the close of the new one.
+  `realtime logs` now shows that replacement as a closed channel.
+- **Realtime: a join that asks for presence sees who is already there.** A join with a
+  `config.presence` that does not say `enabled` gets `presence_state` straight away, not only after
+  its first `track`.
+- **Realtime: messages on a channel the server closed say why.** Each one still gets "unmatched
+  topic", now with a `message` naming the reason the channel was closed (for example "Too many
+  messages per second").
+
 ## 2026-10-05
 
 - **Teams work again.** Earlier today, everyone on a team lost their team in the dashboard and the
