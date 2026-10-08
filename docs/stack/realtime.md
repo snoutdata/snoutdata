@@ -72,6 +72,10 @@ room
   })
 ```
 
+A client that asks for presence in its config is sent who is already there as soon as it joins,
+before it tracks anything, so a player who reconnects sees the room at once even if it waits a
+moment before tracking again.
+
 Presence state lives in the channel, not in your database. When the last client leaves, it is
 gone.
 
@@ -287,6 +291,7 @@ The log says why each socket and channel ended:
 | `connection lost (no close frame)` | The connection ended without a goodbye: a network change, a killed tab. |
 | `Too many messages per second` | The project went over its messages a second; that channel was closed. |
 | `Client presence rate limit exceeded` | More than 5 `track` calls in 30 seconds on one channel. |
+| `replaced by a new join on the same topic` | The client joined a topic it already had open; the old channel was closed. One of these between every join is a client rejoining in a loop. |
 | A join refused with a reason | The key, the plan's limits, or a private channel's policy said no. |
 | `closed by the server ...` | The project's Realtime settings changed (a key rotation), so every socket was closed to reconnect. |
 
@@ -342,9 +347,12 @@ With `vsn=1.0.0` every frame is a text frame holding one JSON object:
 
 - `topic` is `realtime:` followed by the channel name, or `phoenix` for the socket itself.
 - `ref` is any string you choose, unique per frame you send. The answer to that frame is a
-  `phx_reply` carrying the same `ref`. Frames the server pushes on its own carry `"ref": null`.
+  `phx_reply` carrying the same `ref`. Frames the server pushes on its own carry `"ref": null`,
+  except `phx_close` and `system`, which carry the join ref of the channel they are about (see
+  [Leaving](#leaving-and-what-the-server-may-push)).
 - `join_ref` is the `ref` of the join that opened the channel. Send it on the frames of that
-  channel; the server's frames under `vsn=1.0.0` do not carry it.
+  channel. A join sent without one is known by its own `ref`. Under `vsn=1.0.0` the server's
+  frames have no `join_ref` field; `phx_close` and `system` carry it in `ref` instead.
 
 `vsn=2.0.0` is the same messages as a JSON array `[join_ref, ref, topic, event, payload]`, plus
 binary frames for broadcasts whose payload is bytes. Use `1.0.0` for a hand-written client.
@@ -380,7 +388,10 @@ connected to nothing.
   send answered with a `phx_reply`.
 - `presence.key`: the key you are tracked under; a random one when omitted. Two sockets may track
   the same key (two tabs of one player), and each is its own entry under it.
-- `presence.enabled`: send presence to this client from the join. Tracking turns it on anyway.
+- `presence.enabled`: send presence to this client from the join: `presence_state` right after
+  the join is answered, then every `presence_diff`. A `presence` object without `enabled` counts
+  as `true`. With `false`, nothing is sent until your first `track`, which sends
+  `presence_state` first.
 - `private`: a channel your [policies](#private-channels) decide about, as the user in `access_token`.
 - `access_token`: who the client is, for private channels and table changes. Without it the
   socket's key is used. A refreshed token is sent later as
@@ -439,15 +450,27 @@ push, on a channel you joined:
 - `system`, `{ "status": "error" | "ok", "extension": "system" | "postgres_changes", "message": "<sentence>", "channel": "room:42" }`:
   a sentence about the channel. With `"status": "error"` and `"extension": "system"` it is
   followed by `phx_close`.
-- `phx_close`: the channel is closed (you left, or the server closed it with a `system` message
-  first: a rate limit, an expired token). Join again if you still want it.
+- `phx_close`: the channel is closed (you left, the server closed it with a `system` message
+  first: a rate limit, an expired token, or a second join on the same topic replaced it). Join
+  again if you still want it.
 - `phx_error`: not sent today; treat it like `phx_close`.
 - `postgres_changes`: a [table change](#table-changes), `{ "ids": [...], "data": { ... } }`.
 
-A frame on a channel you have not joined is answered with
-`{ "status": "error", "response": { "reason": "unmatched topic" } }`.
+`phx_close` and `system` carry the join ref of the channel they are about: in `ref` under
+`vsn=1.0.0`, in the `join_ref` slot under `vsn=2.0.0`. That is how a close for a channel you
+already replaced is told from a close for its replacement. Joining a topic you already have open
+replaces the old channel, and the server sends `phx_close` for the OLD one, with the old join
+ref. So after a `phx_close`, rejoin with a new `ref`, and ignore any `phx_close` whose join ref
+is not your current one: rejoining on every close, without that check, closes the channel you
+just opened and loops.
 
-### A client in 40 lines
+A frame on a channel you have not joined is answered with
+`{ "status": "error", "response": { "reason": "unmatched topic" } }`. When the server closed that
+channel, the response also says why, so the frames a client keeps sending after a rate-limit close
+are not a run of bare errors: `"message": "channel closed by the server: Too many messages per
+second. Join it again, or open a new socket."`.
+
+### A client in 45 lines
 
 ```js
 const url = `wss://${ref}.api.snoutdata.com/realtime/v1/websocket?apikey=${anonKey}&vsn=1.0.0`
@@ -462,9 +485,13 @@ const send = (frameTopic, event, payload) => {
   return r
 }
 
-ws.onopen = () => {
+const join = () => {
   joinRef = String(ref + 1)
   send(topic, 'phx_join', { config: { presence: { key: myId, enabled: true }, broadcast: { self: false } } })
+}
+
+ws.onopen = () => {
+  join()
   setInterval(() => {
     if (unanswered) { ws.close(4000, 'heartbeat timeout'); return } // reconnect from onclose
     unanswered = send('phoenix', 'heartbeat', {})
@@ -481,7 +508,9 @@ ws.onmessage = ({ data }) => {
   if (m.event === 'presence_diff') applyDiff(m.payload.leaves, m.payload.joins)
   if (m.event === 'broadcast') onBroadcast(m.payload.event, m.payload.payload)
   if (m.event === 'system') console.warn(m.payload.message)
-  if (m.event === 'phx_close') { /* join again, and track again once it is answered */ }
+  // A close for a channel already replaced carries its older ref: only the current one counts.
+  // The join's answer above tracks again.
+  if (m.event === 'phx_close' && m.ref === joinRef) join()
 }
 
 function move(x, y) {
