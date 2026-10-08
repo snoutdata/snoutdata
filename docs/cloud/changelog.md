@@ -13,6 +13,13 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-08
 
+- **The dashboard has a Usage page, and the landing page shows more than AI.** Usage (in the
+  sidebar, or `#/usage`) lists what your projects have used against your plan: database size,
+  file storage, projects, compute, connections, backups, function invocations and Realtime, for
+  the current billing cycle or the last 7, 30 or 90 days, for one project or all of them, with a
+  daily chart for each and a per-project table. The landing page now has a Cloud usage card beside
+  your plan and AI budget, and shows your projects as cards; "View all as a list" opens the full
+  table with search and paging.
 - **`curl -fsSL https://snoutdata.com/install.sh | sh` installs the newest CLI again.** Since
   2026-10-02 it installed 0.9.1, which has no `snoutdata upgrade`, while npm had moved on to 0.11.0.
   It now reads the newest version from npm, as `snoutdata upgrade` does.
