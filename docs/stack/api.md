@@ -18,7 +18,7 @@ That is a different name from `<ref>.db.snoutdata.com`, which is the Postgres po
 two doors.
 
 :::note
-Auth, storage, the data API and Snout Functions are switches you throw, and realtime needs no
+Auth, storage and the data API are switches you throw, while Snout Functions and realtime need no
 switch at all. [What is switched on, and how](#what-is-switched-on-and-how) says it
 product by product, which is worth reading before you design around one.
 :::
