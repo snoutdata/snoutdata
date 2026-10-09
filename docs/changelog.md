@@ -14,6 +14,33 @@ the notes for the version you just got the first time it opens after an update. 
 
 Downloads for every version are on [GitHub](https://github.com/snoutdata/app/releases).
 
+## 1.0.52 (2026-10-09)
+
+**Copy a project to the cloud and back**
+
+- **A whole project copies between this computer and SnoutData Cloud**, in either direction:
+  its users with their passwords, its database, its files, and from this computer its functions
+  and their secrets. The project you copy from is left as it was, and the target can be a new cloud
+  project made when the copy starts. [How it works](studio/projects#copy-a-project-to-the-cloud-and-back).
+- Each project in the Dashboard panel has a short strip of actions under its name: **Start**,
+  **Stop** and **Copy**.
+
+**Editing on production connections**
+
+- **You can allow editing on a production connection for one session**, from the grid itself,
+  without changing its production flag: from the right-click menu, the **Read-only** badge, or the
+  note above a table's data. It locks again when the app restarts, or when you say so. Saving still
+  shows the statements first.
+- A production table's data no longer hides its edit actions; they show greyed out until you allow
+  editing.
+- **Duplicate row** and **Delete row** are in the grid's right-click menu directly. The value
+  actions are under **Edit cell**. **Ctrl+Alt+Insert** duplicates the row.
+
+**Coding agents**
+
+- The screen before a coding agent starts has a drawing, and the agent's version sits under the
+  Start button.
+
 ## 1.0.51 (2026-10-05)
 
 **Security**

@@ -36,9 +36,17 @@ editing text.
 ## Editing cells
 
 On non-production connections, you can edit cell values in place and apply the changes back
-to the database. Type-aware helpers include **Set to default** for a column. On connections
-flagged as [production](../connections/security), in-grid editing is locked to protect live
-data.
+to the database. Type-aware helpers include **Set to default** for a column. Right-click a row for
+**Duplicate row** and **Delete row**; the value-level actions (edit, set to NULL or default, copy
+from the row above or below) are under **Edit cell**.
+
+On connections flagged as [production](../connections/security), in-grid editing is locked to
+protect live data. The edit actions stay in the menu, greyed out, and you can lift the lock for that
+one connection without changing its production flag: choose **Allow editing (this session)** in the
+right-click menu, click the **Read-only** badge under the results, or click **Allow editing for this
+session** above a table's data. The lock comes back when the app restarts, or straight away from the
+**Editing prod** badge or **Lock again**. Saving still shows you the statements before anything
+runs.
 
 ## Large results
 

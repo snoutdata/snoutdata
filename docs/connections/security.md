@@ -27,7 +27,8 @@ those features.
 Flag a connection as **production** to enable a guardrail that detects destructive
 statements (such as a `DELETE` or `UPDATE` without a `WHERE`, or a `DROP`) and asks you to
 confirm before running them. On production connections, in-grid cell editing is also locked
-to prevent accidental writes.
+to prevent accidental writes; you can [allow it for one session](../editor/results-grid#editing-cells)
+from the grid itself, without changing the flag.
 
 ## The AI assistant
 

@@ -88,8 +88,10 @@ it shows the same menu the online dashboard has:
 - **Services**: Auth, Storage, Data API, Functions, Realtime, Push.
 - **Manage**: Logs, Domains, Settings.
 
-**Overview** opens in place, with **Start** and **Stop**, so you can run a project without opening
-a tab. Every other row opens the project's tab at that section. The **Database** row also carries
+Under each project's name is a short strip of actions: **Start**, **Stop** and **Copy** (see
+[Copy a project to the cloud and back](#copy-a-project-to-the-cloud-and-back)), so you can run a
+project without opening a tab. **Overview** opens in place with its state, size and address. Every
+other row opens the project's tab at that section. The **Database** row also carries
 a plug: click it to show the project's database in Connections.
 
 A cloud project's Start and Stop **ask** for a change rather than making it on the spot: the host
@@ -203,6 +205,72 @@ every service's log straight from Docker, and the activity log.
   project: it is restored beside the database first, so a restore that fails changes nothing),
   **Network** (the ports, and whether other devices on your network can reach it), the largest
   upload, and **Remove**, which keeps the data and folder unless you ask otherwise.
+
+## Copy a project to the cloud and back
+
+A project is more than its database, so Studio copies the whole of it between this computer and
+SnoutData Cloud, in either direction: the local project you have been building into a cloud
+project, or a cloud project onto your computer to work on it there. The project you copy from is
+left exactly as it was.
+
+Click **Copy** in the project's strip in the Dashboard panel, or **Copy to Cloud…** / **Copy to
+this computer…** in its **Settings**. The copy opens as a tab with four steps: choose, check,
+review, copy.
+
+![Copying the local project shop to SnoutData Cloud: from shop on this computer, to a new SnoutData Cloud project called shop, with users, database, files, functions and function secrets all switched on](/screenshots/studio-project-copy.png)
+
+**Choose** where it goes and what goes with it. From this computer, the target is one of your cloud
+projects or a **new SnoutData Cloud project**, which is created only when the copy starts. From the
+cloud, the target is one of your local projects; [set one up](#create-a-project) first if you have
+none.
+
+The parts, copied in this order:
+
+| Part | What is copied | Directions |
+| --- | --- | --- |
+| **Users** | Everyone who can sign in with an email, with their id, their confirmation, their metadata and their password as it is stored. People sign in on the new project with the passwords they already have. | Both |
+| **Database** | Your schemas, tables, data, functions, policies and the rest, exactly as [Move a database](/cloud/move-database) copies them, with its checks. The project's own sign-in and storage schemas are left out, because the users and files parts carry what is in them. | Both |
+| **Files** | Every bucket, with its visibility and limits, and every file in it. | Both |
+| **Functions** | The project's `functions` folder, deployed to the cloud project. A function that needs no key keeps that setting. | This computer to Cloud |
+| **Function secrets** | The secrets in `functions/.env`, set on the cloud project. Their values go straight from this computer to SnoutData Cloud and are never shown. | This computer to Cloud |
+
+Users go before the database on purpose: a table of yours that refers to a user keeps that link
+on the new project.
+
+Functions and their secrets only go up. SnoutData Cloud never gives back a function's source code or
+a secret's value, so when you copy from the cloud those two switches are off and say why.
+
+![Copying the cloud project orders to the local project shop: users, database and files switched on, functions and function secrets off, each with the reason](/screenshots/studio-project-copy-down.png)
+
+**Check** reads both projects and says what each part will do: how many users, buckets, files,
+functions and secrets, anything that will be skipped, and the database's own findings, each with the
+ways to resolve it. Nothing runs until every part is clear.
+
+- **Nothing on the target is overwritten by default.** A user whose email is already there, a
+  bucket or a file already there is left as it is and counted. The database must be empty unless
+  you choose to replace it in its findings, and replacing a cloud database saves a copy of it first.
+- **Functions and secrets with the same name on the target are replaced** with this computer's
+  version, since that is the point of copying them. The check names them.
+- **Sign-in and storage are switched on** on a cloud target when a part needs them.
+- **A production target asks you to type its name** before the copy starts.
+
+**Review** lists exactly what will happen, in order, and what will not be copied. **Copy** runs it,
+with each part's progress and the database's table by table, and finishes with what came across
+and anything that did not, by name.
+
+![The copy finished: 3 functions deployed and 3 secrets set on the new cloud project shop](/screenshots/studio-project-copy-done.png)
+
+**Not copied**, on purpose:
+
+- **The API keys and the database password.** Each project has its own. Point your app at the new
+  project's URL and anon key.
+- **Sign-in settings**: Google and GitHub sign-in, the mail server, redirect addresses and email
+  templates. Set them on the new project.
+- People who sign in without an email (anonymously or by phone), and people who sign in with
+  single sign-on.
+
+A copy is taken at one moment. Anything written to the source after it starts is not on the
+target, so copy a busy project when it is quiet.
 
 ## Ask the assistant, or your coding agent
 
