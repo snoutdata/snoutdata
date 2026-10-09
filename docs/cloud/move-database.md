@@ -14,6 +14,12 @@ locally into a hosted project.
 Connections that go through an SSH tunnel cannot be moved yet. The check says so when you pick one.
 :::
 
+:::tip
+To copy a whole project (its users, files, functions and secrets as well as its database) between
+this computer and SnoutData Cloud, use [Copy a project](/studio/projects#copy-a-project-to-the-cloud-and-back)
+instead. It runs this move for the database part.
+:::
+
 ## What moves
 
 The schema and the data: tables and their rows, sequences and where they had got to, views,
