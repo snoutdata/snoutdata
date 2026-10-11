@@ -11,6 +11,17 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-10-11
+
+- **The dashboard's assistant is Liby.** Ask AI is now Liby, the same butterfly as in Studio: "Ask
+  Liby" in the sidebar opens her panel, she peeks over its message box when a statement runs or
+  fails in the SQL tab, says hello when the dashboard opens, and answers when a message names her.
+  Ctrl+Shift+H (Cmd+Shift+H on a Mac), or "Liby: Help Me Here" in search, brings her to what you
+  are looking at; drag her onto anything and she helps with it. Settings has a Hide Liby switch.
+- **The dashboard wears the website's drawings.** Every page, and every tab of a project, has its
+  own drawing beside its title, empty lists show one too, and buttons carry an icon saying what
+  they do.
+
 ## 2026-10-08
 
 - **The dashboard has a Usage page, and the landing page shows more than AI.** Usage (in the
