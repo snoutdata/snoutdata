@@ -14,6 +14,33 @@ the notes for the version you just got the first time it opens after an update. 
 
 Downloads for every version are on [GitHub](https://github.com/snoutdata/app/releases).
 
+## 1.0.53 (2026-10-11)
+
+**Liby**
+
+- **The assistant is Liby**, named after the snout butterfly. There is one assistant now: the
+  docked panel and full screen are the same conversation, switched from the panel's header.
+- **She reacts as you work**: a query that runs, one that fails, a table you open. Where she can
+  help she goes there: a connection form with another engine's port, a refused **Test** read for
+  its real reason, a failed query with the column or table you meant, a write with no `WHERE` as
+  you type it.
+- **Ctrl+Shift+H** (**Cmd+Shift+H** on a Mac), or **Liby: Help Me Here** in the command palette,
+  brings her to what you are looking at. Drag her onto anything and she helps with it. Her bubble
+  takes a question, and **Continue in chat** carries it to the panel.
+- Say her name in the assistant and she comes to it. **Hide Liby** in Settings stops what she does
+  on her own; the shortcut still brings her.
+
+**The assistant**
+
+- **Every reply can act.** The Ask and Agent switch is gone: the assistant always uses its tools
+  when a question needs them.
+- **Claude Sonnet 5.5** replaces Claude Sonnet 5 and Claude Haiku 4.5 in the model list.
+
+**Smaller changes**
+
+- The results panel starts closed and opens on your first run.
+- The side panel reads Connections, Workspace, History, Dashboard, Data Flows.
+
 ## 1.0.52 (2026-10-09)
 
 **Copy a project to the cloud and back**
