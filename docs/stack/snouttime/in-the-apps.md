@@ -107,7 +107,7 @@ let Postgres skip a partition, you get one warning for the table instead of one 
 
 For a series table the explanation names its time column and says to filter on it with a range
 Postgres can compare directly (`ts >= now() - interval '1 day'`, or a literal range), never on a
-function or a cast of it, such as `date(ts) = current_date`, which cannot prune. **Ask AI to fix**
+function or a cast of it, such as `date(ts) = current_date`, which cannot prune. **Ask Liby to fix**
 hands the statement to the assistant. Reads of sealed partitions by SnoutTime's own scans count as
 reads here too.
 

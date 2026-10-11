@@ -50,7 +50,7 @@ and tells you:
 
 When a query fails, the error is classified by ClickHouse's own error code. A query that hit a
 **memory limit, a quota, too many parts or a timeout** is described as that, not as wrong SQL, so
-**Fix with AI** makes the query read and hold less instead of renaming columns that were never
+**Liby: Fix Last Error** makes the query read and hold less instead of renaming columns that were never
 wrong.
 
 ## Query Performance

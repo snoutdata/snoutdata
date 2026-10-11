@@ -11,7 +11,7 @@ queries that quietly read millions of rows, warns you before they run, and expla
 
 This is not an AI feature. The detection reads the database's own query plan and its indexes, so it
 is deterministic, instant, and offline, and it runs on every query. No model, no tokens, no
-guessing. Only the optional **Ask AI to fix** button (below) calls the assistant.
+guessing. Only the optional **Ask Liby to fix** button (below) calls the assistant.
 
 ## Large scan warning
 
@@ -34,7 +34,7 @@ SnoutData flags the filters that defeat an index as you type them. A predicate l
 reason and a suggested rewrite that keeps the index usable.
 
 After a query runs slowly, an advice strip appears above the results naming what made it slow (a
-full table scan, a sort with no index, a temporary table). Its **Ask AI to fix** button hands the
+full table scan, a sort with no index, a temporary table). Its **Ask Liby to fix** button hands the
 statement to the [assistant](../ai-assistant/agentic) to propose an index or a rewrite.
 
 ## Long-running query warning
