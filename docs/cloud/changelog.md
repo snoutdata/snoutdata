@@ -13,6 +13,10 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-11
 
+- **A cluster node with damaged pages is failed over to its replica on its own.** Readings of a
+  node's health (damaged pages found, whether its replica keeps up) were not being stored, so this
+  never happened; it does now. The alert about damaged data now says how many reads have failed
+  their checksum rather than calling each one a damaged page.
 - **The dashboard's assistant is Liby.** Ask AI is now Liby, the same butterfly as in Studio: "Ask
   Liby" in the sidebar opens her panel, she peeks over its message box when a statement runs or
   fails in the SQL tab, says hello when the dashboard opens, and answers when a message names her.
