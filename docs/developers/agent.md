@@ -399,6 +399,7 @@ turns that off.
 | `size_function` | `ref`, `name` (both required), `memoryMb`, `concurrency`, `reset` | Sets one function's memory and workers within the plan. Memory × workers may not exceed the project's memory. |
 | `delete_function` | `ref`, `name` (both required) | Removes one. It stops answering within seconds. |
 | `list_function_secrets` | `ref` (required) | The **names** of the environment variables functions run with. Never the values. |
+| `function_logs` | `ref` (required), `name`, `errorsOnly`, `limit` | What the functions printed with `console.log` and `console.error` in the last seven days, newest first. |
 | `get_project` | `ref` (required) | One project whole: state, products, function and secret names, domains. Never a password, a key or a download link. |
 | `list_products` | `ref` (required) | Whether auth, storage and the data API are on, and whether the plan allows the data API. |
 | `set_product` | `ref`, `product` (`auth`, `storage`, `data-api`), `enabled` (all required) | Turns one on or off; it starts within about a minute. |

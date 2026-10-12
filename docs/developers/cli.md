@@ -535,6 +535,7 @@ key, so nobody is signed out. It answers once the new keys work on the project.
 snoutdata functions deploy <name> [--dir DIR] [--entrypoint FILE] [--no-verify-jwt]
 snoutdata functions list [--ref REF]
 snoutdata functions size <name> [--memory MB] [--concurrency N] [--reset]
+snoutdata functions logs [name] [--errors] [--tail N] [--follow]
 snoutdata functions delete <name>
 ```
 
@@ -550,6 +551,11 @@ them: `--memory` is what one worker may use in MB, `--concurrency` how many work
 may run at once, and memory × workers may not exceed your project's memory. Leave one out to keep
 it; `--reset` goes back to the plan's default. A size that does not fit is refused with a sentence.
 See [Memory and concurrency](/stack/functions#memory-and-concurrency).
+
+`logs` prints what your functions printed in the last seven days, oldest first: the newest 100
+lines, or `--tail N` of them (at most 500), for one function when you name it. `--errors` keeps
+`console.error` and `console.warn` only, and `--follow` keeps printing new lines as they arrive, about a minute after
+they are printed. See [Logs](/stack/functions#logs).
 
 ### `secrets`
 

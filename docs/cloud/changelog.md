@@ -13,6 +13,13 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-12
 
+- **Function logs.** What your Snout Functions print with `console.log` and `console.error` is
+  kept for seven days, with the function's name and the time. Read it on a project's Logs tab
+  under Functions, or with `snoutdata functions logs [name] [--errors] [--follow]`. Before this,
+  that output was not kept anywhere you could read it. [Logs](/stack/functions#logs) has the limits.
+- **Custom domains are open on paid plans.** A project's Domains tab now adds a domain, shows the
+  three DNS records to publish with copy buttons, verifies them and shows when the certificate is
+  live. `snoutdata domains add` does the same from a terminal.
 - **A deleted project no longer counts toward your usage meters.** Database size, file storage
   and backups on Home and on the Usage page are read from the projects you have now. A project
   deleted earlier in the period could make an account look close to its limit. Hours, connections

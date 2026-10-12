@@ -133,6 +133,30 @@ running at the largest size that still fits.
 it has is busy on CPU, so workers are what make CPU-heavy functions run side by side, and a function
 that mostly waits never needs more than one.
 
+## Logs
+
+Whatever a function prints with `console.log`, `console.info`, `console.warn` or `console.error`
+is kept, with the function's name and the time it was printed. Read it on the dashboard's **Logs**
+tab under **Functions** (filter by function, errors only, or search), or from a terminal:
+
+```
+snoutdata functions logs                 # the newest 100 lines, every function
+snoutdata functions logs hello --errors  # one function, console.error and console.warn only
+snoutdata functions logs --follow        # keep printing new lines
+```
+
+A line shows up about a minute after it is printed, and is kept for seven days.
+
+There are limits, so one noisy function cannot crowd out everything else:
+
+| | |
+| --- | --- |
+| A line | 4 KB. A longer one is cut, and says how long it was |
+| A function's worker | 200 lines at once, then 50 a second. Lines past that are counted, and the next line kept says how many were not |
+| A project | 20,000 lines a day (UTC). Past that the Logs tab says how many were not stored |
+
+Do not print secrets: anyone who can read the project can read its logs.
+
 ## What a function can reach
 
 The internet, and your own database with the keys you give it.
@@ -165,8 +189,8 @@ call another project's functions by going round it. [Security](/cloud/security) 
 
 ## For an agent
 
-Five MCP tools cover this: `deploy_function`, `list_functions`, `size_function`,
-`delete_function` and `list_function_secrets`. There is deliberately no tool that sets a secret. See
+Six MCP tools cover this: `deploy_function`, `list_functions`, `size_function`,
+`delete_function`, `list_function_secrets` and `function_logs`. There is deliberately no tool that sets a secret. See
 [for an agent](/developers/agent#mcp-server).
 
 ## Also read
