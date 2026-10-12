@@ -11,6 +11,13 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-10-12
+
+- **A deleted project no longer counts toward your usage meters.** Database size, file storage
+  and backups on Home and on the Usage page are read from the projects you have now. A project
+  deleted earlier in the period could make an account look close to its limit. Hours, connections
+  and calls still include it, since that use happened.
+
 ## 2026-10-11
 
 - **A cluster node with damaged pages is failed over to its replica on its own.** Readings of a
