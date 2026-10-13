@@ -115,9 +115,17 @@ count. `logs` shows everything it printed to stdout and stderr in the last seven
 | Memory each | 256 MB | 512 MB |
 | CPU each | half a core | half a core |
 
-Each container runs in its own gVisor sandbox, with its own network that reaches the public
-internet and nothing private. A container over its memory is stopped and restarted. On a downgrade,
+Each container runs in its own gVisor sandbox and user namespace, on a network of its project's
+own: it reaches the public internet and your project's other containers, and nothing private, not
+another project's containers. A container over its memory is stopped and restarted. On a downgrade,
 the containers past the new plan's number are stopped and kept, and start again on an upgrade.
+
+## Open source, and self-hosted
+
+What runs your containers is [snout-containers](https://github.com/snoutdata/snout-containers),
+Apache-2.0: you can read exactly how a container is isolated and limited. The self-hosted stack
+runs it as an opt-in profile, once the machine has gVisor and the podman engine its README
+describes.
 
 ## Also read
 

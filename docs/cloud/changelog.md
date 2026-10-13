@@ -13,6 +13,16 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-13
 
+- **Snout Containers.** A Docker image of yours runs all the time beside your project, at
+  `/containers/v1/<name>/`: for the process a request cannot hold, such as a WhatsApp client or a
+  broker subscription. `snoutdata containers deploy <name> <image>` (CLI 0.16.0) pins the tag to
+  its digest, and the project's Containers tab shows each one's status, URL and logs. Each runs
+  under gVisor with its own memory and CPU limits and a network of its own, gets `DATABASE_URL` and
+  your secrets, and is stateless: what it writes inside itself is lost on a restart.
+  [Containers](/stack/containers). Plus runs one, Pro three.
+- **snout-containers is open source.** The runner behind Containers is Apache-2.0 at
+  [github.com/snoutdata/snout-containers](https://github.com/snoutdata/snout-containers), and an
+  opt-in profile of the self-hosted stack.
 - **Realtime handlers.** `snout_live.on('send', 'public.send_message(jsonb)', 'room:*')` makes a
   SQL function of yours run when a client sends that event: as that user, under your row-level
   security, in one transaction, and what it returns is the reply. `channel.call(event, payload)`
