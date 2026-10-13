@@ -212,16 +212,17 @@ A `connection` handler that raises is the `connect_error`: `err.message` is its 
 5. **Point the client at the project**: the URL, `path: '/v1/live/socket.io/'`, the app key in
    `query.apikey` and the user's token in `auth.token`. Nothing else in the client changes.
 
-**What does not move:** a process that holds a connection of its own open, such as a client
-logged in to a messaging network, a broker subscription or a game loop. SnoutData does not run
-long-lived processes of yours. Keep that one process where it is and make it small: its state in
-your project's tables rather than on its disk, `snout_live.signal()` (or a broadcast over HTTP) to reach
-your users, and a table it watches for the work your handlers queue for it. Everything else
-moves.
+**What needs a container:** a process that holds a connection of its own open, such as a client
+logged in to a messaging network, a broker subscription or a game loop. On a paid plan it can run
+as a [Snout Container](/stack/containers), your own image running all the time beside the project.
+Make it small either way: its state in your project's tables rather than on its disk,
+`snout_live.signal()` (or a broadcast over HTTP) to reach your users, and a table it watches for the
+work your handlers queue for it. Everything else moves to handlers.
 
 ## Also read
 
 - [Realtime](/stack/realtime), for channels, presence, table changes and the plan limits.
 - [Snout Functions](/stack/functions), for TypeScript your clients call over HTTP.
+- [Snout Containers](/stack/containers), for the one process that has to stay connected.
 - [Row-level security on the data API](/stack/data-api), which is what decides a handler's reads
   and writes too.
