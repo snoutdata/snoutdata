@@ -23,6 +23,11 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   acks are their return values, and a room is a Realtime topic that `snout_live.signal()` from any
   SQL reaches. [Socket.IO](/stack/socketio), with a guide to moving a Node Socket.IO server.
   Paid plans.
+- **`snout_live.signal()` from your own SQL is delivered.** Run as the project's owner (the SQL editor,
+  your triggers and cron jobs), it was refused and only logged a warning, so the broadcast reached
+  nobody. The owner role now has the same rights on `snout_live.signals` as the API roles.
+- **Self-hosted: snout-realtime 0.1.9** in the stack's `compose.yaml`, with handlers, Socket.IO and
+  the fix above.
 
 ## 2026-10-12
 
