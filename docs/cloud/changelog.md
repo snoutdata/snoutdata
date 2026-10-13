@@ -11,6 +11,19 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-10-13
+
+- **Realtime handlers.** `snout_live.on('send', 'public.send_message(jsonb)', 'room:*')` makes a
+  SQL function of yours run when a client sends that event: as that user, under your row-level
+  security, in one transaction, and what it returns is the reply. `channel.call(event, payload)`
+  in `@snoutdata/client` waits for it. What the function sends with `snout_live.emit()` goes out
+  only if it commits. [Handlers](/stack/realtime#handlers-your-code-on-a-message). Paid plans.
+- **Socket.IO.** The official `socket.io-client` connects to your project unmodified, at
+  `path: '/v1/live/socket.io/'`. Your server's `socket.on(...)` listeners become handlers,
+  acks are their return values, and a room is a Realtime topic that `snout_live.signal()` from any
+  SQL reaches. [Socket.IO](/stack/socketio), with a guide to moving a Node Socket.IO server.
+  Paid plans.
+
 ## 2026-10-12
 
 - **Function logs.** What your Snout Functions print with `console.log` and `console.error` is

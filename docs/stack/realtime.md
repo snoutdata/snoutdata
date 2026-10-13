@@ -143,6 +143,85 @@ Underneath it is `POST https://<ref>.api.snoutdata.com/v1/live/signal` with
 token as `Authorization: Bearer`. A private message is sent only if that user's `insert` policy
 allows it.
 
+## Handlers: your code on a message
+
+Broadcast relays a message and runs nothing of yours. A **handler** is the other half: a SQL
+function that runs when a client sends a given event, with the client's own identity, and whose
+return value goes back to that client. It is how you validate, store and fan out a message in
+one step, without a server of your own.
+
+```sql
+create function public.send_message(payload jsonb) returns jsonb
+language plpgsql as $$
+declare
+  new_id bigint;
+begin
+  insert into public.messages (room, body, author)
+  values (payload->>'room', payload->>'body', snout_identity.user_id())
+  returning id into new_id;
+
+  perform snout_live.emit(
+    'room:' || (payload->>'room'),                         -- topic
+    'message',                                             -- event
+    jsonb_build_object('id', new_id, 'body', payload->>'body', 'author', snout_identity.user_id()),
+    true                                                   -- leave the sender out
+  );
+  return jsonb_build_object('id', new_id);
+end $$;
+
+select snout_live.on('send', 'public.send_message(jsonb)', 'room:*');
+```
+
+```js
+const room = db.channel('room:42')
+room.subscribe()
+
+const { data, error } = await room.call('send', { room: '42', body: 'hi' })
+// data: { id: 17 }    error: null, or a RealtimeHandlerError with a code
+```
+
+What holds, and what it means for the function you write:
+
+- **It runs as the caller.** The same role and JWT claims as a request to the data API, so
+  `snout_identity.user_id()` is the user who sent it and your row-level security applies to everything it
+  reads and writes. Whether a role may call the function at all is its `EXECUTE` grant, and
+  Postgres grants that to everyone by default: `revoke execute on function ... from snout_app` when
+  only signed-in users should reach it.
+- **It is one transaction.** What it sends with `snout_live.emit(topic, event, payload,
+  except_self)` goes out only if the transaction commits, so a failed insert never announces a
+  message that is not there. An emit reaches the topic's public and private subscribers alike,
+  since your function has already decided who should hear it, and costs nothing in your
+  database (no row, no WAL).
+- **A handled event is not relayed.** When a handler is registered for it, the message a client
+  sent reaches nobody as it arrived; your function says what goes out. An event with no handler
+  is broadcast exactly as before.
+- **The reply is the return value.** `call()` resolves with it. A function that raises comes
+  back as `error`, with the SQLSTATE as its `code` (`P0001` for a plain `raise exception`), or
+  `unauthorized` (a permission or policy refused it), `timeout` (it ran past 5 seconds) or
+  `no_handler`.
+- **Matching.** `snout_live.on(event, handler, topic)` takes an exact topic, a prefix ending in
+  `*` (`room:*`) or `'*'` for every topic (the default). An exact topic wins over a prefix and a
+  longer prefix over a shorter one. A handler takes one `jsonb` argument and returns `jsonb` or
+  `void`. Inside it, `snout_live.topic()`, `snout_live.event()` and `snout_live.args()` say what it is
+  running for.
+- **Who registers them.** `snout_live.on()` and `snout_live.off(event, topic)` are for the project's
+  owner (the `postgres` role, as in the SQL editor, and `snout_server`). A signed-in user cannot
+  register one, because a handler decides what a channel's messages become.
+- **Changes take effect within two seconds.**
+
+A private channel still needs its `insert` policy before a handler runs, so a handler never
+widens who may send on a channel. Handlers come with the paid plans, like everything else on this
+page that reads your database.
+
+## Socket.IO
+
+The same handlers are what a [Socket.IO](/stack/socketio) client talks to. `socket.io-client`
+connects to `https://<ref>.api.snoutdata.com` with `path: '/v1/live/socket.io/'`, unmodified:
+`socket.emit` runs a handler and its acknowledgement is the return value, a room is a Realtime
+topic, and `snout_live.emit()` or `snout_live.signal()` reaches it. A channel and a Socket.IO room of
+the same name are the same topic, so the two kinds of client hear each other. The
+[Socket.IO page](/stack/socketio) has the whole model, and how to move a Socket.IO server onto it.
+
 ## Table changes
 
 This is the half that reads your database:
@@ -211,6 +290,7 @@ What you can rely on:
 | Broadcast and presence | yes | yes | yes |
 | Table changes (`changes`) | **no** | yes | yes |
 | Private channels, broadcast from the database | **no** | yes | yes |
+| Handlers and Socket.IO | **no** | yes | yes |
 | Concurrent clients | 100 | 500 | 2,000 |
 | Channels per client | 100 | 100 | 100 |
 | Messages a second | 100 | 500 | 2,000 |
@@ -520,13 +600,15 @@ function move(x, y) {
 
 ## Not built
 
-- **Long polling.** Realtime is a websocket only; a network that blocks websockets cannot use it.
+- **Long polling on a channel.** The channel protocol is a websocket only; a network that blocks
+  websockets cannot use it. The [Socket.IO](/stack/socketio) door does poll, and upgrades when it can.
 - **Delivery to users who are not connected.** A message sent while someone is offline is not
   queued for them (private channels can replay the last three days on join). For a phone or a
   closed tab, use [push notifications](/stack/push).
 
 ## Also read
 
+- [Socket.IO](/stack/socketio), for a Socket.IO client and server model on the same handlers.
 - [The project API](/stack/api), for the other four products and the two keys.
 - [Limits, and what is not built](/cloud/limits), for the plan table and what pauses.
 - [Security](/cloud/security), for how a project is isolated and what we hold.
