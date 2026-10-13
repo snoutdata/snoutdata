@@ -205,8 +205,9 @@ What holds, and what it means for the function you write:
   `void`. Inside it, `snout_live.topic()`, `snout_live.event()` and `snout_live.args()` say what it is
   running for.
 - **Who registers them.** `snout_live.on()` and `snout_live.off(event, topic)` are for the project's
-  owner (the `postgres` role, as in the SQL editor, and `snout_server`). A signed-in user cannot
-  register one, because a handler decides what a channel's messages become.
+  owner: the role the SQL editor and `snoutdata db url` connect as (`postgres` on a stack you run
+  yourself), and `snout_server`. A signed-in user cannot register one, because a handler decides
+  what a channel's messages become.
 - **Changes take effect within two seconds.**
 
 A private channel still needs its `insert` policy before a handler runs, so a handler never
