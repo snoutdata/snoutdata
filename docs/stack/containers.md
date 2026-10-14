@@ -96,6 +96,64 @@ copied). A slimmer base (alpine, distroless, a `-slim` tag) usually fixes one th
 A secret named `DATABASE_URL` or `PORT` takes the place of ours. Setting or changing a secret
 restarts your containers with the new value.
 
+## Connecting to your project
+
+### The database
+
+`DATABASE_URL` is a normal Postgres connection string, so any driver takes it as it is:
+
+```js
+import pg from 'pg'
+
+const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL, max: 5 })
+const { rows } = await pool.query('select id, body from messages where sent = false')
+```
+
+It connects as your project's **owner role**. Row-level security policies do not apply to a
+table's owner, so this connection reads and writes everything. That is right for a container you
+wrote yourself and trust with the whole project.
+
+When the container should be able to do less (it runs code you did not write, or touches only a
+few tables), give it a role of its own and hand it that role's connection string instead:
+
+```sql
+create role whatsapp_bot login password '<a long random password>';
+grant usage on schema public to whatsapp_bot;
+grant select, insert, update on public.messages, public.wa_session to whatsapp_bot;
+```
+
+```bash
+snoutdata secrets set DATABASE_URL='postgresql://whatsapp_bot:<password>@<host>:<port>/<database>?sslmode=require'
+```
+
+Take the host, port and database from your project's own connection string (`snoutdata db url`).
+Your secret replaces ours, and the container restarts with it. That role sees only what you
+granted, and your row-level security policies apply to it.
+
+**Keep the pool small.** A container's connections count against your project's connections (100
+on Plus, 200 on Pro, see [Limits](/cloud/limits)), together with everything else that connects.
+Five is plenty for most containers. Let the pool reconnect on its own: a database restart or a
+password reset closes its connections.
+
+### The API, with `@snoutdata/client`
+
+The same client your front end uses works in a container, with `SNOUTDATA_URL` and one of the two
+keys:
+
+```js
+import { snout } from '@snoutdata/client'
+
+// Your row-level security policies decide, as for a signed-out user of your app.
+const db = snout(process.env.SNOUTDATA_URL, process.env.SNOUTDATA_APP_KEY)
+
+// Bypasses row-level security: the whole project, like DATABASE_URL.
+const admin = snout(process.env.SNOUTDATA_URL, process.env.SNOUTDATA_SERVER_KEY)
+```
+
+`from()` queries need the [data API](/stack/data-api) switched on; auth, storage and Realtime work
+without it. **The server key is a password to the whole project.** Keep it in the container:
+never send it to a browser, a webhook reply or a log line.
+
 ## It is stateless
 
 **Anything written inside a container is lost when it restarts, is redeployed, or moves to
@@ -122,9 +180,8 @@ A container talks to the rest of your project the way any client does:
 
 - **Your users:** `snout_live.signal()` from SQL, or a broadcast over HTTP, reaches every
   [Realtime](/stack/realtime) and [Socket.IO](/stack/socketio) client in the room.
-- **Your database:** `DATABASE_URL`, with your row-level security policies where you use a role
-  other than the owner. A table it watches with `LISTEN` is how your handlers and functions hand it
-  work.
+- **Your database:** `DATABASE_URL` (see [Connecting to your project](#connecting-to-your-project)).
+  A table it watches with `LISTEN` is how your handlers and functions hand it work.
 
 Run **one** copy of anything that holds a session of its own. SnoutData runs exactly one instance
 of each container, and stops the old one before starting the new one on a deploy; if your process

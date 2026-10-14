@@ -13,6 +13,10 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-14
 
+- **Connecting a container to your project, documented.** Which role `DATABASE_URL` connects as,
+  how to give a container a role of its own that sees only what you grant, which key to use with
+  `@snoutdata/client`, and why its pool should stay small.
+  [Connecting to your project](/stack/containers#connecting-to-your-project).
 - **Self-hosted: image resizing works.** The stack's `compose.yaml` now turns on storage's render
   routes; before, the `images` service ran and every `/v1/files/image/...` request answered
   404. `git pull` then `docker compose up -d`. And the stack's size is measured, no longer
