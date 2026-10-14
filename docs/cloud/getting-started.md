@@ -162,8 +162,8 @@ appears in its Connections list on its own, marked with the SnoutData butterfly.
 A project is not only a Postgres port. In front of it is an HTTPS door serving a REST and GraphQL
 API over your tables, authentication, file storage, realtime subscriptions, your own functions
 on the edge and [push notifications](/stack/push), at `https://<ref>.api.snoutdata.com`. It is ordinary HTTP, so it needs nothing
-installed, and an application already written against the same API shape works by changing one
-URL.
+installed: [`@snoutdata/client`](/stack/api) is the short way in from JavaScript, and `curl` works
+as well.
 
 ```bash
 snoutdata keys                       # the app and server keys

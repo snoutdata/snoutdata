@@ -250,9 +250,8 @@ alter publication snoutdata_realtime add table public.todos;
 It is empty on purpose. A publication covering every table would have started streaming every row
 of every table the day your project was created, including the ones you never meant to expose.
 
-Migrations written for another hosted Postgres often add tables to a publication of that host's
-own name. That one does not exist here, so the statement fails with "publication does not exist":
-change the name to `snoutdata_realtime` in those migrations.
+A migration that adds tables to a publication of any other name fails with "publication does not
+exist": change the name to `snoutdata_realtime` in it.
 
 **2. The row must be visible to the subscriber, under your policies.** A change is filtered by the
 same row-level security that governs a `select`, evaluated as the user whose token opened the

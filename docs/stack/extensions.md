@@ -11,8 +11,8 @@ A project is a real Postgres, so it can be taught new things with extensions. Th
 their own sections here because people build on them: **pg_cron** runs SQL on a schedule,
 **pg_net** makes HTTP requests from SQL, and the two together call a URL on a schedule.
 
-The function names are the upstream ones (`cron.schedule`, `net.http_post`), so a snippet written
-for another hosted Postgres that ships these extensions runs here unchanged.
+The function names are the extensions' own (`cron.schedule`, `net.http_post`), so a snippet from
+their documentation runs here as written.
 
 ## Switching an extension on
 
@@ -166,8 +166,8 @@ Responses are kept for six hours and then removed.
 - A request is sent again only if the database restarts while it is on the network.
 
 pg_net on SnoutData Cloud is our own implementation of the same functions and tables,
-[snout_net](https://github.com/snoutdata/snout-net) (Apache-2.0), so a snippet written for another
-hosted Postgres works unchanged.
+[snout_net](https://github.com/snoutdata/snout-net) (Apache-2.0), so pg_net's own documentation
+applies.
 
 ### Calling a URL on a schedule
 

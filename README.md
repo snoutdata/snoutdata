@@ -29,7 +29,7 @@ API, with the devices, the queue and the delivery log as tables in your own data
 [Push notifications](https://docs.snoutdata.com/stack/push).
 
 Your app talks to it with [`@snoutdata/client`](https://github.com/snoutdata/snout-client) (Apache-2.0),
-or with the client it is already written against by changing one URL.
+or over plain HTTP.
 [Get started](https://docs.snoutdata.com/cloud/getting-started).
 
 ### The `snoutdata` CLI

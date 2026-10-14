@@ -64,7 +64,7 @@ for a table.
 **Writing your own storage policies did not work until 2026-09-11.** The project owner had no
 rights on the `storage` schema, so `create policy on snout_files.files` — the commonest statement in
 any application that stores files — failed outright. It is fixed, and a signed-in user uploading
-under their own policy is one of the checks in the compatibility harness now. It is written down
+under their own policy is one of the checks we run against a live project now. It is written down
 because a customer who tried it in the first week deserves to know it was us.
 :::
 

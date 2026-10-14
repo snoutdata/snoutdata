@@ -23,7 +23,7 @@ curl -X POST "https://<ref>.api.snoutdata.com/v1/graph" \
 
 It is answered inside your database by `pg_graphql`, which on SnoutData Cloud is our own
 implementation of the same extension, [snout_graphql](https://github.com/snoutdata/snout-graphql)
-(Apache-2.0), so a query or a generated client written for another hosted Postgres works unchanged.
+(Apache-2.0).
 
 From JavaScript, `@snoutdata/client` has no GraphQL helper of its own: POST to the same URL with
 your usual GraphQL client, and put the signed-in user's access token in `Authorization` so their
