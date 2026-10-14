@@ -13,6 +13,9 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-14
 
+- **Liby knows Snout Containers.** Ask her in the dashboard how to build, deploy, connect or debug a
+  container: she knows the commands, the limits and the environment, sees what runs on the project
+  (its status and the host's last report), and knows which tab you are on.
 - **Redeploy a container from the dashboard.** Each container's card has a Redeploy button: an
   image from a registry resolves its tag again, and one built with `--dockerfile` starts that same
   build again. A built image now shows as "built from a Dockerfile" in the dashboard, the CLI and
