@@ -143,6 +143,13 @@ count. `logs` shows everything it printed to stdout and stderr in the last seven
 | Sent each month, all containers together | 5 GB | 60 GB |
 | Image size, compressed | 1 GB | 1 GB |
 
+What a container is good at is holding connections: an idle websocket costs memory (about 30 KB
+each for a small Go server) and no CPU, and a Plus container can hold a few thousand. The front
+door lets a Plus project hold 200 websockets at once and a Pro project 400. A busy one costs CPU:
+gVisor serves every network read and write itself, so half a core echoes about 3,000 small messages
+a second. A loop that fans messages out to many users belongs in
+[realtime handlers](/stack/socketio), where it runs in your database.
+
 Each container runs in its own gVisor sandbox and user namespace, on a network of its project's
 own: it reaches the public internet and your project's other containers, and nothing private: not
 the machine, not the cloud's metadata service, not another project's containers. A container over
