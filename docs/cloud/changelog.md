@@ -19,7 +19,8 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   [From a Dockerfile](/stack/containers#from-a-dockerfile-with-no-registry).
 - **A container's image is copied into SnoutData's registry** the first time it starts, and every
   restart or move after that runs the copy, so your registry and its tokens are needed at deploy and
-  not after. An image may be at most 1 GB compressed. [Where it runs from](/stack/containers#where-it-runs-from).
+  not after. A copy no container runs any more is deleted within a few hours. An image may be at
+  most 1 GB compressed. [Where it runs from](/stack/containers#where-it-runs-from).
 - **A monthly allowance for what containers send.** A project's containers may send 5 GB a month on
   Plus and 60 GB on Pro, together; what reaches them does not count. You are emailed at 80%, and at
   the allowance they stop until the 1st, then start again on their own.

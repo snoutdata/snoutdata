@@ -77,6 +77,10 @@ after that (a restart, a crash, a move to another machine) runs the copy. So onc
 started, your registry being down, your token expiring or Docker Hub's rate limit never stops it
 coming back. A registry token is used at deploy and for that first copy, and not after.
 
+A copy is kept while a container runs it. Once none does (you deployed a newer image, or deleted
+the container), it is deleted, within a few hours. Deploying that image again copies it again,
+so a private image needs its registry token again then.
+
 An image may be at most **1 GB**, compressed (its `linux/arm64` image, which is all that is
 copied). A slimmer base (alpine, distroless, a `-slim` tag) usually fixes one that is larger.
 
