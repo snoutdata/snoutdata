@@ -11,6 +11,13 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-10-14
+
+- **A monthly allowance for what containers send.** A project's containers may send 5 GB a month on
+  Plus and 60 GB on Pro, together; what reaches them does not count. You are emailed at 80%, and at
+  the allowance they stop until the 1st, then start again on their own.
+  [Each month's allowance](/stack/containers#each-months-allowance).
+
 ## 2026-10-13
 
 - **Snout Containers.** A Docker image of yours runs all the time beside your project, at

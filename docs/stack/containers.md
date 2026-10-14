@@ -114,6 +114,7 @@ count. `logs` shows everything it printed to stdout and stderr in the last seven
 | Containers | 1 | 3 |
 | Memory each | 256 MB | 512 MB |
 | CPU each | half a core | half a core |
+| Sent each month, all containers together | 5 GB | 60 GB |
 
 Each container runs in its own gVisor sandbox and user namespace, on a network of its project's
 own: it reaches the public internet and your project's other containers, and nothing private: not
@@ -138,6 +139,16 @@ than hanging), and bytes over the rate are dropped, which TCP sees as a slower l
 your container (your users, webhooks and websockets through its address) are not counted against
 any of this. A container that is refused again and again, slowed down for long stretches, or sends
 more than 4 GB in an hour opens an alert: you are emailed which, and so are we.
+
+### Each month's allowance
+
+What a project's containers send in a calendar month (UTC) counts against its plan's allowance: 5 GB
+on Plus, 60 GB on Pro, for all its containers together. Everything a container sends counts,
+replies to your users included; what reaches it does not. At 80% you are emailed. At the allowance
+the project's containers are **stopped until the 1st**, when they start again on their own, and you
+are emailed then too: `snoutdata containers list` and the Containers tab say so, and show what has
+been sent this month. The connections, messages and webhooks these containers are for use a small
+fraction of it.
 
 ## Open source, and self-hosted
 
