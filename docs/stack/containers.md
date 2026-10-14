@@ -109,6 +109,10 @@ const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL, max: 5 })
 const { rows } = await pool.query('select id, body from messages where sent = false')
 ```
 
+It connects over TLS with `sslmode=require`, which every driver accepts. Node's `pg` 8 checks the
+server's certificate with it and prints a warning that its next major version will not; pass
+`ssl: { rejectUnauthorized: true }` beside the connection string to keep that check either way.
+
 It connects as your project's **owner role**. Row-level security policies do not apply to a
 table's owner, so this connection reads and writes everything. That is right for a container you
 wrote yourself and trust with the whole project.

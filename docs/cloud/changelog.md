@@ -13,6 +13,10 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-14
 
+- **Redeploy a container from the dashboard.** Each container's card has a Redeploy button: an
+  image from a registry resolves its tag again, and one built with `--dockerfile` starts that same
+  build again. A built image now shows as "built from a Dockerfile" in the dashboard, the CLI and
+  the audit log.
 - **Connecting a container to your project, documented.** Which role `DATABASE_URL` connects as,
   how to give a container a role of its own that sees only what you grant, which key to use with
   `@snoutdata/client`, and why its pool should stay small.
