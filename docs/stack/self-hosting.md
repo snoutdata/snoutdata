@@ -19,6 +19,9 @@ keys, the same client code. Only the URL changes.
 ## Start it
 
 You need Docker with the Compose plugin (2.24 or later), on Linux, macOS or Windows, Intel or Arm.
+Measured with the default profiles on a 2-core Arm machine: about 170 MB of memory idle and about
+360 MB under a modest load (as `docker stats` counts it), so 1 GB of memory is comfortable, and
+1.9 GB of disk for the images, a 670 MB download.
 
 ```bash
 git clone https://github.com/snoutdata/snout-stack && cd snout-stack

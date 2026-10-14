@@ -13,6 +13,11 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-14
 
+- **Self-hosted: image resizing works.** The stack's `compose.yaml` now turns on storage's render
+  routes; before, the `images` service ran and every `/v1/files/image/...` request answered
+  404. `git pull` then `docker compose up -d`. And the stack's size is measured, no longer
+  estimated: about 170 MB of memory idle, about 360 MB under a modest load, 1.9 GB of images (a
+  670 MB download). [Run the stack yourself](/stack/self-hosting).
 - **Deploy a container from a Dockerfile.** `snoutdata containers deploy <name> --dockerfile <dir>`
   (CLI 0.16.1) builds the folder for linux/arm64 with your own Docker and pushes it into your project's own
   repository in SnoutData's registry, so a container needs no registry of yours.
