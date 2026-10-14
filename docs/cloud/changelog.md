@@ -14,7 +14,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 ## 2026-10-14
 
 - **Deploy a container from a Dockerfile.** `snoutdata containers deploy <name> --dockerfile <dir>`
-  builds the folder for linux/arm64 with your own Docker and pushes it into your project's own
+  (CLI 0.16.1) builds the folder for linux/arm64 with your own Docker and pushes it into your project's own
   repository in SnoutData's registry, so a container needs no registry of yours.
   [From a Dockerfile](/stack/containers#from-a-dockerfile-with-no-registry).
 - **A container's image is copied into SnoutData's registry** the first time it starts, and every
