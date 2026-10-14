@@ -64,11 +64,18 @@ Dockerfile):
 snoutdata containers deploy whatsapp --dockerfile ./bridge
 ```
 
-It builds the folder for `linux/arm64` with the Docker on your machine, pushes the image straight
-into your project's own repository in SnoutData's registry, and deploys it. The login it pushes
-with is made for that one repository, ends within the hour, and is logged out of Docker as soon as
-the push is done. Nothing is built on our side: the build is your Docker's, with your cache and
-your build secrets.
+It builds the folder for `linux/arm64` with the Docker on your machine into an image archive,
+uploads that to your project, and deploys it. The upload goes to your project's own address
+(`https://<ref>.api.snoutdata.com`) with a link made for that one upload: it works once, for 15
+minutes, and needs no registry login or Docker login of any kind. Nothing is built on our side: the
+build is your Docker's, with your cache and your build secrets. Studio's **Deploy from a folder**
+does the same.
+
+The archive is written by `docker buildx build --output type=oci`, which Docker Desktop's default
+builder supports. If Docker says the `docker` driver cannot export it, turn on the containerd image
+store (Docker Desktop: Settings, General, "Use containerd for pulling and storing images"), or make
+a builder that can with `docker buildx create --use`. An upload may be at most 2 GB, and the image
+in it at most 1 GB compressed (below).
 
 ### Where it runs from
 

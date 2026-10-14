@@ -13,6 +13,12 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-14
 
+- **`--dockerfile` uploads the image instead of pushing it.** `snoutdata containers deploy <name>
+  --dockerfile <dir>` (from the CLI release after 0.16.1) and Studio's Deploy from a folder build an
+  image archive with your Docker and upload it to your project's own address with a link that works
+  once, for 15 minutes. No registry login is handed to Docker, and nothing about where SnoutData
+  keeps the image is shown to you. An upload may be at most 2 GB.
+  [From a Dockerfile](/stack/containers#from-a-dockerfile-with-no-registry).
 - **Liby knows Snout Containers.** Ask her in the dashboard how to build, deploy, connect or debug a
   container: she knows the commands, the limits and the environment, sees what runs on the project
   (its status and the host's last report), and knows which tab you are on.
