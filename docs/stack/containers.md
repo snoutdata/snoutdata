@@ -34,7 +34,8 @@ changes nothing until the next `deploy`. It then waits for the container to star
 URL, or why it did not start.
 
 The image must include `linux/arm64`, which is what SnoutData runs. Most official images do. If
-yours is built for amd64 only, `deploy` says so; build both with:
+yours is built for amd64 only, `deploy` says so; build both with (or deploy with `--dockerfile`,
+below, which builds for arm64):
 
 ```bash
 docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/acme/whatsapp-bridge:1.4 --push .
@@ -53,6 +54,31 @@ echo "$GHCR_TOKEN" | snoutdata containers deploy whatsapp ghcr.io/acme/whatsapp-
 Any registry works: Docker Hub, GitHub (GHCR), GitLab, or your own. The token is stored sealed,
 is used only to pull your image, and is never shown again. A redeploy of the same container reuses
 it; `--clear-registry` forgets it.
+
+### From a Dockerfile, with no registry
+
+No registry of your own? Point `deploy` at a folder with a `Dockerfile` in it (or at the
+Dockerfile):
+
+```bash
+snoutdata containers deploy whatsapp --dockerfile ./bridge
+```
+
+It builds the folder for `linux/arm64` with the Docker on your machine, pushes the image straight
+into your project's own repository in SnoutData's registry, and deploys it. The login it pushes
+with is made for that one repository, ends within the hour, and is logged out of Docker as soon as
+the push is done. Nothing is built on our side: the build is your Docker's, with your cache and
+your build secrets.
+
+### Where it runs from
+
+The first time a container starts, its image is copied into SnoutData's registry, and every start
+after that (a restart, a crash, a move to another machine) runs the copy. So once a container has
+started, your registry being down, your token expiring or Docker Hub's rate limit never stops it
+coming back. A registry token is used at deploy and for that first copy, and not after.
+
+An image may be at most **1 GB**, compressed (its `linux/arm64` image, which is all that is
+copied). A slimmer base (alpine, distroless, a `-slim` tag) usually fixes one that is larger.
 
 ## What a container gets
 
@@ -115,6 +141,7 @@ count. `logs` shows everything it printed to stdout and stderr in the last seven
 | Memory each | 256 MB | 512 MB |
 | CPU each | half a core | half a core |
 | Sent each month, all containers together | 5 GB | 60 GB |
+| Image size, compressed | 1 GB | 1 GB |
 
 Each container runs in its own gVisor sandbox and user namespace, on a network of its project's
 own: it reaches the public internet and your project's other containers, and nothing private: not
