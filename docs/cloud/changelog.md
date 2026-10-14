@@ -20,6 +20,11 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   under gVisor with its own memory and CPU limits and a network of its own, gets `DATABASE_URL` and
   your secrets, and is stateless: what it writes inside itself is lost on a restart.
   [Containers](/stack/containers). Plus runs one, Pro three.
+- **Limits on what a container sends.** A container may open 20 connections a second (bursts of
+  200), hold 1,000 open and send 2 MB a second on them, and port 25 is closed; past a limit a
+  connection is refused at once. Connections to your container are not limited. A container that
+  keeps hitting them, or sends more than 4 GB in an hour, emails you.
+  [What a container may send](/stack/containers#what-a-container-may-send).
 - **snout-containers is open source.** The runner behind Containers is Apache-2.0 at
   [github.com/snoutdata/snout-containers](https://github.com/snoutdata/snout-containers), and an
   opt-in profile of the self-hosted stack.

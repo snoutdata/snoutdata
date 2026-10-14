@@ -116,9 +116,28 @@ count. `logs` shows everything it printed to stdout and stderr in the last seven
 | CPU each | half a core | half a core |
 
 Each container runs in its own gVisor sandbox and user namespace, on a network of its project's
-own: it reaches the public internet and your project's other containers, and nothing private, not
-another project's containers. A container over its memory is stopped and restarted. On a downgrade,
-the containers past the new plan's number are stopped and kept, and start again on an upgrade.
+own: it reaches the public internet and your project's other containers, and nothing private: not
+the machine, not the cloud's metadata service, not another project's containers. A container over
+its memory is stopped and restarted. On a downgrade, the containers past the new plan's number are
+stopped and kept, and start again on an upgrade.
+
+### What a container may send
+
+The public internet is open to a container, so what it sends is limited by how much and how fast,
+the same on every plan:
+
+| | |
+| --- | --- |
+| New connections | 20 a second, with bursts of 200 |
+| Connections it holds open | 1,000 |
+| Sending, on connections it opened | 2 MB a second, with bursts of 8 MB |
+| Port 25 | Closed. Send mail through a provider's submission port (587 or 465) |
+
+Past a limit, a new connection is refused at once (a TCP reset, so your client fails fast rather
+than hanging), and bytes over the rate are dropped, which TCP sees as a slower link. Connections TO
+your container (your users, webhooks and websockets through its address) are not counted against
+any of this. A container that is refused again and again, slowed down for long stretches, or sends
+more than 4 GB in an hour opens an alert: you are emailed which, and so are we.
 
 ## Open source, and self-hosted
 
