@@ -34,5 +34,7 @@ from the grid itself, without changing the flag.
 
 When you use the AI assistant on the managed gateway, your question and the relevant schema
 context are sent to the model to generate a reply. If you would rather keep prompts off our
-servers entirely, [Bring Your Own Key](../ai-assistant/byok) routes requests straight from
-your machine to your own AI provider.
+servers, [Bring Your Own Key](../ai-assistant/byok) routes the assistant's chat and edits straight
+from your machine to your own AI provider. [AI auto-completion](../ai-assistant/auto-completion)
+needs a fill-in-the-middle model, so if you switch it on it still uses SnoutData's completion model
+through our gateway.

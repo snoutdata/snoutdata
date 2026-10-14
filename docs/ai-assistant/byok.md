@@ -7,8 +7,9 @@ sidebar_label: Bring your own key
 # Bring your own key (BYOK)
 
 On **Plus** and **Pro**, you can point the SnoutData assistant at your own OpenAI,
-OpenRouter, or Anthropic key. Requests go straight from your machine to that provider. The
-key and your prompts never pass through SnoutData's servers.
+OpenRouter, or Anthropic key. The assistant's chat and edits go straight from your machine to
+that provider, and the key and those prompts never pass through SnoutData's servers.
+[AI auto-completion](auto-completion) is the exception: see [below](#ai-auto-completion-stays-on-snoutdatas-model).
 
 ![The BYOK provider settings: pick a provider, paste a key, add a model, optional base URL](/screenshots/bring-you-own-key.png)
 
@@ -18,6 +19,16 @@ By default the assistant runs on SnoutData's managed gateway: we serve the model
 usage, and bill it to your plan. BYOK swaps that out for your own provider account. You paste
 an API key, pick a model, and the assistant talks to that provider directly. You pay the
 provider for what you use, at their rates.
+
+## AI auto-completion stays on SnoutData's model
+
+Your key is used for the assistant's chat and its inline edits. [AI auto-completion](auto-completion),
+the ghost text in the editor, is not moved to it. Completion needs a fill-in-the-middle model, and
+we cannot count on your provider or model offering one, so it always uses SnoutData's completion
+model through our gateway, even with your own key set. It is off by default. When it is on, each
+completion sends the text around your cursor, the relevant part of the schema and some of your
+earlier queries on that connection. If prompts must go only to your provider, leave AI
+auto-completion off.
 
 ## Set it up
 

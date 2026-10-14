@@ -23,6 +23,14 @@ Completion uses its own dedicated model, separate from the chat model list. It i
 speed and SQL fill-in-the-middle rather than raw reasoning, so a small, fast model beats a
 large chat model here. In SnoutData it is served as **Snout Complete**.
 
+## Where it runs
+
+AI completion needs a fill-in-the-middle model, and we cannot count on every provider offering
+one, so it uses SnoutData's completion model through our gateway, also when the assistant uses
+[your own provider key](byok). When it is on, each completion sends the text around your
+cursor, the relevant part of the schema and some of your earlier queries on that connection.
+It is off by default.
+
 ## Settings
 
 Open **Settings, AI Settings, Auto-completion** to:
