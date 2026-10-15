@@ -161,7 +161,7 @@ const db = snout(process.env.SNOUTDATA_URL, process.env.SNOUTDATA_APP_KEY)
 const admin = snout(process.env.SNOUTDATA_URL, process.env.SNOUTDATA_SERVER_KEY)
 ```
 
-`from()` queries need the [data API](/stack/data-api) switched on; auth, storage and Realtime work
+`table()` queries need the [data API](/stack/data-api) switched on; auth, storage and Realtime work
 without it. **The server key is a password to the whole project.** Keep it in the container:
 never send it to a browser, a webhook reply or a log line.
 
@@ -189,7 +189,7 @@ any server you run does. A key that is sent is passed through unchanged.
 
 A container talks to the rest of your project the way any client does:
 
-- **Your users:** `snout_live.signal()` from SQL, or a broadcast over HTTP, reaches every
+- **Your users:** `snout_live.signal()` from SQL, or a signal over HTTP, reaches every
   [Realtime](/stack/realtime) and [Socket.IO](/stack/socketio) client in the room.
 - **Your database:** `DATABASE_URL` (see [Connecting to your project](#connecting-to-your-project)).
   A table it watches with `LISTEN` is how your handlers and functions hand it work.

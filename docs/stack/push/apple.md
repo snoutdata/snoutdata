@@ -155,7 +155,7 @@ Register the token for the user who is signed in, with their access token from
 func registerDevice(_ token: String) async {
 	var request = URLRequest(url: URL(string: "https://<ref>.api.snoutdata.com/push/v1/devices")!)
 	request.httpMethod = "POST"
-	request.setValue("<your app key>", forHTTPHeaderField: "apikey")
+	request.setValue("<your app key>", forHTTPHeaderField: "Snout-Key")
 	request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
 	request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 	// Follows the aps-environment your build is signed with.

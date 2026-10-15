@@ -74,7 +74,7 @@ act on the same containers Studio shows, so starting a project here starts it th
 
 ```bash
 npx snoutdata db url    # the database, for an ORM or DATABASE_URL
-npx snoutdata keys      # the app and server keys
+npx snoutdata keys      # the app key and server key
 ```
 
 ```js

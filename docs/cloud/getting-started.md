@@ -166,7 +166,7 @@ installed: [`@snoutdata/client`](/stack/api) is the short way in from JavaScript
 as well.
 
 ```bash
-snoutdata keys                       # the app and server keys
+snoutdata keys                       # the app key and server key
 snoutdata functions deploy hello     # your TypeScript, on the edge
 ```
 

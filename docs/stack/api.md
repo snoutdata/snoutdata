@@ -30,8 +30,8 @@ product by product, which is worth reading before you design around one.
 | `/v1/data` | REST over your tables and functions, generated from the schema | every plan | [REST and GraphQL](/stack/data-api) |
 | `/v1/graph` | The same data over GraphQL, the same policies | every plan | [REST and GraphQL](/stack/data-api) |
 | `/v1/identity` | Sign-up, sign-in and sessions, signed with your project's own secret | every plan | [Authentication](/stack/auth) |
-| `/v1/files` | Files in buckets, in object storage | every plan | [File storage](/stack/storage) |
-| `/v1/live` | Broadcast, presence and table changes, over a websocket | broadcast and presence every plan; table changes paid | [Realtime](/stack/realtime) |
+| `/v1/files` | Files in spaces, in object storage | every plan | [File storage](/stack/storage) |
+| `/v1/live` | Signals, the roster and table changes, over a websocket | signals and the roster every plan; table changes paid | [Realtime](/stack/realtime) |
 | `/v1/fn` | Your own TypeScript | every plan | [Snout Functions](/stack/functions) |
 | `/push/v1` | Notifications to iPhone, Android and the web | every plan; a later send paid | [Push notifications](/stack/push) |
 
@@ -68,8 +68,9 @@ const BASE = 'https://<ref>.api.snoutdata.com/v1/data'
 const KEY = '<your app key>'
 
 // The app key goes in both headers signed out. Once somebody signs in, put THEIR access token
-// in Authorization and leave apikey alone: that is what makes `snout_identity.user_id()` work in your policies.
-const headers = { apikey: KEY, Authorization: `Bearer ${KEY}` }
+// in Authorization and leave Snout-Key alone: that is what makes `snout_identity.user_id()` work
+// in your policies.
+const headers = { 'Snout-Key': KEY, Authorization: `Bearer ${KEY}` }
 
 const todos = await fetch(`${BASE}/todos?select=*&done=eq.false`, { headers }).then((r) => r.json())
 
@@ -97,10 +98,10 @@ import { snout } from '@snoutdata/client'
 
 const db = snout('https://<ref>.api.snoutdata.com', '<your app key>')
 
-const { data, error } = await db.from('todos').select('id, title').eq('done', false)
+const { data, error } = await db.table('todos').read('id, title').eq('done', false)
 ```
 
-Once somebody signs in with `db.auth`, every request carries their token for you, so your policies
+Once somebody signs in with `db.identity`, every request carries their token for you, so your policies
 see them. A refusal is an `error` in the result, never a throw.
 
 ### In a page with no build step
@@ -112,29 +113,29 @@ release never changes a page that is already live:
 
 ```html
 <script type="module">
-  import { snout } from 'https://cdn.jsdelivr.net/npm/@snoutdata/client@0.3.2/dist/index.js'
+  import { snout } from 'https://cdn.jsdelivr.net/npm/@snoutdata/client@0.4.0/dist/index.js'
 
   const db = snout('https://<ref>.api.snoutdata.com', '<your app key>')
 
-  const room = db.channel('room:42', { config: { presence: { key: crypto.randomUUID() } } })
+  const room = db.live.topic('room:42', { config: { roster: { key: crypto.randomUUID() } } })
   room
     .listen('roster', { event: 'sync' }, () => console.log(room.presenceState()))
-    .subscribe(async (status) => {
+    .join(async (status) => {
       if (status === 'SUBSCRIBED') {
-        await room.track({ name: 'Purple Otter' })
+        await room.announce({ name: 'Purple Otter' })
       }
     })
 </script>
 ```
 
-`https://unpkg.com/@snoutdata/client@0.3.2/dist/index.js` serves the same files. The app key
+`https://unpkg.com/@snoutdata/client@0.4.0/dist/index.js` serves the same files. The app key
 belongs in a page; the server key never does (see [your two keys](#your-two-keys)).
 The Realtime connection underneath is documented in
 [the Realtime wire protocol](/stack/realtime#the-wire-protocol), for a client written by hand.
 
 **It is checked rather than believed.** A harness drives a real application through the client
 against a real project: sign-up, sign-in, an insert under row-level security and a read-back, the
-signed-out refusal, broadcast, `changes`, a file up and down, a signed URL, a Snout
+signed-out refusal, signals, table `changes`, a file up and down, a signed link, a Snout
 Function and a GraphQL query, all of it passing.
 
 ## Your two keys
@@ -147,8 +148,8 @@ snoutdata keys rotate --force     # new ones
 
 | Key | Who it is | Where it belongs |
 | --- | --- | --- |
-| `snout_app` | a signed-out visitor, and then whoever signs in | your front end, in the browser |
-| `snout_server` | **bypasses row-level security entirely** | a server you control, and nowhere else |
+| app key | a signed-out visitor, and then whoever signs in | your front end, in the browser |
+| server key | **bypasses row-level security entirely** | a server you control, and nowhere else |
 
 The two look identical in a terminal and the difference between them is your entire dataset, so
 the CLI says which is which every time it prints them.
@@ -175,16 +176,16 @@ the rate limits, and what is missing.
 
 ## Storage
 
-`/v1/files` holds files in buckets, with policies you write yourself as SQL on `snout_files.files`
-and signed URLs for handing out a private file temporarily. Bytes are streamed through the storage
+`/v1/files` holds files in spaces, with policies you write yourself as SQL on `snout_files.files`
+and signed links for handing out a private file temporarily. Bytes are streamed through the storage
 service, never held whole in memory.
 
-**[File storage](/stack/storage) is the page**: buckets, a policy worth copying, image transforms, the
+**[File storage](/stack/storage) is the page**: spaces, a policy worth copying, image transforms, the
 per-plan sizes, and the storage-policy defect that was fixed on 2026-09-11.
 
 ## Realtime
 
-`/v1/live` carries three things on one websocket: **broadcast** and **presence**, which are a
+`/v1/live` carries three things on one websocket: **signals** and the **roster**, which are a
 message bus between your clients and are free on every plan, and **table changes**, which are your
 database's own inserts, updates and deletes arriving as they are committed, filtered by the same
 row-level security that governs a read, and are paid.

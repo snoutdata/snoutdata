@@ -181,7 +181,7 @@ fun registerDevice(token: String) {
 	val connection = URL("https://<ref>.api.snoutdata.com/push/v1/devices").openConnection() as HttpURLConnection
 	connection.requestMethod = "POST"
 	connection.doOutput = true
-	connection.setRequestProperty("apikey", "<your app key>")
+	connection.setRequestProperty("Snout-Key", "<your app key>")
 	connection.setRequestProperty("Authorization", "Bearer $accessToken")
 	connection.setRequestProperty("Content-Type", "application/json")
 	connection.outputStream.use { it.write("""{"transport": "fcm", "token": "$token"}""".toByteArray()) }

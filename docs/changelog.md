@@ -136,7 +136,7 @@ A security release, from a review of the whole app. Updating is recommended.
   deployed".
 - **Every section of a project fits its tab**, including Auth's user list and Realtime's
   addresses.
-- Deleting a storage bucket says it was deleted, and Settings names the plans that include
+- Deleting a storage space says it was deleted, and Settings names the plans that include
   point-in-time restore.
 
 **Everywhere else**

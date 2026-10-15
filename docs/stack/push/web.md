@@ -80,7 +80,7 @@ subscribeButton.onclick = async () => {
 `subscribeWeb` fetches your project's public key, subscribes the browser to its push service with
 it, and registers the subscription as a device.
 
-**Who the device belongs to.** With a user signed in through `db.auth`, the device is theirs, and
+**Who the device belongs to.** With a user signed in through `db.identity`, the device is theirs, and
 `user_ids` reaches it. For a page whose visitors never sign in, allow anonymous devices once, as
 the project's owner:
 
@@ -99,7 +99,7 @@ Brave's privacy settings; there is nothing your page can do about it, so say so 
 
 ```js
 const base = 'https://<ref>.api.snoutdata.com/push/v1'
-const headers = { apikey: APP_KEY, Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' }
+const headers = { 'Snout-Key': APP_KEY, Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' }
 
 const { key } = await (await fetch(`${base}/vapid-public-key`, { headers })).json()
 const subscription = await registration.pushManager.subscribe({

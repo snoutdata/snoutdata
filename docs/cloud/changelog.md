@@ -76,7 +76,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   SQL reaches. [Socket.IO](/stack/socketio), with a guide to moving a Node Socket.IO server.
   Paid plans.
 - **`snout_live.signal()` from your own SQL is delivered.** Run as the project's owner (the SQL editor,
-  your triggers and cron jobs), it was refused and only logged a warning, so the broadcast reached
+  your triggers and cron jobs), it was refused and only logged a warning, so the signal reached
   nobody. The owner role now has the same rights on `snout_live.signals` as the API roles.
 - **Self-hosted: snout-realtime 0.1.9** in the stack's `compose.yaml`, with handlers, Socket.IO and
   the fix above.
@@ -135,8 +135,8 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   `vsn=1.0.0`, a client that sends no `join_ref` now finds its join's `ref` on the server's `phx_close` and `system` messages,
   so the close of a channel it already replaced can be told from the close of the new one.
   `realtime logs` now shows that replacement as a closed channel.
-- **Realtime: a join that asks for presence sees who is already there.** A join with a
-  `config.presence` that does not say `enabled` gets `roster_state` straight away, not only after
+- **Realtime: a join that asks for the roster sees who is already there.** A join with a
+  `config.roster` that does not say `enabled` gets `roster_state` straight away, not only after
   its first `track`.
 - **Realtime: messages on a channel the server closed say why.** Each one still gets "unmatched
   topic", now with a `message` naming the reason the channel was closed (for example "Too many
@@ -195,7 +195,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 - **`@snoutdata/client` 0.3.3.** With the PKCE flow (the default for apps that sign in through a
   redirect), a link carrying a session in its `#access_token` fragment no longer replaces the
   signed-in session, so a crafted link cannot sign a user into somebody else's account. The
-  `apikey` and `Authorization` headers are not carried across a redirect to another origin, and
+  `Snout-Key` and `Authorization` headers are not carried across a redirect to another origin, and
   storage paths with `.` or `..` segments are refused.
 - **More security fixes, from a review of the whole platform.**
   - **SAML sign-in only for your own domains.** A SAML provider's users sign in only with an
@@ -203,8 +203,8 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
     provider sends addresses outside them, add those domains to the provider first.
   - **Realtime stays up when one client misbehaves.** A connection that stops reading is closed
     after 30 seconds instead of queueing without end, one that sends nothing for 60 seconds is
-    closed (client libraries send a heartbeat well inside that), and presence and message sizes
-    have the same limits as the protocol's reference server. Presence on a private channel only
+    closed (client libraries send a heartbeat well inside that), and roster and message sizes
+    have the same limits as the protocol's reference server. The roster on a private channel only
     reaches members your policies let read it.
   - **Your project's API address never sees our sign-in cookie,** so a function or file on
     `<ref>.api.snoutdata.com` cannot read a dashboard session.
@@ -227,7 +227,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   - **Uploaded HTML, SVG and XML can't run script on your project's API address.** HTML is served
     as plain text whatever the capitalisation of its type, and SVG and XML keep their type but
     are served with a policy that blocks script, so an SVG still shows in an `<img>`. Copying an
-    object is now held to the destination bucket's allowed types, as an upload is.
+    object is now held to the destination space's allowed types, as an upload is.
   - **A signed download URL can't be used to upload, and a signed upload URL can't be used to
     download.** Signed URLs you have already handed out keep working for what they were made for.
 
@@ -263,16 +263,16 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 - **Guest sign-in.** Switch it on with `snoutdata auth anonymous on` or on the dashboard's Auth tab,
   and `guestSignIn()` gives a browser a real session with no email or password, so
   `snout_identity.user_id()` works in your policies and the token says `is_anonymous`. A guest who adds an email
-  address with `updateUser` becomes a full account with the same user id. At most 30 guests an hour
+  address with `changePerson` becomes a full account with the same user id. At most 30 guests an hour
   from one address. See [guest sign-in](/stack/auth#guest-sign-in).
 - **See what Realtime is doing.** `snoutdata realtime inspect` shows the channels open now, who is
-  on each, their presence, when each client was last heard from, and the last minute of messages
+  on each, the roster, when each client was last heard from, and the last minute of messages
   (`--watch` follows joins and leaves as they happen). `snoutdata realtime logs --since 10m` lists
   connections, joins, leaves and disconnects with the reason each ended, such as a client's
   heartbeat timeout, a lost connection or "Too many messages per second". The dashboard's Realtime
   page has the same under **Live channels**.
-- **The Realtime limit, stated exactly.** A broadcast counts once however many clients receive it,
-  against the whole project's messages a second; presence and broadcasts sent from the database do
+- **The Realtime limit, stated exactly.** A signal counts once however many clients receive it,
+  against the whole project's messages a second; the roster and signals sent from the database do
   not count. Past the limit the sending channel gets "Too many messages per second" and is closed,
   and nothing is dropped silently. See [Realtime](/stack/realtime).
 - **The Realtime wire protocol is documented**, as a stable interface, with a hand-written client
@@ -280,10 +280,10 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 - **`@snoutdata/client` from a CDN, with no build step.** A page can import it from
   `https://cdn.jsdelivr.net/npm/@snoutdata/client@0.3.2/dist/index.js` in a
   `<script type="module">`. See [the client library](/stack/api#in-a-page-with-no-build-step).
-- **`@snoutdata/client` 0.3.2: a rejoined channel announces its presence again.** When a channel
+- **`@snoutdata/client` 0.3.2: a rejoined channel announces its roster entry again.** When a channel
   was closed and rejoined (the message limit, a dropped connection), the others saw that client
-  leave and never come back. The rejoin now tracks whatever it last tracked. And
-  `guestSignIn({ options: { data } })` keeps the metadata, which 0.3.1 dropped.
+  leave and never come back. The rejoin now announces whatever it last announced. And
+  `guestSignIn({ options: { profile_data } })` keeps the profile data, which 0.3.1 dropped.
 - **`snoutdata upgrade`** installs the newest CLI the way it was installed: a binary downloads the
   release, checks its SHA-256 and replaces itself; an npm install runs npm. `--check` only looks.
 - **An out-of-date CLI says what to do.** It exits 11 with `"code":"outdated"`, naming the version
@@ -296,7 +296,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 - **`snoutdata login --email you@example.com`** signs in as that account: Google offers it, SSO
   takes the domain from it, and a different account coming back is reported at once and by every
   `whoami` after.
-- **`snoutdata products` and `projects show` list Realtime**, as always on: broadcast and presence
+- **`snoutdata products` and `projects show` list Realtime**, as always on: signals and the roster
   on every plan, table changes on Plus and Pro.
 - **`snoutdata <command> --help` explains each flag**, one line each, and `--help --json` carries
   them as `flagHelp`.
@@ -332,13 +332,13 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 - **SnoutTime is in the self-hosted stack and the local database.** The Postgres image the
   stack's compose file and `snoutdata start` run now includes SnoutTime, the same as a hosted
   project, so `create extension snouttime` works locally too.
-- **Realtime counts socket broadcasts against your plan's messages a second.** Only broadcasts sent
+- **Realtime counts socket signals against your plan's messages a second.** Only signals sent
   over HTTP were counted, so one client on a socket could send without limit. Past the limit the
   channel is closed with "Too many messages per second".
 - **A free project's table-changes refusal names the plan**: "Table changes (postgres_changes) are
   part of the Plus and Pro plans, and this project is not on one of them." It said "not enabled
   for this project", which read as a fault.
-- **Self-hosted: snout-realtime 0.1.3** in the stack's `compose.yaml`, with the same broadcast limit.
+- **Self-hosted: snout-realtime 0.1.3** in the stack's `compose.yaml`, with the same signal limit.
 
 - **`snoutdata projects pause`, `resume` and `delete` wait until it is true.** They printed
   "resumed." while the project was still paused; now they show each state and finish when the
@@ -443,7 +443,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   project, dropping every connection.
 - **`snoutdata db restore` moves an export into another of your projects.** It used to report
   dozens of errors and a failed restore, and a restored project could not switch Auth on afterwards.
-  It now restores your own tables plus your users, buckets and push devices, and tells you which
+  It now restores your own tables plus your users, spaces and push devices, and tells you which
   products to switch on first.
 - **The SQL editor shows large rows without stalling.** A result now stops at 500 rows or 8 MB,
   whichever comes first, and still tells you how many rows there are in all. Selecting a table of
@@ -630,7 +630,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 - **Realtime: table changes with a filter.** A subscription with a `filter` (`done=eq.false`,
   say) was refused with "invalid column for filter" on any table you made. It now subscribes and
   receives the rows the filter matches.
-- **Realtime: broadcast over HTTP.** Sending on a channel you have not joined (the client sends
+- **Realtime: signals over HTTP.** Sending on a channel you have not joined (the client sends
   it over HTTP then) failed with a 404. It now reaches everyone on the channel.
 
 ## 2026-09-27
@@ -654,7 +654,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-09-26
 
-- **Dashboard.** The Storage tab can make and delete buckets, make a bucket public or private,
+- **Dashboard.** The Storage tab can make and delete spaces, make a space public or private,
   and upload, download and delete files. Upload takes several files at once, into an optional
   folder, or a drop onto the Files card. Each change goes through your project's storage API, the
   same one your app uses.
@@ -666,8 +666,8 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   `snoutdata gen types typescript`, rows stay exact.
 - **`@snoutdata/client` 0.2.0.** A session can live in a cookie on your parent domain, so your
   subdomains share one sign-in ([`cookieStorage`](/stack/auth#one-sign-in-across-your-subdomains)). Adds
-  `auth.signInWithIdToken` (Google One Tap and similar), `identity.ssoSignIn`,
-  `auth.startAutoRefresh`, and a `debug` option that says why a session ended. Two tabs or two
+  `identity.signInWithIdToken` (Google One Tap and similar), `identity.ssoSignIn`,
+  `identity.startAutoRefresh`, and a `debug` option that says why a session ended. Two tabs or two
   processes sharing one session no longer sign each other out when one refreshes it.
 - **Dashboard.** A project's API tab starts its code with `@snoutdata/client`.
 - **Time series.** SnoutTime 0.1.6. Automatic sealing failed with "permission denied for schema
@@ -786,7 +786,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 - **`snoutdata start`** runs a project on your own machine, Windows included, from a plain
   install. See [local development](/stack/local).
 - **The data API** can be switched on by anyone on a paid plan, you can write your own storage
-  policies, and Realtime `changes` delivers events.
+  policies, and Realtime table `changes` are delivered.
 
 ## 2026-09-10
 

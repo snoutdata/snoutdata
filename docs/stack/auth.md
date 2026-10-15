@@ -12,7 +12,7 @@ or as a guest with no account at all.
 
 ## How it works
 
-**Your users are rows in your own database.** They land in the `auth` schema of your project,
+**Your users are rows in your own database.** They land in the `snout_identity` schema of your project,
 beside your tables, and you can join against them.
 
 **The token is one your database reads.** Tokens are signed with your project's own secret, so
@@ -139,7 +139,7 @@ It takes effect when your auth service restarts, which takes about a minute.
 ```js
 const { data: { session } } = await db.identity.currentSession()
 if (!session) {
-  await db.identity.guestSignIn({ options: { data: { name: 'Sleepy Otter' } } })
+  await db.identity.guestSignIn({ options: { profile_data: { name: 'Sleepy Otter' } } })
 }
 ```
 
@@ -147,8 +147,8 @@ Check for a session first. Every call to `guestSignIn()` makes a **new** guest, 
 on every page load gives the same person a new user id each time. The client keeps the session in
 the browser, so the guest is the same user when they come back.
 
-`data` is optional and lands in the user's `profile_data`, where a display name for a guest is
-easy to keep and to change with `db.identity.changePerson({ data: { name } })`.
+`profile_data` is optional and is kept on the user (and in their token), where a display name for a guest is
+easy to keep and to change with `db.identity.changePerson({ profile_data: { name } })`.
 
 ### Guests in your policies
 
@@ -190,7 +190,7 @@ it, for example with a scheduled job that removes old rows where `is_anonymous` 
 const { data: { session } } = await db.identity.currentSession()
 ```
 
-Every request from then on carries two things: the app key in `apikey`, which names the project,
+Every request from then on carries two things: the app key in `Snout-Key`, which names the project,
 and the user's access token in `Authorization`, which names the person. That is what makes
 `snout_identity.user_id()` the signed-in user rather than nobody. The client library does this for you; if you
 call the API by hand, it is the one detail worth getting right.
@@ -265,15 +265,15 @@ misbehaving.
 Authentication is **snout-auth**, our own server, open source under the Apache License 2.0 at
 [github.com/snoutdata/snout-auth](https://github.com/snoutdata/snout-auth). It runs inside your
 project's own container, next to your database, as one static binary using about a megabyte of
-memory. It keeps your users, sessions and factors in your database's `auth` schema, so nothing
+memory. It keeps your users, sessions and factors in your database's `snout_identity` schema, so nothing
 about them lives anywhere else.
 
 ## Two-factor sign-in
 
-Users can add an authenticator app (TOTP) as a second factor. The endpoints are the standard ones
-under `/v1/identity/second-factors`: `POST /factors` with `{"factor_type": "totp"}` enrols one and returns
-its secret and QR code, `POST /factors/<id>/challenge` starts a check, and
-`POST /factors/<id>/verify` with the challenge id and the six-digit code returns a session at
+Users can add an authenticator app (TOTP) as a second factor. The endpoints are
+under `/v1/identity/second-factors`: `POST /second-factors` with `{"factor_type": "totp"}` enrols one and returns
+its secret and QR code, `POST /second-factors/<id>/challenge` starts a check, and
+`POST /second-factors/<id>/verify` with the challenge id and the six-digit code returns a session at
 `aal2`. A password sign-in by a user with a verified factor is `aal1` until they verify, so a
 policy can require the second factor with `snout_identity.claims() ->> 'aal' = 'aal2'`.
 

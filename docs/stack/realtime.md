@@ -11,8 +11,8 @@ confuse and worth keeping apart:
 
 | | What it is | Who it is between | Plan |
 | --- | --- | --- | --- |
-| **Broadcast** | A message bus. You send a payload on a channel, everyone on that channel gets it. | Your clients, to each other | Every plan, free |
-| **Presence** | Who is currently on a channel, kept in sync as people join and leave. | Your clients, to each other | Every plan, free |
+| **Signals** | A message bus. You send a payload on a channel, everyone on that channel gets it. | Your clients, to each other | Every plan, free |
+| **Roster** | Who is currently on a channel, kept in sync as people join and leave. | Your clients, to each other | Every plan, free |
 | **Table changes** | Your database's own inserts, updates and deletes, arriving as they are committed. | Your **database**, to your clients | Paid |
 
 The first two never touch your tables: a cursor position, a typing indicator, a chat message in a
@@ -20,7 +20,7 @@ room nobody is storing. The third is your data, and it is the one that costs mon
 consumes a replication slot and a walsender inside your own database.
 
 There is nothing to switch on. Every project can use Realtime from the moment it is created:
-broadcast and presence on every plan, table changes on paid plans once the table is in the
+signals and the roster on every plan, table changes on paid plans once the table is in the
 publication (below).
 
 ## Connecting
@@ -36,18 +36,18 @@ const db = snout('https://<ref>.api.snoutdata.com', '<your app key>')
 Everything below is that `db`. The key in the browser is the **app** key, and what a subscriber
 is allowed to see is decided by row-level security, not by the key.
 
-## Broadcast
+## Signals
 
-A channel is a name you invent. Nothing is stored, and nothing is read from your database:
+A topic is a name you invent. Nothing is stored, and nothing is read from your database:
 
 ```js
-const room = db.channel('room:42')
+const room = db.live.topic('room:42')
 
 room
   .listen('signal', { event: 'cursor' }, ({ payload }) => drawCursor(payload))
-  .subscribe((status) => {
+  .join((status) => {
     if (status === 'SUBSCRIBED') {
-      room.send({ type: 'broadcast', event: 'cursor', payload: { x: 12, y: 30 } })
+      room.signal({ type: 'signal', event: 'cursor', payload: { x: 12, y: 30 } })
     }
   })
 ```
@@ -55,28 +55,28 @@ room
 Use it for the things that are worthless a second later: cursors, "is typing", a live count, a
 nudge telling other tabs to refetch something.
 
-## Presence
+## Roster
 
-The same channel can track who is on it. Each client publishes a small state, and everyone gets
+The same topic can keep a roster of who is on it. Each client publishes a small state, and everyone gets
 the whole set whenever it changes:
 
 ```js
-const room = db.channel('room:42', { config: { presence: { key: userId } } })
+const room = db.live.topic('room:42', { config: { roster: { key: userId } } })
 
 room
   .listen('roster', { event: 'sync' }, () => setOnline(room.presenceState()))
-  .subscribe(async (status) => {
+  .join(async (status) => {
     if (status === 'SUBSCRIBED') {
-      await room.track({ name: 'Ada', editing: 'invoice-7' })
+      await room.announce({ name: 'Ada', editing: 'invoice-7' })
     }
   })
 ```
 
-A client that asks for presence in its config is sent who is already there as soon as it joins,
-before it tracks anything, so a player who reconnects sees the room at once even if it waits a
-moment before tracking again.
+A client that asks for the roster in its config is sent who is already there as soon as it joins,
+before it announces anything, so a player who reconnects sees the room at once even if it waits a
+moment before announcing again.
 
-Presence state lives in the channel, not in your database. When the last client leaves, it is
+The roster lives in the channel, not in your database. When the last client leaves, it is
 gone.
 
 ## Private channels
@@ -103,16 +103,16 @@ create policy "members write to their rooms" on snout_live.signals
 ```
 
 ```js
-const room = db.channel('room:42', { config: { private: true } })
+const room = db.live.topic('room:42', { config: { private: true } })
 ```
 
 A `select` policy lets a user join and receive; an `insert` policy lets them send. With neither,
 the join is refused. A send the policy refuses is answered with an error when you asked for an
-acknowledgement (`broadcast: { ack: true }`), so the client says `error` rather than timing out.
+acknowledgement (`signal: { ack: true }`), so the client says `error` rather than timing out.
 
-## Broadcast from your database
+## Signals from your database
 
-A row written to `snout_live.signals` is broadcast to the topic it names, so a trigger or a
+A row written to `snout_live.signals` is sent to the topic it names, so a trigger or a
 function can tell your clients something happened without a client being in the loop:
 
 ```sql
@@ -127,25 +127,25 @@ select snout_live.signal(
 `snout_live.broadcast_changes(topic, event, operation, table, schema, new, old)` sends a row
 change in the same shape as a table change, for use in a trigger. Messages are kept for three
 days, so a client can ask for the ones it missed when it joins:
-`{ config: { broadcast: { replay: { since: <epoch ms>, limit: 25 } }, private: true } }`.
+`{ config: { signal: { replay: { since: <epoch ms>, limit: 25 } }, private: true } }`.
 
-## Broadcast without a socket
+## Signals without a socket
 
-A server that has nothing to listen to can send without joining: `send()` on a channel that is
-not subscribed goes over HTTP instead.
+A server that has nothing to listen to can send without joining: `signal()` on a topic that is
+not joined goes over HTTP instead.
 
 ```js
-await db.channel('room:42').send({ type: 'broadcast', event: 'refresh', payload: {} })
+await db.live.topic('room:42').signal({ type: 'signal', event: 'refresh', payload: {} })
 ```
 
 Underneath it is `POST https://<ref>.api.snoutdata.com/v1/live/signal` with
-`{ "messages": [{ "topic", "event", "payload", "private" }] }`, the key as `apikey` and a user's
+`{ "messages": [{ "topic", "event", "payload", "private" }] }`, the key as `Snout-Key` and a user's
 token as `Authorization: Bearer`. A private message is sent only if that user's `insert` policy
 allows it.
 
 ## Handlers: your code on a message
 
-Broadcast relays a message and runs nothing of yours. A **handler** is the other half: a SQL
+A signal is relayed and runs nothing of yours. A **handler** is the other half: a SQL
 function that runs when a client sends a given event, with the client's own identity, and whose
 return value goes back to that client. It is how you validate, store and fan out a message in
 one step, without a server of your own.
@@ -173,8 +173,8 @@ select snout_live.on('send', 'public.send_message(jsonb)', 'room:*');
 ```
 
 ```js
-const room = db.channel('room:42')
-room.subscribe()
+const room = db.live.topic('room:42')
+room.join()
 
 const { data, error } = await room.call('send', { room: '42', body: 'hi' })
 // data: { id: 17 }    error: null, or a RealtimeHandlerError with a code
@@ -194,7 +194,7 @@ What holds, and what it means for the function you write:
   database (no row, no WAL).
 - **A handled event is not relayed.** When a handler is registered for it, the message a client
   sent reaches nobody as it arrived; your function says what goes out. An event with no handler
-  is broadcast exactly as before.
+  is relayed exactly as before.
 - **The reply is the return value.** `call()` resolves with it. A function that raises comes
   back as `error`, with the SQLSTATE as its `code` (`P0001` for a plain `raise exception`), or
   `unauthorized` (a permission or policy refused it), `timeout` (it ran past 5 seconds) or
@@ -228,13 +228,13 @@ the same name are the same topic, so the two kinds of client hear each other. Th
 This is the half that reads your database:
 
 ```js
-db.channel('todos-feed')
+db.live.topic('todos-feed')
   .listen(
     'changes',
     { event: '*', schema: 'public', table: 'todos', filter: 'done=eq.false' },
     ({ eventType, new: row, old }) => apply(eventType, row, old)
   )
-  .subscribe()
+  .join()
 ```
 
 **Two things have to be true before a row reaches that callback**, and both are yours to set:
@@ -255,7 +255,7 @@ exist": change the name to `snoutdata_realtime` in it.
 
 **2. The row must be visible to the subscriber, under your policies.** A change is filtered by the
 same row-level security that governs a `select`, evaluated as the user whose token opened the
-socket. A table with no policy sends nothing to an `snout_app` subscriber, which is the safe default
+socket. A table with no policy sends nothing to a `snout_app` subscriber, which is the safe default
 and the usual reason a first subscription looks silent.
 
 For an `update` or a `delete`, Postgres only tells us the primary key of the old row unless you ask
@@ -287,9 +287,9 @@ What you can rely on:
 
 | | Free | Plus | Pro |
 | --- | --- | --- | --- |
-| Broadcast and presence | yes | yes | yes |
+| Signals and the roster | yes | yes | yes |
 | Table changes (`changes`) | **no** | yes | yes |
-| Private channels, broadcast from the database | **no** | yes | yes |
+| Private channels, signals from the database | **no** | yes | yes |
 | Handlers and Socket.IO | **no** | yes | yes |
 | Concurrent clients | 100 | 500 | 2,000 |
 | Channels per client | 100 | 100 | 100 |
@@ -304,25 +304,25 @@ across machines to go further.
 
 ### How messages a second are counted
 
-- **Once per message sent, however many receive it.** One broadcast on a channel of five clients
+- **Once per message sent, however many receive it.** One signal on a channel of five clients
   is one message, not five. A batch sent over HTTP counts each message in it.
 - **For the whole project, not per client.** Every client of the project shares the one
   allowance, over one-second windows. Five players each sending 25 position updates a second is
   125 a second, which is over the free plan's 100.
-- **Presence is not counted against it**, but each channel may call `track` or `untrack` at most
-  5 times in 30 seconds. Track when something changes, not on a timer.
-- **Broadcasts from your database** (`snout_live.signal`) are not counted against it.
+- **The roster is not counted against it**, but each channel may call `announce` or `untrack` at most
+  5 times in 30 seconds. Announce when something changes, not on a timer.
+- **Signals from your database** (`snout_live.signal`) are not counted against it.
 
-**Past the limit, nothing is dropped silently.** The broadcast that went over is not delivered,
+**Past the limit, nothing is dropped silently.** The signal that went over is not delivered,
 and the channel it was sent on is closed: the sending client receives a `system` message
 `{ "status": "error", "extension": "system", "message": "Too many messages per second" }` on that
 channel, then `phx_close`. The socket stays open and its other channels are untouched. With
-`@snoutdata/client`, `on('system', ...)` hears the sentence, the subscribe callback hears
+`@snoutdata/client`, `listen('system', ...)` hears the sentence, the join callback hears
 `CLOSED`, and the channel rejoins by itself after a short backoff. Closing the channel takes the
-client out of presence, so the others on it see a leave until it rejoins. Since
-`@snoutdata/client` 0.3.2 the rejoin announces whatever the client last tracked, so it comes back
-on its own; with an older client, or a client of your own, track again when the rejoin is
-answered. A send with `broadcast: { ack: true }` is not answered when it is the
+client off the roster, so the others on it see a leave until it rejoins. Since
+`@snoutdata/client` 0.3.2 the rejoin announces whatever the client last announced, so it comes back
+on its own; with an older client, or a client of your own, announce again when the rejoin is
+answered. A send with `signal: { ack: true }` is not answered when it is the
 one that went over, so it times out.
 
 The HTTP door answers 429 instead: "You have exceeded your rate limit" for one message, and "Too
@@ -332,13 +332,13 @@ A game should send positions at a fixed rate that fits (a few a second per playe
 frame), and treat a `Too many messages per second` closure as the signal to slow down.
 `snoutdata realtime inspect` shows each channel's busiest second over the last minute.
 
-**Why table changes are the paid half**, stated rather than left to look arbitrary: broadcast and
-presence cost a socket on a server we already run, while a table subscription consumes a
+**Why table changes are the paid half**, stated rather than left to look arbitrary: signals and
+the roster cost a socket on a server we already run, while a table subscription consumes a
 replication slot and a walsender inside your own database, for as long as it is open. On a free
-project the channel's subscribe callback gets `CHANNEL_ERROR` with "Table changes
+project the channel's join callback gets `CHANNEL_ERROR` with "Table changes
 (postgres_changes) are part of the Plus and Pro plans, and this project is not on one of them.
-Broadcast and presence work on every plan.", which is the plan and not a fault; broadcast and presence on the same
-project work. Private channels and broadcast from the database read your database too, so they come with
+Broadcast and presence work on every plan.", which is the plan and not a fault; signals and the roster on the same
+project work. Private channels and signals from the database read your database too, so they come with
 it. Downgrading takes effect the next time your project's tenant is registered, not instantly.
 
 ## Seeing what Realtime is doing
@@ -347,7 +347,7 @@ The server keeps, for each project, the channels open now and a log of connectio
 going with the reason each one ended. Two ways to read it, both for the project's owner only:
 
 ```sh
-snoutdata realtime inspect                  # every channel: who is on it, their presence, the last minute
+snoutdata realtime inspect                  # every channel: who is on it, the roster, the last minute
 snoutdata realtime inspect --channel room:42 --watch   # one channel, then joins and leaves as they happen
 snoutdata realtime logs --since 10m         # connects, joins, leaves and disconnects, with why
 snoutdata realtime logs --channel room:42 --json
@@ -355,11 +355,11 @@ snoutdata realtime logs --channel room:42 --json
 
 In the dashboard it is **Realtime → Live channels** on the project, refreshed every ten seconds.
 
-What you see for each client is its socket number, its presence key, when it joined and **when it
+What you see for each client is its socket number, its roster key, when it joined and **when it
 was last heard from**. A client sends a heartbeat every 25 seconds, so one that has been silent
 for more than a minute has almost certainly gone without closing (a phone losing signal, a laptop
 lid shut). The server does not time a socket out for a missed heartbeat; the client does, and a
-client that vanishes without closing stays on its channels, and in presence, until the network
+client that vanishes without closing stays on its channels, and on the roster, until the network
 reports the connection dead. "Last heard" is how to tell that apart from a player who is there.
 
 The log says why each socket and channel ended:
@@ -370,7 +370,7 @@ The log says why each socket and channel ended:
 | `client closed (4000: heartbeat timeout)` | The client gave up after a heartbeat went unanswered, and reconnects. |
 | `connection lost (no close frame)` | The connection ended without a goodbye: a network change, a killed tab. |
 | `Too many messages per second` | The project went over its messages a second; that channel was closed. |
-| `Client presence rate limit exceeded` | More than 5 `track` calls in 30 seconds on one channel. |
+| `Client presence rate limit exceeded` | More than 5 `announce` calls in 30 seconds on one channel. |
 | `replaced by a new join on the same topic` | The client joined a topic it already had open; the old channel was closed. One of these between every join is a client rejoining in a loop. |
 | A join refused with a reason | The key, the plan's limits, or a private channel's policy said no. |
 | `closed by the server ...` | The project's Realtime settings changed (a key rotation), so every socket was closed to reconnect. |
@@ -380,8 +380,8 @@ project runs on restarts. It is the server's side of the story; it does not reco
 contents.
 
 Over HTTP it is `GET https://<ref>.api.snoutdata.com/v1/live/inspect` (`?channel=`) and
-`/v1/live/events` (`?since=<epoch ms>&channel=`), with the **server** key as `apikey`.
-The app key is refused: this is every player's presence, which is not a web page's to read.
+`/v1/live/events` (`?since=<epoch ms>&channel=`), with the **server** key as `Snout-Key`.
+The app key is refused: this is every player's roster, which is not a web page's to read.
 
 ## How it runs
 
@@ -425,7 +425,7 @@ With `vsn=1.0.0` every frame is a text frame holding one JSON object:
 { "topic": "live:room:42", "event": "phx_join", "payload": { }, "ref": "1", "join_ref": "1" }
 ```
 
-- `topic` is `realtime:` followed by the channel name, or `phoenix` for the socket itself.
+- `topic` is `live:` followed by the channel name, or `phoenix` for the socket itself.
 - `ref` is any string you choose, unique per frame you send. The answer to that frame is a
   `phx_reply` carrying the same `ref`. Frames the server pushes on its own carry `"ref": null`,
   except `phx_close` and `system`, which carry the join ref of the channel they are about (see
@@ -435,7 +435,7 @@ With `vsn=1.0.0` every frame is a text frame holding one JSON object:
   frames have no `join_ref` field; `phx_close` and `system` carry it in `ref` instead.
 
 `vsn=2.0.0` is the same messages as a JSON array `[join_ref, ref, topic, event, payload]`, plus
-binary frames for broadcasts whose payload is bytes. Use `1.0.0` for a hand-written client.
+binary frames for signals whose payload is bytes. Use `1.0.0` for a hand-written client.
 
 ### Heartbeat
 
@@ -456,20 +456,20 @@ connected to nothing.
 { "topic": "live:room:42", "event": "phx_join", "ref": "1", "join_ref": "1",
   "payload": {
     "config": {
-      "broadcast": { "self": false, "ack": false },
-      "presence": { "key": "ada", "enabled": true },
+      "signal": { "self": false, "ack": false },
+      "roster": { "key": "ada", "enabled": true },
       "private": false
     },
     "access_token": "<a signed-in user's JWT, optional>"
   } }
 ```
 
-- `broadcast.self`: also receive your own broadcasts. `broadcast.ack`: have each broadcast you
+- `signal.self`: also receive your own signals. `signal.ack`: have each signal you
   send answered with a `phx_reply`.
-- `presence.key`: the key you are tracked under; a random one when omitted. Two sockets may track
+- `roster.key`: the key you are tracked under; a random one when omitted. Two sockets may track
   the same key (two tabs of one player), and each is its own entry under it.
-- `presence.enabled`: send presence to this client from the join: `roster_state` right after
-  the join is answered, then every `roster_diff`. A `presence` object without `enabled` counts
+- `roster.enabled`: send the roster to this client from the join: `roster_state` right after
+  the join is answered, then every `roster_diff`. A `roster` object without `enabled` counts
   as `true`. With `false`, nothing is sent until your first `track`, which sends
   `roster_state` first.
 - `private`: a channel your [policies](#private-channels) decide about, as the user in `access_token`.
@@ -478,33 +478,33 @@ connected to nothing.
   `{ "event": "access_token", "payload": { "access_token": "<new JWT>" } }` on the channel.
 
 The answer is `{ "event": "phx_reply", "payload": { "status": "ok", "response": { "changes": [] } } }`,
-or `"status": "error"` with `"response": { "reason": "<why>" }`. With presence on, the server then
-pushes the whole presence set:
+or `"status": "error"` with `"response": { "reason": "<why>" }`. With the roster on, the server then
+pushes the whole roster:
 
 ```json
 { "topic": "live:room:42", "event": "roster_state", "ref": null,
   "payload": { "ada": { "metas": [ { "phx_ref": "F5q2kV0", "name": "Ada" } ] } } }
 ```
 
-### Broadcast
+### Signals
 
 Send:
 
 ```json
-{ "topic": "live:room:42", "event": "broadcast", "ref": "8", "join_ref": "1",
-  "payload": { "type": "broadcast", "event": "move", "payload": { "x": 12, "y": 30 } } }
+{ "topic": "live:room:42", "event": "signal", "ref": "8", "join_ref": "1",
+  "payload": { "type": "signal", "event": "move", "payload": { "x": 12, "y": 30 } } }
 ```
 
 Everyone else on the channel receives the same `payload` with `"ref": null`. The inner `event` is
-yours to name; the outer one is always `broadcast`.
+yours to name; the outer one is always `signal`.
 
-### Presence
+### Roster
 
 Track (a second track under the same key replaces what you published):
 
 ```json
-{ "topic": "live:room:42", "event": "presence", "ref": "9", "join_ref": "1",
-  "payload": { "type": "presence", "event": "track", "payload": { "name": "Ada" } } }
+{ "topic": "live:room:42", "event": "roster", "ref": "9", "join_ref": "1",
+  "payload": { "type": "roster", "event": "track", "payload": { "name": "Ada" } } }
 ```
 
 `"event": "untrack"` (with no inner payload) stops. Every client on the channel, the sender
@@ -567,7 +567,7 @@ const send = (frameTopic, event, payload) => {
 
 const join = () => {
   joinRef = String(ref + 1)
-  send(topic, 'phx_join', { config: { presence: { key: myId, enabled: true }, broadcast: { self: false } } })
+  send(topic, 'phx_join', { config: { roster: { key: myId, enabled: true }, signal: { self: false } } })
 }
 
 ws.onopen = () => {
@@ -582,11 +582,11 @@ ws.onmessage = ({ data }) => {
   const m = JSON.parse(data)
   if (m.topic === 'phoenix' && m.ref === unanswered) { unanswered = null; return }
   if (m.event === 'phx_reply' && m.ref === joinRef && m.payload.status === 'ok') {
-    send(topic, 'presence', { type: 'presence', event: 'track', payload: { name: 'Ada' } })
+    send(topic, 'roster', { type: 'roster', event: 'track', payload: { name: 'Ada' } })
   }
   if (m.event === 'roster_state') replacePlayers(m.payload)
   if (m.event === 'roster_diff') applyDiff(m.payload.leaves, m.payload.joins)
-  if (m.event === 'broadcast') onBroadcast(m.payload.event, m.payload.payload)
+  if (m.event === 'signal') onSignal(m.payload.event, m.payload.payload)
   if (m.event === 'system') console.warn(m.payload.message)
   // A close for a channel already replaced carries its older ref: only the current one counts.
   // The join's answer above tracks again.
@@ -594,7 +594,7 @@ ws.onmessage = ({ data }) => {
 }
 
 function move(x, y) {
-  send(topic, 'broadcast', { type: 'broadcast', event: 'move', payload: { id: myId, x, y } })
+  send(topic, 'signal', { type: 'signal', event: 'move', payload: { id: myId, x, y } })
 }
 ```
 

@@ -85,7 +85,7 @@ provider. Nobody else receives your hosted data.
 ## Who can see your data
 
 **An operator of ours can.** Someone holding the platform's key material and the control plane's
-service role can decrypt a project's password and reach its database. There is no technical
+server key can decrypt a project's password and reach its database. There is no technical
 control that removes this; what stands in its place is key handling discipline, the audit log, and
 our terms of service. That is the ordinary trust boundary of every managed host, and it is why Studio, not this service, is the answer for a credential that must never leave your machine.
 

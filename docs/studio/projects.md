@@ -148,7 +148,7 @@ The project's own Postgres, as the online dashboard shows it:
 
 ### Storage
 
-Buckets and files: create and delete buckets, upload and download files. A cloud project has the
+Spaces and files: create and delete spaces, upload and download files. A cloud project has the
 **Storage** switch here, with how many files and how much.
 
 ### Data API
@@ -230,7 +230,7 @@ The parts, copied in this order:
 | --- | --- | --- |
 | **Users** | Everyone who can sign in with an email, with their id, their confirmation, their metadata and their password as it is stored. People sign in on the new project with the passwords they already have. | Both |
 | **Database** | Your schemas, tables, data, functions, policies and the rest, exactly as [Move a database](/cloud/move-database) copies them, with its checks. The project's own sign-in and storage schemas are left out, because the users and files parts carry what is in them. | Both |
-| **Files** | Every bucket, with its visibility and limits, and every file in it. | Both |
+| **Files** | Every space, with its visibility and limits, and every file in it. | Both |
 | **Functions** | The project's `functions` folder, deployed to the cloud project. A function that needs no key keeps that setting. | This computer to Cloud |
 | **Function secrets** | The secrets in `functions/.env`, set on the cloud project. Their values go straight from this computer to SnoutData Cloud and are never shown. | This computer to Cloud |
 
@@ -242,12 +242,12 @@ a secret's value, so when you copy from the cloud those two switches are off and
 
 ![Copying the cloud project orders to the local project shop: users, database and files switched on, functions and function secrets off, each with the reason](/screenshots/studio-project-copy-down.png)
 
-**Check** reads both projects and says what each part will do: how many users, buckets, files,
+**Check** reads both projects and says what each part will do: how many users, spaces, files,
 functions and secrets, anything that will be skipped, and the database's own findings, each with the
 ways to resolve it. Nothing runs until every part is clear.
 
 - **Nothing on the target is overwritten by default.** A user whose email is already there, a
-  bucket or a file already there is left as it is and counted. The database must be empty unless
+  space or a file already there is left as it is and counted. The database must be empty unless
   you choose to replace it in its findings, and replacing a cloud database saves a copy of it first.
 - **Functions and secrets with the same name on the target are replaced** with this computer's
   version, since that is the point of copying them. The check names them.

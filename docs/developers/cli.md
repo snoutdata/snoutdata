@@ -209,7 +209,7 @@ on or off restarts the database once. A switch asks for the change and the host
 makes it within about a minute, so `products` may show `waiting for the host` for a moment. The
 data API is on every plan, including free. Realtime
 needs no switch: it is on for every project from the start, and `products` and `projects show`
-list it as on (broadcast and presence on every plan, table changes on Plus and Pro).
+list it as on (signals and the roster on every plan, table changes on Plus and Pro).
 
 ### `push credentials`
 
@@ -257,9 +257,9 @@ snoutdata realtime inspect [--channel C] [--watch] [--ref REF]
 snoutdata realtime logs [--since 10m] [--channel C] [--ref REF]
 ```
 
-`inspect` shows every open broadcast and presence channel: each client's socket, its presence key,
+`inspect` shows every open channel: each client's socket, its roster key,
 when it joined and when it was last heard from (a client silent for over a minute has most likely
-gone without closing), the presence state, and the last minute's broadcasts sent and delivered with
+gone without closing), the roster, and the last minute's signals sent and delivered with
 the busiest second. `--watch` then prints joins, leaves and disconnects as they happen. `--watch`
 is for a person; with `--json`, poll `inspect --json` or `logs --since 1m --json` instead.
 
@@ -521,12 +521,12 @@ snoutdata keys [--ref REF]
 snoutdata keys rotate --force [--ref REF]
 ```
 
-The two API keys the project's HTTP stack is reached with. `snout_app` is for a browser;
-**`snout_server` bypasses row-level security entirely** and belongs only on a server you control.
+The two API keys the project's HTTP stack is reached with. The app key is for a browser;
+**the server key bypasses row-level security entirely** and belongs only on a server you control.
 The command says which is which every time, because in a terminal they look identical.
 
 `rotate` invalidates every key already issued, including any shipped to a browser, which is why it
-insists on `--force`. Users' access tokens stop too, but their sessions refresh with the new `snout_app`
+insists on `--force`. Users' access tokens stop too, but their sessions refresh with the new app
 key, so nobody is signed out. It answers once the new keys work on the project.
 
 ### `functions`

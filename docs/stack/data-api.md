@@ -74,7 +74,7 @@ also the commonest reason a new project's first query comes back empty, so it is
 outright rather than leaving somebody to debug it.
 
 Signed out, the app key goes in both headers. Once a user signs in, **their** access token goes
-in `Authorization` and `apikey` stays as it was: that is what makes `snout_identity.user_id()` the person rather
+in `Authorization` and `Snout-Key` stays as it was: that is what makes `snout_identity.user_id()` the person rather
 than nobody. The server key bypasses policies entirely and belongs on a server you control
 and nowhere else.
 

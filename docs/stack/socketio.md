@@ -175,7 +175,7 @@ A `connection` handler that raises is the `connect_error`: `err.message` is its 
   join one by asking.
 - **Every socket starts in `socket:<its id>`**, so a handler can reach one client.
 - **A room is a Realtime topic.** `snout_live.signal(payload, 'news', 'room:42')` from a trigger reaches
-  every socket in `room:42`, and so does a broadcast from a [channel](/stack/realtime) named
+  every socket in `room:42`, and so does a signal from a [channel](/stack/realtime) named
   `room:42`; an emit to the room reaches those channels too.
 - **Rooms are shared across namespaces.** `room:42` joined from `/` and from `/chat` is one topic.
 
@@ -216,12 +216,12 @@ A `connection` handler that raises is the `connect_error`: `err.message` is its 
 logged in to a messaging network, a broker subscription or a game loop. On a paid plan it can run
 as a [Snout Container](/stack/containers), your own image running all the time beside the project.
 Make it small either way: its state in your project's tables rather than on its disk,
-`snout_live.signal()` (or a broadcast over HTTP) to reach your users, and a table it watches for the
+`snout_live.signal()` (or a signal over HTTP) to reach your users, and a table it watches for the
 work your handlers queue for it. Everything else moves to handlers.
 
 ## Also read
 
-- [Realtime](/stack/realtime), for channels, presence, table changes and the plan limits.
+- [Realtime](/stack/realtime), for channels, the roster, table changes and the plan limits.
 - [Snout Functions](/stack/functions), for TypeScript your clients call over HTTP.
 - [Snout Containers](/stack/containers), for the one process that has to stay connected.
 - [Row-level security on the data API](/stack/data-api), which is what decides a handler's reads

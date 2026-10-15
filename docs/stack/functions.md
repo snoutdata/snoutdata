@@ -50,9 +50,9 @@ function is arbitrary code with a network attached, and the cost of getting this
 stranger running it.
 
 The `Authorization: Bearer` token is checked too: it must be signed by your project and not
-expired, so the app key, the service key and a signed-in user's access token are accepted, and a
+expired, so the app key, the server key and a signed-in user's access token are accepted, and a
 token your project did not sign gets `401 Invalid JWT` before your code runs. With no
-`Authorization` header, the `apikey` header is used as the token. So a function can trust the
+`Authorization` header, the `Snout-Key` header is used as the token. So a function can trust the
 claims in the token it is called with, such as the user's id in `sub`.
 
 `--no-verify-jwt` removes that check, which makes the URL callable by anybody who knows it. It is
