@@ -11,6 +11,15 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-10-15
+
+- **An unverified custom domain no longer holds the name.** Adding a domain to a project used to
+  reserve it for that project even before it was verified, so a name could be held by somebody
+  who did not control it. Now only a verified domain is exclusive: several projects may add the
+  same name, the first to verify it (by publishing its TXT record) gets it and the other claims
+  are removed, and a domain left unverified for 7 days is released. A name already verified on
+  another project is still refused when you add it. [`domains`](/developers/cli#domains).
+
 ## 2026-10-14
 
 - **`--dockerfile` uploads the image instead of pushing it.** `snoutdata containers deploy <name>

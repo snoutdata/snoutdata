@@ -36,15 +36,15 @@
 	</section>
 
 	<script type="module">
-		import { snout } from 'https://cdn.jsdelivr.net/npm/@snoutdata/client@0.1/+esm'
+		import { createClient } from 'https://cdn.jsdelivr.net/npm/@snoutdata/client@0.1/+esm'
 
-		// Your project's API URL and its ANON key (`npx snoutdata keys`). The app key is meant
+		// Your project's API URL and its ANON key (`npx snoutdata keys`). The anon key is meant
 		// to be public: row-level security in migrations/001_notes.sql decides what it reaches.
-		// Never put the server key in a page.
+		// Never put the service_role key in a page.
 		const SNOUTDATA_URL = 'https://<ref>.api.snoutdata.com'
-		const SNOUTDATA_APP_KEY = '<app key>'
+		const SNOUTDATA_ANON_KEY = '<anon key>'
 
-		const db = snout(SNOUTDATA_URL, SNOUTDATA_APP_KEY)
+		const db = createClient(SNOUTDATA_URL, SNOUTDATA_ANON_KEY)
 		const $ = (id) => document.getElementById(id)
 
 		function say(text) {
@@ -52,7 +52,7 @@
 		}
 
 		async function render() {
-			const { data } = await db.identity.currentSession()
+			const { data } = await db.auth.getSession()
 			const session = data.session
 			$('signed-out').hidden = Boolean(session)
 			$('signed-in').hidden = !session
@@ -87,11 +87,11 @@
 			event.preventDefault()
 			const credentials = { email: $('email').value, password: $('password').value }
 			if (event.submitter?.dataset.action === 'up') {
-				const { error } = await db.identity.register(credentials)
+				const { error } = await db.auth.signUp(credentials)
 				say(error ? error.message : 'Check your email and click the link to confirm, then you are signed in.')
 				return
 			}
-			const { error } = await db.identity.passwordSignIn(credentials)
+			const { error } = await db.auth.signInWithPassword(credentials)
 			say(error?.message)
 			render()
 		})
@@ -107,12 +107,12 @@
 		})
 
 		$('sign-out').addEventListener('click', async () => {
-			await db.identity.signOff()
+			await db.auth.signOut()
 			say('')
 			render()
 		})
 
-		db.identity.onSessionChange(() => render())
+		db.auth.onAuthStateChange(() => render())
 		render()
 	</script>
 </body>

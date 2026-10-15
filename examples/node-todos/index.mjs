@@ -1,17 +1,17 @@
 // Insert, query and update rows in a SnoutData Cloud project with @snoutdata/client.
 //
-// Server-side only: the server key bypasses row-level security, so it must never be
-// shipped to a browser. For a browser, see ../web-notes, which uses the app key.
-import { snout } from '@snoutdata/client'
+// Server-side only: the service_role key bypasses row-level security, so it must never be
+// shipped to a browser. For a browser, see ../web-notes, which uses the anon key.
+import { createClient } from '@snoutdata/client'
 
 const url = process.env.SNOUTDATA_URL
-const key = process.env.SNOUTDATA_SERVER_KEY
+const key = process.env.SNOUTDATA_SERVICE_ROLE_KEY
 if (!url || !key) {
-	console.error('Set SNOUTDATA_URL and SNOUTDATA_SERVER_KEY in .env (see README.md).')
+	console.error('Set SNOUTDATA_URL and SNOUTDATA_SERVICE_ROLE_KEY in .env (see README.md).')
 	process.exit(1)
 }
 
-const db = snout(url, key)
+const db = createClient(url, key)
 
 function check(error, what) {
 	if (error) {

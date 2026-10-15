@@ -52,7 +52,7 @@ The dashboard's card and `snoutdata db access grant` give the connection string.
 this, and has no password in it:
 
 ```
-psql "host=<ref>.db.snoutdata.com port=5432 dbname=<ref> user=oauth_<your id> sslmode=require oauth_issuer=https://accounts.snoutdata.com/v1/identity oauth_client_id=psql"
+psql "host=<ref>.db.snoutdata.com port=5432 dbname=<ref> user=oauth_<your id> sslmode=require oauth_issuer=https://accounts.snoutdata.com/auth/v1 oauth_client_id=psql"
 ```
 
 psql prints an address and a code:
