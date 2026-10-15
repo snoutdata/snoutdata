@@ -12,7 +12,7 @@ the notes for the version you just got the first time it opens after an update. 
 (the dashboard, hosted projects, the CLI and `@snoutdata/client`) has
 [its own changelog](cloud/changelog).
 
-Downloads for every version are on [GitHub](https://github.com/snoutdata/app/releases).
+Downloads for every version are on [GitHub](https://github.com/snoutdata/studio/releases).
 
 ## 1.0.53 (2026-10-11)
 
@@ -227,4 +227,4 @@ A security release, from a review of the whole app. Updating is recommended.
 
 ## Earlier
 
-Every earlier version's notes are on its [GitHub release](https://github.com/snoutdata/app/releases).
+Every earlier version's notes are on its [GitHub release](https://github.com/snoutdata/studio/releases).

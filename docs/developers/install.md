@@ -51,7 +51,7 @@ your session, and `snoutdata logout` removes that.
 
 The installer does not serve Windows. Use `npx snoutdata`, or take
 `snoutdata-windows-x64.exe` from the
-[releases page](https://github.com/snoutdata/app/releases) and put it somewhere on your `PATH`.
+[releases page](https://github.com/snoutdata/studio/releases) and put it somewhere on your `PATH`.
 
 ## npm
 
