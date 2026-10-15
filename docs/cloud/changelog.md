@@ -13,6 +13,12 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-15
 
+- **New project keys carry `snout_app` and `snout_server`.** A project created from today, or
+  whose keys you rotate, gets an app key whose `role` claim is `snout_app` and a server key with
+  `snout_server`. Keys issued earlier keep `anon` and `service_role` and keep working, so there is
+  nothing to change. With a new key the data API runs as `snout_app`, so write grants and policies
+  for `snout_app` and `snout_member` rather than `anon` and `authenticated`.
+  [Your two keys](/stack/api#your-two-keys).
 - **A function's address is `/v1/fn/<name>`.** `snoutdata functions deploy`, `functions list`, the
   dashboard and Studio print `https://<ref>.api.snoutdata.com/v1/fn/<name>`. The earlier
   `/functions/v1/<name>` still answers. [Functions](/stack/functions).

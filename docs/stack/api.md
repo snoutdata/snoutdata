@@ -154,6 +154,10 @@ snoutdata keys rotate --force     # new ones
 The two look identical in a terminal and the difference between them is your entire dataset, so
 the CLI says which is which every time it prints them.
 
+Each key is a JWT whose `role` claim names the database role a request runs as: `snout_app` for
+the app key and `snout_server` for the server key. Keys issued before 2026-10-15 say `anon` and
+`service_role` instead, and keep working unchanged; rotating gives you keys with the new names.
+
 **Rotating breaks every key already issued**, including any client shipped to a browser, which is
 why `rotate` requires `--force`. Every access token a user holds stops too, but signed-in users are
 not signed out: their session refreshes into a token signed with the new secret, so once your app
