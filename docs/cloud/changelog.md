@@ -13,6 +13,10 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-15
 
+- **`snoutdata upgrade` downloads from github.com/snoutdata/studio** (CLI 0.17.2), the release
+  feed's current name. The earlier address still redirected; nothing to change.
+- **`@snoutdata/client` 0.4.1: a live message that is not a JSON object is ignored** rather than
+  thrown on, so one malformed frame no longer breaks a channel.
 - **New project keys carry `snout_app` and `snout_server`.** A project created from today, or
   whose keys you rotate, gets an app key whose `role` claim is `snout_app` and a server key with
   `snout_server`. Keys issued earlier keep `anon` and `service_role` and keep working, so there is
