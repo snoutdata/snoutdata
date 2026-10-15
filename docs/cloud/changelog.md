@@ -13,6 +13,13 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-15
 
+- **A function's address is `/v1/fn/<name>`.** `snoutdata functions deploy`, `functions list`, the
+  dashboard and Studio print `https://<ref>.api.snoutdata.com/v1/fn/<name>`. The earlier
+  `/functions/v1/<name>` still answers. [Functions](/stack/functions).
+- **`snoutdata domains verify` fails when the domain did not verify** (CLI 0.17.1). It exits 4
+  ("not ready yet") with the records to publish, and `--json` returns `{"ok": false, "code":
+  "not-ready", ...}` with the domain, so `snoutdata domains verify api.example.com && ...` stops
+  there. It used to exit 0. [`domains`](/developers/cli#domains).
 - **An unverified custom domain no longer holds the name.** Adding a domain to a project used to
   reserve it for that project even before it was verified, so a name could be held by somebody
   who did not control it. Now only a verified domain is exclusive: several projects may add the

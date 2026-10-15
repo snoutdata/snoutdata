@@ -290,7 +290,8 @@ snoutdata domains remove HOSTNAME [--ref REF]
 ```
 
 Serve the project's API at your own hostname, with a certificate obtained and renewed for you.
-`add` prints the DNS records to publish; `verify` checks them. Paid plans only. A domain is
+`add` prints the DNS records to publish; `verify` checks them, and exits 4 (not ready) with the
+records again when the domain has not verified yet, so a script can wait on it. Paid plans only. A domain is
 the project's once it is verified; until then it reserves nothing, and an unverified domain is
 released after 7 days.
 
