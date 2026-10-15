@@ -72,6 +72,12 @@ inside it.
 - **Move a database** between your computer and SnoutData Cloud, in either direction, with every
   table's row count checked on both sides.
 
+Its source is on GitHub at **[snoutdata/studio](https://github.com/snoutdata/studio)**, under the
+Apache License 2.0, and the installers for Windows, macOS and Linux are on its
+[releases](https://github.com/snoutdata/studio/releases/latest). Data Flows and Liby, the
+assistant's butterfly, ship in the official build at no charge and are not in the source.
+[Download](https://snoutdata.com/download).
+
 <p align="center">
   <a href="https://raw.githubusercontent.com/snoutdata/.github/main/assets/screenshots/orbit.png"><img src="https://raw.githubusercontent.com/snoutdata/.github/main/assets/screenshots/orbit.png" alt="SnoutData Orbit drawing a 500-table Postgres database as a 3D world, with live queries moving through it" width="100%" /></a>
 </p>
@@ -99,10 +105,33 @@ inside it.
   </tr>
 </table>
 
+## Repositories
+
+| Repository | What it is |
+| --- | --- |
+| [snoutdata/snoutdata](https://github.com/snoutdata/snoutdata) | This one: the docs, runnable examples and bug reports |
+| [snoutdata/studio](https://github.com/snoutdata/studio) | SnoutData Studio: its source, and its releases for Windows, macOS and Linux |
+| [snoutdata/snout-cli](https://github.com/snoutdata/snout-cli) | The `snoutdata` CLI and its MCP server |
+| [snoutdata/snout-client](https://github.com/snoutdata/snout-client) | `@snoutdata/client`, the JavaScript client for a Cloud project |
+| [snoutdata/snout-stack](https://github.com/snoutdata/snout-stack) | The whole stack on your own machine with Docker Compose |
+| [snoutdata/snout-auth](https://github.com/snoutdata/snout-auth) | Sign-up, sign-in, multi-factor, OAuth and SAML single sign-on |
+| [snoutdata/snout-storage](https://github.com/snoutdata/snout-storage) | File storage: buckets and files in S3, access by row-level security |
+| [snoutdata/snout-images](https://github.com/snoutdata/snout-images) | Image resizing for storage |
+| [snoutdata/snout-realtime](https://github.com/snoutdata/snout-realtime) | Broadcast, presence and database changes over WebSockets |
+| [snoutdata/snout-functions](https://github.com/snoutdata/snout-functions) | The Snout Functions runtime |
+| [snoutdata/snout-push](https://github.com/snoutdata/snout-push) | Push notifications to iPhone, Android and the web |
+| [snoutdata/snouttime](https://github.com/snoutdata/snouttime) | The time-series extension for Postgres |
+| [snoutdata/snout-graphql](https://github.com/snoutdata/snout-graphql) | GraphQL answered inside Postgres |
+| [snoutdata/snout-net](https://github.com/snoutdata/snout-net) | HTTP requests from SQL |
+| [snoutdata/snout-utils](https://github.com/snoutdata/snout-utils) | Superuser-only statements, delegated to the database owner |
+| [snoutdata/snout-oauth](https://github.com/snoutdata/snout-oauth) | Sign in to Postgres 18 with an OAuth token |
+| [snoutdata/snout-containers](https://github.com/snoutdata/snout-containers) | The runner behind Snout Containers |
+| [snoutdata/snout-lepis](https://github.com/snoutdata/snout-lepis) | One Postgres database spread over many nodes, being built in the open |
+| [snoutdata/apt](https://github.com/snoutdata/apt) | The signed Debian and Ubuntu apt repository for Studio |
+
 ## License
 
 The [examples](./examples) are under the [MIT License](./LICENSE). The [docs](./docs) are under
-[CC BY 4.0](./docs/LICENSE). The CLI and the client (both Apache-2.0) carry their own
-licences in their repos.
+[CC BY 4.0](./docs/LICENSE). Every other repository carries its own licence.
 
 Contributions are welcome: see [CONTRIBUTING.md](./CONTRIBUTING.md).
