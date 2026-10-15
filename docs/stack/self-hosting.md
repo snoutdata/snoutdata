@@ -25,7 +25,7 @@ Measured with the default profiles on a 2-core Arm machine: about 170 MB of memo
 
 ```bash
 git clone https://github.com/snoutdata/snout-stack && cd snout-stack
-docker run --rm ghcr.io/snoutdata/snout-stack:0.1.4 init > .env
+docker run --rm ghcr.io/snoutdata/snout-stack:0.1.5 init > .env
 docker compose up -d --wait
 ```
 
