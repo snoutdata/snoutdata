@@ -13,6 +13,10 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-16
 
+- **A function's log lines can only land in its own project's log.** A function that wrote to its
+  stderr directly, past `console`, could name another project in what it wrote, and the line was
+  filed in that project's log if it ran on the same host. Each project's output now reaches the
+  log through the runtime, which says whose it is; a line naming another project is refused.
 - **A Business project can add its own domain from the dashboard.** The Domains tab offered an
   upgrade to Business projects, which include custom domains; it shows the form now, as it does on
   Plus and Pro.

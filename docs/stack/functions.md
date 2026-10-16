@@ -145,7 +145,9 @@ snoutdata functions logs hello --errors  # one function, console.error and conso
 snoutdata functions logs --follow        # keep printing new lines
 ```
 
-A line shows up about a minute after it is printed, and is kept for seven days.
+A line shows up about a minute after it is printed, and is kept for seven days. A project's log
+holds only what its own functions wrote: each project's functions run in a process of their own,
+and the runtime, not the line, says which project's process wrote it.
 
 So does the reason a function stopped when it printed nothing: a request handler that throws is
 answered with a 500 and its error is logged; and when the runtime itself ends a function's worker
