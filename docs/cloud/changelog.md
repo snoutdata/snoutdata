@@ -13,6 +13,11 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-16
 
+- **Many requests for the data API's description at once are all answered.** The data API's root
+  (`/v1/data/`, the OpenAPI document) is the dearest thing it builds, and twenty-five at once could
+  hold every database connection the API has, so most were answered 504 and requests for your
+  tables waited behind them. Identical requests now share one answer and a project's descriptions
+  are built one at a time; one that would wait too long is answered 429 with `Retry-After`.
 - **A function's log lines can only land in its own project's log.** A function that wrote to its
   stderr directly, past `console`, could name another project in what it wrote, and the line was
   filed in that project's log if it ran on the same host. Each project's output now reaches the
