@@ -13,6 +13,16 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-16
 
+- **A cluster tells you when its home node is down, and when a node stops answering.** If the home
+  node of a cluster stops and cannot be started again, the whole cluster is unavailable, and you now
+  get a "home down" alert (on the project, in `snoutdata shards status`, and by email) until it runs
+  again. A data node that is still running but does not answer for 15 seconds (hung, or cut off from
+  the network) opens a "node not answering" alert, closed with how long it lasted when it answers.
+  An alert that opened and closed between two emails is still emailed when it lasted 30 seconds or
+  more, with how it ended.
+- **pg_cron and pg_net no longer restart every second on a cluster's nodes.** Their background
+  workers looked for a database named after the node rather than the cluster's; they now use the
+  cluster's database on every node.
 - **`snoutdata db push` no longer needs `psql`** (CLI 0.17.4). It connects to the database itself
   and sends each migration a statement at a time, cut where `psql` would cut it, with the same
   ledger and the same refusals; `--dry-run` included. A file holding a `psql` command such as
