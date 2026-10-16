@@ -13,6 +13,12 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-16
 
+- **A cluster node that fails never takes acknowledged writes with it.** When a node of a cluster
+  stops working while its replica is behind, its last writes are now copied from its disk to the
+  replica before the replica takes its place. If they cannot be, the replica is not put in its place
+  automatically: the node's share of the data stays unavailable, nothing is given up, and you get a
+  "failover held" alert. A broken node with a replica is now replaced after one minute rather than
+  three.
 - **Containers can be held to an allowlist.** By default a project's Snout Containers reach the
   public internet; you can now list the destinations they may reach instead (host names, IPv4
   addresses or ranges, with ports), and everything else is refused. `snoutdata containers egress`
