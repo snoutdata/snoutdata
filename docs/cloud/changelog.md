@@ -25,6 +25,8 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   and an empty table shows its columns with no rows under them. In the SQL editor, a `select` that
   finds nothing says "No rows."
 - **Logs: the data API's card is headed "The data API"** rather than starting in lower case.
+- **Rotating a project's keys answers in a second or two** on a project whose data API and auth
+  are off. It waited half a minute for a restart those projects do not have.
 
 ## 2026-10-15
 
