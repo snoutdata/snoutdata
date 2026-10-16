@@ -11,6 +11,15 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-10-16
+
+- **The table browser no longer offers a Next page that is empty.** On a table whose rows came to
+  an exact multiple of the page size, the last full page still had Next, and it led to a page
+  saying the statement "returned no columns". Next now appears only when there is another row,
+  and an empty table shows its columns with no rows under them. In the SQL editor, a `select` that
+  finds nothing says "No rows."
+- **Logs: the data API's card is headed "The data API"** rather than starting in lower case.
+
 ## 2026-10-15
 
 - **Resume starts a paused project sooner.** Resume on the dashboard, `snoutdata projects resume`
