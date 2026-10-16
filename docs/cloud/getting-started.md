@@ -118,7 +118,11 @@ Each file runs once, in name order, and what ran is recorded in a `_snoutdata_mi
 in your own database. The ledger row is written in the same transaction as the migration, so a
 file that fails half way leaves nothing behind.
 
-`db push` connects to the database like any other client, so it needs `psql` on the machine.
+`db push` connects to the database itself, so nothing else needs to be installed: no `psql`. It
+cuts each file into statements the way `psql` does and sends them one at a time, so
+`CREATE INDEX CONCURRENTLY` works in a file marked `-- snoutdata:no-transaction`, and
+`COPY ... FROM stdin` with its rows in the file works too. A `psql` command such as `\i` is the one
+thing it cannot run, and a file holding one is refused before anything runs.
 
 ## Access tokens, for CI and agents
 

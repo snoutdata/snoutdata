@@ -147,6 +147,12 @@ snoutdata functions logs --follow        # keep printing new lines
 
 A line shows up about a minute after it is printed, and is kept for seven days.
 
+So does the reason a function stopped when it printed nothing: a request handler that throws is
+answered with a 500 and its error is logged; and when the runtime itself ends a function's worker
+(past its CPU, or the one holding the most memory when the host runs short) or code throws where no
+request is waiting (a promise nobody awaited, a timer), that is logged as an error under the
+function's name too, with its stack.
+
 There are limits, so one noisy function cannot crowd out everything else:
 
 | | |

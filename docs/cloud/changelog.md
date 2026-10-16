@@ -13,6 +13,16 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-16
 
+- **`snoutdata db push` no longer needs `psql`** (CLI 0.17.4). It connects to the database itself
+  and sends each migration a statement at a time, cut where `psql` would cut it, with the same
+  ledger and the same refusals; `--dry-run` included. A file holding a `psql` command such as
+  `\i` is refused before anything runs. The MCP server's `push_migrations` tool works the same way.
+- **The MCP server can show and change where containers may send** (CLI 0.17.4):
+  `container_egress` and `set_container_egress`, the same as `snoutdata containers egress`.
+- **A function's log now says why the runtime stopped it.** A worker ended for using too much CPU,
+  or because the host ran short of memory, and an error thrown where no request was waiting (with
+  its stack), appear under the function's name as errors, on the Logs tab and in
+  `snoutdata functions logs`.
 - **A cluster node that fails never takes acknowledged writes with it.** When a node of a cluster
   stops working while its replica is behind, its last writes are now copied from its disk to the
   replica before the replica takes its place. If they cannot be, the replica is not put in its place

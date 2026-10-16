@@ -385,7 +385,7 @@ turns that off.
 | `get_connection_url` | `ref` (required) | The `postgres://` URL. **It contains a live password.** |
 | `pause_project` | `ref` (required) | Stops a project and waits until it is paused. Its data is kept and the next connection wakes it. |
 | `resume_project` | `ref` (required) | Starts a paused project without waiting for a connection, and waits until it is ready. |
-| `push_migrations` | `ref` (required), `dir`, `dryRun` | Runs the `.sql` files in a folder. Needs `psql`. |
+| `push_migrations` | `ref` (required), `dir`, `dryRun` | Runs the `.sql` files in a folder. Needs nothing installed. |
 | `usage` | `ref` (required), `days` | Storage and compute against the plan's limit. **Read it before a migration or a bulk insert**: a project that goes over is made read-only. |
 | `export_status` | `ref` (required) | Whether a copy is being taken, and a download link if there is a live one. Starts nothing. |
 | `start_export` | `ref` (required) | Starts a `pg_dump` and returns. Poll `export_status` for the link. |
@@ -399,7 +399,12 @@ turns that off.
 | `size_function` | `ref`, `name` (both required), `memoryMb`, `concurrency`, `reset` | Sets one function's memory and workers within the plan. Memory × workers may not exceed the project's memory. |
 | `delete_function` | `ref`, `name` (both required) | Removes one. It stops answering within seconds. |
 | `list_function_secrets` | `ref` (required) | The **names** of the environment variables functions run with. Never the values. |
-| `function_logs` | `ref` (required), `name`, `errorsOnly`, `limit` | What the functions printed with `console.log` and `console.error` in the last seven days, newest first. |
+| `function_logs` | `ref` (required), `name`, `errorsOnly`, `limit` | What the functions printed with `console.log` and `console.error` in the last seven days, newest first, and why the runtime stopped one (past its CPU, short of memory, an error nothing caught). |
+| `list_containers` | `ref` (required) | The project's containers, each one's status and why it is not running, and the plan's allowance. |
+| `deploy_container`, `restart_container`, `delete_container` | `ref`, `name` (both required); `image`, `port` to deploy | Runs an image beside the project, starts one again, or removes one. |
+| `container_logs` | `ref` (required), `name`, `errorsOnly`, `limit` | What the containers printed in the last seven days, newest first. |
+| `container_egress` | `ref` (required) | Where the containers may send: the public internet, or only an allowlist. |
+| `set_container_egress` | `ref` (required), `allow` or `clear` | Holds the containers to `allow` (`[]` is nothing outside the project), or with `clear: true` lets them reach the public internet again. |
 | `get_project` | `ref` (required) | One project whole: state, products, function and secret names, domains. Never a password, a key or a download link. |
 | `list_products` | `ref` (required) | Whether auth, storage and the data API are on, and whether the plan allows the data API. |
 | `set_product` | `ref`, `product` (`auth`, `storage`, `data-api`), `enabled` (all required) | Turns one on or off; it starts within about a minute. |
@@ -447,7 +452,7 @@ An agent that wants to query calls `get_connection_url` and uses a real Postgres
 | A free project cannot be marked production | A free project pauses after a week idle; Plus, Pro and Business never pause | Tell the user |
 | Writes are refused, reads work | Over the plan's storage limit, so the database is read-only | Shrink it, or tell the user to change plan |
 | Connecting takes a few seconds | The project was paused and the connection is waking it | Wait. It is not an error |
-| `psql is not installed` (exit 127) | `db psql`, `db push` and `db restore` need it | Use `db url` and a client you have |
+| `psql is not installed` (exit 127) | `db psql` and `db restore` need it (`db push` does not) | Use `db url` and a client you have |
 
 ## What does not exist
 

@@ -25,7 +25,7 @@ This page is about the **self-hosted stack in Docker**. For a bare Postgres unde
   - **In Studio**: Projects, Local, **Set up a local project**. Studio downloads the stack, writes
     its keys and starts it.
   - **By hand**: follow [Run the stack yourself](/stack/self-hosting#start-it).
-- **`psql`**, for `db psql`, `db push` and `gen types`: the Postgres client tools (on Windows, the
+- **`psql`**, for `db psql` and `gen types` (`db push` needs nothing): the Postgres client tools (on Windows, the
   PostgreSQL installer's "Command Line Tools"; on macOS, `brew install libpq`; on Linux, your
   distribution's `postgresql-client`).
 
