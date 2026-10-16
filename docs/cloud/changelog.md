@@ -13,6 +13,10 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-16
 
+- **A password reset says how long it really takes to apply: about fifteen seconds.** It said "a few
+  seconds", and the MCP server's `reset_password` told an agent to wait five, which was measured at
+  up to ten; an agent that connected on time was refused. Until it applies, the new password is
+  refused and the old one still works.
 - **A region that does not exist is refused as a mistake, not as a full region.** `projects create
   --region` with a name we do not run (a typo, or a region not open) said the region was "full right
   now" and to try again later. It now says there is no such region and names the ones there are; the
