@@ -2,10 +2,10 @@
 
 One HTML page with no build step. People sign up with email and password, and each one reads and
 writes only their own notes. It uses [`@snoutdata/client`](https://github.com/snoutdata/snout-client)
-from a CDN, the project's **anon** key, and row-level security.
+from a CDN, the project's **app** key, and row-level security.
 
 You need a SnoutData account, on any plan including free (the data API, which the client's
-`from()` calls go through, is on every plan).
+`table()` calls go through, is on every plan).
 
 ## Run it
 
@@ -14,15 +14,18 @@ cd examples/web-notes
 
 npx snoutdata login
 npx snoutdata init                        # a project for this folder
-npx snoutdata db push                     # runs migrations/001_notes.sql
+npx snoutdata products enable auth        # sign-up and sign-in (first: the migration's policies use it)
 npx snoutdata products enable data-api    # the REST API the page calls
-npx snoutdata products enable auth        # sign-up and sign-in
+npx snoutdata db push                     # runs migrations/001_notes.sql
 npx snoutdata auth redirects --site-url http://localhost:3000
-npx snoutdata keys                        # copy the anon key
+npx snoutdata keys                        # copy the app key
 ```
 
+Auth starts within a minute of being switched on, and the migration's policies need it, so if
+`db push` says `snout_identity` does not exist, wait a moment and run it again.
+
 Open `index.html` and set the two constants at the top of the script: your project's API URL
-(`https://<ref>.api.snoutdata.com`, the ref is in `.snoutdata/project.json`) and the **anon** key.
+(`https://<ref>.api.snoutdata.com`, the ref is in `.snoutdata/project.json`) and the **app** key.
 
 Then serve the folder on port 3000:
 
@@ -37,9 +40,9 @@ back to the page, signed in.
 
 - `migrations/001_notes.sql`: `owner_id` defaults to `snout_identity.user_id()`, and the three policies let a
   signed-in user select, insert and delete only rows they own. That is the whole of the security:
-  the anon key in the page is public by design.
-- `index.html`: `db.auth.signUp`, `signInWithPassword`, `getSession` and `onAuthStateChange`, then
-  `db.from('notes')` for the data. The session is kept in the browser's `localStorage`.
+  the app key in the page is public by design.
+- `index.html`: `db.identity.register`, `passwordSignIn`, `currentSession` and `onSessionChange`, then
+  `db.table('notes')` for the data. The session is kept in the browser's `localStorage`.
 
 Docs: [authentication](https://docs.snoutdata.com/stack/auth) and
 [the project API](https://docs.snoutdata.com/stack/api).

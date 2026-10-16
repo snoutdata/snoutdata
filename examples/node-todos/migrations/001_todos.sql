@@ -6,6 +6,6 @@ create table if not exists public.todos (
 	created_at timestamptz not null default now()
 );
 
--- Row-level security on, with no policies: the anon key can read nothing. This script is
--- server-side and uses the service_role key, which bypasses row-level security.
+-- Row-level security on, with no policies: the app key can read nothing. This script is
+-- server-side and uses the server key, which bypasses row-level security.
 alter table public.todos enable row level security;

@@ -9,7 +9,7 @@ create table if not exists public.notes (
 
 alter table public.notes enable row level security;
 
--- snout_identity.user_id() is the user whose session made the request, so the anon key in the page can only
+-- snout_identity.user_id() is the user whose session made the request, so the app key in the page can only
 -- ever reach the signed-in user's rows.
 create policy "read own notes" on public.notes
 	for select to snout_member using (owner_id = snout_identity.user_id());

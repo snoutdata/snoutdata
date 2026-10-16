@@ -6,7 +6,7 @@
 		"start": "node --env-file=.env index.mjs"
 	},
 	"dependencies": {
-		"@snoutdata/client": "^0.1.0"
+		"@snoutdata/client": "^0.4.1"
 	},
 	"engines": {
 		"node": ">=22"

@@ -36,15 +36,15 @@
 	</section>
 
 	<script type="module">
-		import { createClient } from 'https://cdn.jsdelivr.net/npm/@snoutdata/client@0.1/+esm'
+		import { snout } from 'https://cdn.jsdelivr.net/npm/@snoutdata/client@0.4.1/+esm'
 
-		// Your project's API URL and its ANON key (`npx snoutdata keys`). The anon key is meant
+		// Your project's API URL and its APP key (`npx snoutdata keys`). The app key is meant
 		// to be public: row-level security in migrations/001_notes.sql decides what it reaches.
-		// Never put the service_role key in a page.
+		// Never put the server key in a page.
 		const SNOUTDATA_URL = 'https://<ref>.api.snoutdata.com'
-		const SNOUTDATA_ANON_KEY = '<anon key>'
+		const SNOUTDATA_APP_KEY = '<app key>'
 
-		const db = createClient(SNOUTDATA_URL, SNOUTDATA_ANON_KEY)
+		const db = snout(SNOUTDATA_URL, SNOUTDATA_APP_KEY)
 		const $ = (id) => document.getElementById(id)
 
 		function say(text) {
@@ -52,15 +52,15 @@
 		}
 
 		async function render() {
-			const { data } = await db.auth.getSession()
+			const { data } = await db.identity.currentSession()
 			const session = data.session
 			$('signed-out').hidden = Boolean(session)
 			$('signed-in').hidden = !session
 			if (!session) {
 				return
 			}
-			$('who').textContent = session.user.email
-			const { data: notes, error } = await db.from('notes').select('id, body').order('id', { ascending: false })
+			$('who').textContent = session.person.email
+			const { data: notes, error } = await db.table('notes').read('id, body').order('id', { ascending: false })
 			if (error) {
 				say(error.message)
 				return
@@ -73,7 +73,7 @@
 					const remove = document.createElement('button')
 					remove.textContent = 'Delete'
 					remove.onclick = async () => {
-						const { error } = await db.from('notes').delete().eq('id', note.id)
+						const { error } = await db.table('notes').remove().eq('id', note.id)
 						say(error?.message)
 						render()
 					}
@@ -87,18 +87,18 @@
 			event.preventDefault()
 			const credentials = { email: $('email').value, password: $('password').value }
 			if (event.submitter?.dataset.action === 'up') {
-				const { error } = await db.auth.signUp(credentials)
+				const { error } = await db.identity.register(credentials)
 				say(error ? error.message : 'Check your email and click the link to confirm, then you are signed in.')
 				return
 			}
-			const { error } = await db.auth.signInWithPassword(credentials)
+			const { error } = await db.identity.passwordSignIn(credentials)
 			say(error?.message)
 			render()
 		})
 
 		$('note-form').addEventListener('submit', async (event) => {
 			event.preventDefault()
-			const { error } = await db.from('notes').insert({ body: $('note').value })
+			const { error } = await db.table('notes').add({ body: $('note').value })
 			say(error?.message)
 			if (!error) {
 				$('note').value = ''
@@ -107,12 +107,12 @@
 		})
 
 		$('sign-out').addEventListener('click', async () => {
-			await db.auth.signOut()
+			await db.identity.signOff()
 			say('')
 			render()
 		})
 
-		db.auth.onAuthStateChange(() => render())
+		db.identity.onSessionChange(() => render())
 		render()
 	</script>
 </body>
