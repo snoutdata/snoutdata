@@ -35,7 +35,7 @@ back to the page, signed in.
 
 ## What to look at
 
-- `migrations/001_notes.sql`: `owner_id` defaults to `auth.uid()`, and the three policies let a
+- `migrations/001_notes.sql`: `owner_id` defaults to `snout_identity.user_id()`, and the three policies let a
   signed-in user select, insert and delete only rows they own. That is the whole of the security:
   the anon key in the page is public by design.
 - `index.html`: `db.auth.signUp`, `signInWithPassword`, `getSession` and `onAuthStateChange`, then
