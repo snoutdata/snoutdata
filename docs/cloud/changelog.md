@@ -13,6 +13,10 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-16
 
+- **The first request to a paused project's data API is answered, not refused.** The request that
+  woke a project was often answered 503 ("Could not query the database for the schema cache"),
+  because the API was let through the moment the database was up and loads its schema a moment
+  later. That request now waits for it, about half a second.
 - **Creating several projects at once can no longer go past your plan's number.** Creates sent
   together were each counted before any of them existed, so they all succeeded; they are now
   counted one at a time, and the ones over the plan are refused with the usual sentence (the CLI
