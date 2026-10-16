@@ -13,6 +13,16 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-16
 
+- **A team's members are changed only by inviting, removing and changing a role.** A team admin
+  could also write member rows directly through the data API, with no invite and nothing on the
+  team's history; those writes are refused now. Reading the roster is unchanged.
+- **After you remove somebody from a team, the team page offers to take back database access.**
+  Removing a member signs them out, but a password or server key they copied from a team project
+  still works; the page now says so and lists the team's projects with Reset password and Rotate
+  keys beside each one you own.
+- **Your projects are the same whichever way you sign in.** A project made after signing in with an
+  emailed code is yours, and counts against the same plan, when you sign in with Google or your
+  company's single sign-on, and the other way round.
 - **Many requests for the data API's description at once are all answered.** The data API's root
   (`/v1/data/`, the OpenAPI document) is the dearest thing it builds, and twenty-five at once could
   hold every database connection the API has, so most were answered 504 and requests for your
