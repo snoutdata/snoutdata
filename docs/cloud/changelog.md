@@ -13,6 +13,9 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-15
 
+- **Resume starts a paused project sooner.** Resume on the dashboard, `snoutdata projects resume`
+  and Studio now start the project at once, the way a connection to a paused project does, rather
+  than on the host's next check a few seconds later.
 - **`snoutdata upgrade` downloads from github.com/snoutdata/studio** (CLI 0.17.2), the release
   feed's current name. The earlier address still redirected; nothing to change.
 - **`@snoutdata/client` 0.4.1: a live message that is not a JSON object is ignored** rather than
