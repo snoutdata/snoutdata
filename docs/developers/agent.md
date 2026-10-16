@@ -389,7 +389,7 @@ turns that off.
 | `usage` | `ref` (required), `days` | Storage and compute against the plan's limit. **Read it before a migration or a bulk insert**: a project that goes over is made read-only. |
 | `export_status` | `ref` (required) | Whether a copy is being taken, and a download link if there is a live one. Starts nothing. |
 | `start_export` | `ref` (required) | Starts a `pg_dump` and returns. Poll `export_status` for the link. |
-| `reset_password` | `ref` (required) | Rotates the database password and returns the new URL. **The old one stops working within about fifteen seconds**, including any `DATABASE_URL` already written down; connect with the new one after about fifteen seconds. |
+| `reset_password` | `ref` (required) | Rotates the database password and returns the new URL. **The old one stops working, usually within fifteen seconds** (longer while the host is busy), including any `DATABASE_URL` already written down; connect with the new one after about fifteen seconds, retrying a refusal for up to two minutes. |
 | `list_teams` | | The teams this account is in, with the id `create_project` takes. |
 | `list_tokens` | | The `sdt_` access tokens: names, prefixes, when each was used. Never the token. |
 | `create_token` | `name` (required), `expires`, `project` | Mints an access token, limited to one project when `project` is a ref. **Returns it once and never again.** |
