@@ -224,7 +224,8 @@ a second. A loop that fans messages out to many users belongs in
 
 Each container runs in its own gVisor sandbox and user namespace, on a network of its project's
 own: it reaches the public internet and your project's other containers, and nothing private: not
-the machine, not the cloud's metadata service, not another project's containers. A container over
+the machine, not the cloud's metadata service, not another project's containers. It sends over
+IPv4 only: IPv6 is dropped at the firewall, so no address family gets around the limits below. A container over
 its memory is stopped and restarted. On a downgrade, the containers past the new plan's number are
 stopped and kept, and start again on an upgrade.
 
@@ -245,6 +246,32 @@ than hanging), and bytes over the rate are dropped, which TCP sees as a slower l
 your container (your users, webhooks and websockets through its address) are not counted against
 any of this. A container that is refused again and again, slowed down for long stretches, or sends
 more than 4 GB in an hour opens an alert: you are emailed which, and so are we.
+
+### Only the destinations you list
+
+By default a container reaches the whole public internet, within the limits above. You can instead
+give the project an **allowlist**: its containers then reach only what it names, plus the
+project's own database and API and its other containers. Everything else is refused at once (a TCP
+reset), and a destination you take off the list is cut off within a minute, connections already
+open included. Nothing restarts.
+
+```bash
+snoutdata containers egress                                   # what is allowed now
+snoutdata containers egress set api.example.com:443 mqtt.example.com:8883,8884 140.82.112.0/20
+snoutdata containers egress set --none                        # nothing outside the project
+snoutdata containers egress clear                             # the public internet again
+```
+
+Each destination is a host name, an IPv4 address or an IPv4 range, then `:port` or
+`:port,port`; with no port, any port. Up to 32. On the dashboard it is the **Container network**
+card on the project's Settings tab.
+
+A host name is looked up every minute, and an address it gave stays allowed for an hour after it
+stops giving it, so a name that rotates through a set of addresses keeps working. A name that
+answers differently depending on who asks (some CDNs do) can be refused now and then; for one of
+those, list its published address ranges instead. A container resolves names through its network's
+own resolver, which is always reachable. The limits on how much and how fast still apply to what
+is allowed.
 
 ### Each month's allowance
 

@@ -13,6 +13,12 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-16
 
+- **Containers can be held to an allowlist.** By default a project's Snout Containers reach the
+  public internet; you can now list the destinations they may reach instead (host names, IPv4
+  addresses or ranges, with ports), and everything else is refused. `snoutdata containers egress`
+  shows, sets and clears it, and the dashboard has a Container network card on the project's
+  Settings tab. Containers also no longer send over IPv6 at all, so every limit on what they send
+  applies to everything they send.
 - **The table browser no longer offers a Next page that is empty.** On a table whose rows came to
   an exact multiple of the page size, the last full page still had Next, and it led to a page
   saying the statement "returned no columns". Next now appears only when there is another row,
