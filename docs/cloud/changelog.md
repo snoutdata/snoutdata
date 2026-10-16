@@ -13,6 +13,9 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-16
 
+- **A Business project can add its own domain from the dashboard.** The Domains tab offered an
+  upgrade to Business projects, which include custom domains; it shows the form now, as it does on
+  Plus and Pro.
 - **The first request to a paused project's data API is answered, not refused.** The request that
   woke a project was often answered 503 ("Could not query the database for the schema cache"),
   because the API was let through the moment the database was up and loads its schema a moment
