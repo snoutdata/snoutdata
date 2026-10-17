@@ -13,6 +13,11 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-17
 
+- **A function stopped for its CPU limit says so in its log.** A request whose function kept the
+  CPU past its limit was answered 500 "it reached its CPU limit", but when the function never let
+  its event loop turn (a tight loop), nothing appeared in the Logs tab, `snoutdata functions logs`
+  or MCP `function_logs`. It now shows there as an error: "Stopped by the runtime: it used more
+  than N ms of CPU for each request it was given."
 - **`snoutdata db push` refuses a migration that ends its own transaction** (CLI 0.17.5). A
   file with a `COMMIT`, `END` or `ROLLBACK` in it ended the transaction `db push` wraps it in, so
   when a later statement failed, what ran before the `COMMIT` stayed and the push said nothing had.
