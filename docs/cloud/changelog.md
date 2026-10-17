@@ -11,6 +11,15 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-10-17
+
+- **`snoutdata db push` refuses a migration that ends its own transaction** (next CLI release). A
+  file with a `COMMIT`, `END` or `ROLLBACK` in it ended the transaction `db push` wraps it in, so
+  when a later statement failed, what ran before the `COMMIT` stayed and the push said nothing had.
+  It is refused before anything runs now, naming the line; `-- snoutdata:no-transaction` at the top
+  of the file still runs it as written. A statement Postgres will not run in a transaction (`CREATE
+  INDEX CONCURRENTLY`) now says how to run it outside one.
+
 ## 2026-10-16
 
 - **A team's members are changed only by inviting, removing and changing a role.** A team admin

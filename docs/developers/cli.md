@@ -431,7 +431,12 @@ It refuses three things, and overrides only one:
 Every problem is reported at once, not one per run. `--dry-run` says what would happen and changes
 nothing.
 
-Needs `psql`, because a migration connects to the database like any other client.
+Needs nothing installed: the CLI connects to the database itself. Two things in a file are refused
+before anything runs. A psql command (`\i`, `\set`, `\copy`) only psql can run, so put the SQL it
+stands for in the file instead. And a `COMMIT`, `END` or `ROLLBACK` in a file that runs in a
+transaction would end that transaction early, keeping what ran before it if a later statement
+failed; take it out, or mark the file `-- snoutdata:no-transaction` to run it as written (the next
+CLI release refuses this; until then it runs).
 
 ### `db restore`
 
