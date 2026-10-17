@@ -13,7 +13,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-17
 
-- **`snoutdata db push` refuses a migration that ends its own transaction** (next CLI release). A
+- **`snoutdata db push` refuses a migration that ends its own transaction** (CLI 0.17.5). A
   file with a `COMMIT`, `END` or `ROLLBACK` in it ended the transaction `db push` wraps it in, so
   when a later statement failed, what ran before the `COMMIT` stayed and the push said nothing had.
   It is refused before anything runs now, naming the line; `-- snoutdata:no-transaction` at the top
@@ -60,11 +60,11 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 - **A region that does not exist is refused as a mistake, not as a full region.** `projects create
   --region` with a name we do not run (a typo, or a region not open) said the region was "full right
   now" and to try again later. It now says there is no such region and names the ones there are; the
-  CLI exits 2 for it (with the next CLI release; until then, 1).
+  CLI exits 2 for it (CLI 0.17.4).
 - **`snoutdata push credentials` speaks in sentences when push cannot answer.** With push off it
   printed "404 Not Found"; it now says push is off and how to switch it on. Right after switching
   push on, while the database restarts, it could print a page of HTML; it now says push is still
-  starting. The CLI also never prints markup for an answer it cannot read (next CLI release).
+  starting. The CLI also never prints markup for an answer it cannot read (CLI 0.17.4).
 
 - **A cluster tells you when its home node is down, and when a node stops answering.** If the home
   node of a cluster stops and cannot be started again, the whole cluster is unavailable, and you now
