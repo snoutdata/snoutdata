@@ -24,6 +24,11 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   It is refused before anything runs now, naming the line; `-- snoutdata:no-transaction` at the top
   of the file still runs it as written. A statement Postgres will not run in a transaction (`CREATE
   INDEX CONCURRENTLY`) now says how to run it outside one.
+- **A container allowlist entry with a bad port says so** (next CLI release). `host:99999` was
+  refused for its name; the port is checked first now, and a name with no domain (`localhost`,
+  `api`) is told to give its domain. MCP `set_container_egress` no longer gives an example range
+  that it refuses.
+- **The Containers page says where their network is set:** Settings, under Container network.
 
 ## 2026-10-16
 
