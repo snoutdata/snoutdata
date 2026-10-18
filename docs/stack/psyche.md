@@ -62,8 +62,8 @@ no published image yet. What works today is below, and what is coming is at the 
   server beside your own model servers.
 - **A request log in your own Postgres**, below.
 
-Callers authenticate with the project's service key (an HS256 JWT with `role: service_role`) as a
-Bearer token or an `apikey` header. Keys of its own, with budgets, are coming.
+Callers authenticate as a Bearer token or an `apikey` header, with the project's service key (an
+HS256 JWT with `role: service_role`) or, when Psyche has a database, one of its own keys (below).
 
 ## Run it yourself
 
@@ -172,14 +172,73 @@ a long delete. Tested on Postgres 17.
 Each finished call is also logged to the process's own output under the `psyche::call` target, with
 the same fields.
 
+## Prices
+
+Each log row carries what the call cost, in dollars, exact to a millionth of a millionth: the tokens
+the provider reported at the model's price. Give a model its price in the providers file, in dollars
+per million tokens as providers publish them:
+
+```json
+{"name": "sonnet", "provider": "bedrock", "upstream": "us.anthropic.claude-sonnet-5-5",
+ "price": {"input": 2.2, "output": 11, "cache_read": 0.11, "cache_write": 2.75}}
+```
+
+`cache_read` and `cache_write` default to the input price, `request` adds a fee per call, and
+`long_context` (`{"above": 272000, "input": ..., "output": ...}`) is the second tier some models
+have. Without one, Psyche looks the model up in the price list it ships, which today holds the
+Amazon Bedrock models it has been run against, in `us-west-2`, from AWS's own price list. Prices
+differ by region and by inference profile (a `us.` profile costs 10% more than a `global.` one), so
+the list matches on both. A model priced by neither still works: its calls are logged with no cost,
+and Psyche names it in a warning at start.
+
+## Keys, budgets and rate limits
+
+With a database, the service key manages three more things under `/ai/v1/admin`. Each is a table
+in the `psyche` schema, and a change made there by any means (this API or plain SQL) reaches Psyche
+at once: a trigger announces it and Psyche reloads.
+
+**Keys** (`/admin/keys`): a `psy_` key for a person, an app or an agent, optionally limited to some
+models and given an expiry. Only its hash is stored, so it is shown once, when it is made. A key
+sees only its models on `/models`, and each log row names the key that made it.
+
+```bash
+curl -X POST http://localhost:5300/ai/v1/admin/keys -H "Authorization: Bearer $SERVICE_KEY" \
+  -d '{"name": "ci", "models": ["sonnet"], "expires_in": 2592000}'
+```
+
+**Budgets** (`/admin/budgets`): what the project or one key may spend in a day, a month (UTC) or the
+last N days. Before a call is sent, its worst case (the prompt's size and the reply's cap, at the
+model's price) is reserved against every budget on it, and when it ends it is settled to what the
+provider reported. So calls in flight together cannot spend past a budget, and a long reply cannot
+run through one. A hard budget refuses with 429, the code `budget_exceeded` and a sentence saying how
+much is left; a soft one lets the call through and names itself in `x-psyche-budget-warning`. A
+budget cannot be kept for a model with no price, so such a call is refused. In our test, 300 calls
+at once on a $0.001 budget: 18 answered, 282 refused, $0.000342 spent. The reservation is
+generous, so near its end a budget refuses some calls that would have fit.
+
+```bash
+curl -X POST http://localhost:5300/ai/v1/admin/budgets -H "Authorization: Bearer $SERVICE_KEY" \
+  -d '{"name": "ci daily", "amount": 5, "period": "day", "key_id": "<key id>"}'
+```
+
+**Rate limits** (`/admin/limits`): requests and tokens a minute, for the project or one key. Over a
+limit, a call gets 429 with the code `rate_limit_exceeded` and a `retry-after`; every response to a
+limited call carries OpenAI's `x-ratelimit-*` headers.
+
+```bash
+curl -X POST http://localhost:5300/ai/v1/admin/limits -H "Authorization: Bearer $SERVICE_KEY" \
+  -d '{"name": "ci", "key_id": "<key id>", "requests_per_minute": 60}'
+```
+
+Two things a budget does not catch, stated rather than hidden: a reply with no cap at all (an
+OpenAI-style provider called without `max_tokens`, for a model with no `max_output_tokens`) is
+reserved at 4,096 tokens and can run past that once; and the rows a crash did not write are not
+counted after a restart.
+
 ## What is coming
 
-- **Keys of its own**: issued per person, app or agent, stored hashed, each with the models it may
-  use.
-- **Budgets and rate limits**: per project, key, user or group of users, with a call's worst-case
-  cost reserved before it is sent and settled to what the provider reported, so a long reply cannot
-  run past a budget. Requests and tokens per minute, with the OpenAI `x-ratelimit-*` headers.
-- **A price catalogue**, so every log row carries what the call cost.
+- **Your app's signed-in users** calling it from the browser with the project's anon key, each with
+  a budget and limits of their own, and their own usage readable through row-level security.
 - **Routing**: fallbacks across providers, accounts and regions, decided before the first byte
   reaches you.
 - **The Anthropic Messages API in**, at `/ai/v1/messages`, so tools that speak Anthropic's API can

@@ -18,6 +18,11 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   in your own Postgres. It is early and not in SnoutData Cloud yet: build it yourself from
   [snoutdata/snout-psyche](https://github.com/snoutdata/snout-psyche). See
   [AI Gateway (Psyche)](/stack/psyche).
+- **Psyche gains prices, keys, budgets and rate limits.** Every call in its request log carries
+  what it cost. Keys of its own (`psy_…`, stored hashed) can be limited to some models; budgets per
+  project or key reserve a call's worst case before it is sent, so calls in flight together cannot
+  spend past one; and rate limits answer with OpenAI's `x-ratelimit-*` headers. See
+  [AI Gateway (Psyche)](/stack/psyche#keys-budgets-and-rate-limits).
 - **Every write is copied to a second zone before it is confirmed.** A project's writes are sent as
   they are made to a server of ours in another availability zone of the region, and a commit is
   confirmed only once that server holds it. Losing a server, its disk or its zone no longer loses
