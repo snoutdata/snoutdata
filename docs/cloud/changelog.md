@@ -18,6 +18,10 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   in your own Postgres. It is early and not in SnoutData Cloud yet: build it yourself from
   [snoutdata/snout-psyche](https://github.com/snoutdata/snout-psyche). See
   [AI Gateway (Psyche)](/stack/psyche).
+- **Psyche stores provider credentials.** A provider can take its key from Psyche rather than the
+  environment: set it once through the admin API, where it is checked against the provider before
+  it is kept and never shown again, and the next call uses it without a restart. See
+  [Stored credentials](/stack/psyche#stored-credentials).
 - **Psyche takes calls from your app's signed-in users.** With the anon key and their own token,
   straight from the browser, once the project has a hard budget of its own and one for every user.
   Budgets and rate limits can now be set per user (a default for everyone, overridable for one) and

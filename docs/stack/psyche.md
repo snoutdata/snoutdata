@@ -238,6 +238,16 @@ no `max_output_tokens`), Psyche sends 4,096, or less when that is all the budget
 to 256, below which the call is refused. One thing a budget does not catch, stated rather than
 hidden: the rows a crash did not write are not counted after a restart.
 
+## Stored credentials
+
+With a database, a provider can name a stored credential (`"credential": "openai"`) instead of the
+environment variable its key is in, and the service key sets it with
+`PUT /ai/v1/admin/credentials/openai` and `{"api_key": "…"}` (or AWS credentials for Bedrock). Psyche
+checks it against the provider first, with a request that spends no tokens, and stores it only if
+the provider takes it. The next call uses it, with no restart. A stored credential is never shown
+again: lists give its kind, a fingerprint and its last four characters, and only Psyche's own
+database role can read the table.
+
 ## Calling from the browser
 
 Your app's signed-in users can call models directly: the anon key as `apikey` and the user's own
