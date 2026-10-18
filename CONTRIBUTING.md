@@ -9,8 +9,8 @@ This repo is published from SnoutData's main repository, which is private: `docs
 Each commit here is one change made there, copied across.
 
 So a pull request here is not merged with the merge button. When we accept it, we apply your change
-in the main repository with you as co-author, and the next sync brings it back here as a commit that
-credits you. Your pull request is then closed with a link to that commit. Docs changes also go live
+in the main repository with you as its author, and the next sync brings it back here as your commit,
+under your name. Your pull request is then closed with a link to that commit. Docs changes also go live
 on docs.snoutdata.com at that point.
 
 ## What helps
