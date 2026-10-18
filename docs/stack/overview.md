@@ -26,7 +26,9 @@ part is open source.
 	{title: 'Auth', to: '/stack/auth', stack: 'auth', text: 'Sign-up, sign-in, sessions, multi-factor, OAuth and SAML single sign-on, with the users in your own database.'},
 	{title: 'Storage', to: '/stack/storage', stack: 'storage', text: 'Files in spaces, governed by the same kind of policies as your rows, with image resizing.'},
 	{title: 'Realtime', to: '/stack/realtime', stack: 'realtime', text: 'Signals, the roster and table changes over WebSockets.'},
+	{title: 'Socket.IO', to: '/stack/socketio', stack: 'sockets', text: 'socket.io-client connects unmodified; your event handlers are SQL functions that run as the caller.'},
 	{title: 'Functions', to: '/stack/functions', stack: 'functions', text: 'Your own TypeScript next to the database, with its secrets.'},
+	{title: 'Containers', to: '/stack/containers', stack: 'containers', text: 'A Docker image of yours, running as long as your project does, for a process that keeps its own connection open.'},
 	{title: 'Push', to: '/stack/push', stack: 'push', text: 'Notifications to iPhone, Android and the web, from one API and from SQL.'},
 	{title: 'SnoutTime', to: '/stack/snouttime/overview', mark: 'timeseries', text: 'Time series in plain Postgres: series tables, sealed columnar partitions, rollups.'},
 	{title: 'Clusters (Lepis)', to: '/stack/lepis/overview', stack: 'cluster', text: 'One database over several Postgres nodes, with one connection string. Tables spread by a key, moved online.'},
@@ -38,6 +40,8 @@ part is open source.
 |---|---|---|
 | Postgres 18, extensions, SnoutTime | yes | yes |
 | Data API, auth, storage, realtime, functions, push | yes | yes |
+| Socket.IO | yes | yes |
+| Containers | Plus and Pro ([containers](/stack/containers)) | an opt-in profile, on a machine with gVisor |
 | Clusters (Lepis) | yes ([clusters in Cloud](/stack/lepis/cloud)) | the router in front of your own Postgres ([run it yourself](/stack/lepis/self-hosting)) |
 | Every write copied to a second zone, continuous backups, point-in-time restore | yes ([durability](/cloud/durability)) | your own (`pg_dump`, volume backups) |
 | Sleeps when idle, wakes on connect | yes | no |
@@ -63,6 +67,7 @@ Moving between the two is a database dump and the files, since the schemas are t
 | Image resizing | [snoutdata/snout-images](https://github.com/snoutdata/snout-images) |
 | Realtime | [snoutdata/snout-realtime](https://github.com/snoutdata/snout-realtime) |
 | Functions | [snoutdata/snout-functions](https://github.com/snoutdata/snout-functions) |
+| Containers | [snoutdata/snout-containers](https://github.com/snoutdata/snout-containers) |
 | Push | [snoutdata/snout-push](https://github.com/snoutdata/snout-push) |
 | SnoutTime | [snoutdata/snouttime](https://github.com/snoutdata/snouttime) |
 | Lepis (clusters) | [snoutdata/snout-lepis](https://github.com/snoutdata/snout-lepis) |
