@@ -11,6 +11,19 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-10-18
+
+- **Every write is copied to a second zone before it is confirmed.** A project's writes are sent as
+  they are made to a server of ours in another availability zone of the region, and a commit is
+  confirmed only once that server holds it. Losing a server, its disk or its zone no longer loses
+  the last minute of writes the backup archive had not received: driven with a disk destroyed under
+  load, 0 of 4,231 confirmed writes were lost, and the machine restored it by itself in 89 seconds.
+  Each commit takes about a millisecond longer. See [backups and recovery](durability).
+- **Never lose a write, on Pro and Business.** Settings, Durability chooses what happens when the
+  second-zone copy cannot keep up: *Stay available* (the default) lets writes go on and tells you;
+  *Never lose a write* keeps a copy in two other zones, either one enough, and only if neither
+  answers do writes wait, with reads going on.
+
 ## 2026-10-17
 
 - **Ready and running show green in the dashboard.** The dot beside a project that is ready, a
@@ -81,7 +94,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 - **A cluster tells you when its home node is down, and when a node stops answering.** If the home
   node of a cluster stops and cannot be started again, the whole cluster is unavailable, and you now
-  get a "home down" alert (on the project, in `snoutdata shards status`, and by email) until it runs
+  get a "home down" alert (on the project, in `snoutdata cluster status`, and by email) until it runs
   again. A data node that is still running but does not answer for 15 seconds (hung, or cut off from
   the network) opens a "node not answering" alert, closed with how long it lasted when it answers.
   An alert that opened and closed between two emails is still emailed when it lasted 30 seconds or

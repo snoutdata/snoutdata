@@ -126,8 +126,9 @@ Connecting to a paused project wakes it, and the client waits. The CLI says so b
 ## Durability, in one paragraph
 
 Your database lives in object storage in **`us-west-2` on AWS**, the write-ahead log is archived
-continuously, and a full backup is taken at most every 24 hours. A server is a cache: losing one
-loses uptime, not data. The retention row in the plan table above is how long backups are kept, and
+continuously, and a full backup is taken at most every 24 hours. Every write is also copied to another
+zone of the region as it is made, before it is confirmed. A server is a cache: losing one, its disk
+or its zone loses uptime, not data. The retention row in the plan table above is how long backups are kept, and
 every plan keeps at least two full ones whatever that row says.
 
 **RPO, RTO, restore testing, Object Lock and the disaster recovery drill are on

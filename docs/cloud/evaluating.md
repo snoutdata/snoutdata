@@ -21,8 +21,9 @@ AWS `us-west-2` (Oregon), on machines we run ourselves. Backups are replicated c
 
 | | |
 | --- | --- |
-| Recovery point (RPO) | About 56 seconds of writes at worst, measured on the live system |
-| Recovery time (RTO) | 1.1 to 1.4 seconds with the data on the machine; about 10 to 21 seconds from object storage |
+| Recovery point (RPO) | Zero confirmed writes lost with a server, disk or zone lost: every write is copied to another zone as it is made (driven with a disk destroyed under load, 0 of 4,231 lost). On the default setting, up to about a minute only while that copy is behind |
+| Never lose a write | Pro and Business: a copy in two other zones, and writes wait rather than be kept in one place |
+| Recovery time (RTO) | 1.1 to 1.4 seconds with the data on the machine; about 10 to 21 seconds from object storage; 89 seconds for a lost disk, with nothing done by hand |
 | Backups kept | 7 days on Free and Plus, 14 on Pro, never fewer than two full backups |
 | Point-in-time restore | Pro: any moment in the last 7 days, into a new project |
 | Restore testing | Every project's backup restored and checked at least weekly |
@@ -41,7 +42,7 @@ uptime percentage yet, because the record only starts on 2026-09-11.
 ## Is there an SLA?
 
 No plan carries a signed uptime commitment today. There is no hot standby, so recovery is a restore
-and not a failover. Both are on [limits](limits).
+and not a failover, though no confirmed write is lost in it. Both are on [limits](limits).
 
 ## Who can see my data?
 

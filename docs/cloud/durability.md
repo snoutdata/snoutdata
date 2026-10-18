@@ -13,8 +13,9 @@ on this page was measured on the live system.
 
 | | |
 | --- | --- |
-| **RPO** (recovery point) | About **56 seconds** of writes, and only while the database is taking writes. An idle database has nothing in flight. Measured 2026-09-05. |
-| **RTO** (recovery time) | **1.1 to 1.4 seconds** when the data is still on the machine; **about 10 to 21 seconds** when it comes back from object storage. |
+| **RPO** (recovery point) | **Zero** confirmed writes lost when a server, its disk or its zone is lost: every write is copied to another zone of the region as it is made. Driven 2026-10-18 with a disk destroyed under load, 0 of 4,231 confirmed writes lost. The one exception is on *Stay available*, while that copy is behind: up to about a minute. |
+| **Durability setting** | *Stay available* (every plan) or *Never lose a write* (Pro and Business). See [the second-zone copy](#the-second-zone-copy). |
+| **RTO** (recovery time) | **1.1 to 1.4 seconds** when the data is still on the machine; **about 10 to 21 seconds** when it comes back from object storage; **89 seconds** for a lost disk, restored with nothing done by hand. |
 | **Backups** | Write-ahead log archived continuously; a full backup at most every 24 hours. |
 | **Retention** | 7 days on Free and Plus, 14 on Pro, and never fewer than two full backups. |
 | **Point-in-time restore** | Pro: any moment in the last 7 days, into a new project. |
@@ -29,8 +30,52 @@ taken at most every 24 hours. Object storage is the copy of record. The machine 
 database is a cache: losing one costs uptime, not data, because a replacement restores from the
 archive and replays it to the end.
 
-The recovery point is the same on every plan. Every restore replays to the end of the archive. What
-Pro adds is the ability to *choose* the moment, which is for "put it back to before I ran that".
+The archive alone trails the database by up to about a minute (measured at 56 seconds, 2026-09-05).
+The second-zone copy below closes that gap: what the archive has not received yet is already on a
+disk in another zone.
+
+Every restore replays to the end of what was kept, on every plan. What Pro adds is the ability to
+*choose* the moment, which is for "put it back to before I ran that".
+
+## The second-zone copy
+
+Since 2026-10-18, every write is sent as it is made to a server of ours in **another availability
+zone** of the region, which holds the write-ahead log and nothing else. A commit is confirmed only
+once that server has it on disk, so a confirmed write is on two zones' disks. It adds about a
+millisecond to each commit.
+
+When a server, its disk or its whole zone is lost, the database is restored from object storage and
+the second-zone copy supplies everything the archive had not received. The machine holding your
+database does this by itself: it notices the lost disk, holds the restore, has each copy that
+followed the database say how far it reached, takes the furthest, and only then restores. You are
+told, and so are we.
+
+Each project chooses what happens on the rare occasion the copy cannot keep up, in the dashboard
+under **Settings, Durability**:
+
+| | Stay available (default, every plan) | Never lose a write (Pro and Business) |
+| --- | --- | --- |
+| Copies in other zones | one | two, in two different zones; either one is enough |
+| A copy down or behind | writes go on, and you are told | writes go on through the other copy |
+| Every copy down | writes go on, and you are told | writes wait, reads go on, and you and we are told |
+| Lost in a disaster | nothing, unless the server is lost while the copy is behind: then up to about a minute | nothing |
+
+Never lose a write is on Pro and Business because the second copy is a server of its own in a third
+zone. Its copies are verified: each one checks the database's own certificate before it accepts a
+byte, so nothing but your database can feed it.
+
+**Driven on the live system, 2026-10-18,** with a load of writers, readers and two-row transfers
+running through the public endpoint and every operation logged and checked:
+
+| What was done | Confirmed writes lost | What clients saw |
+| --- | --- | --- |
+| The copy stopped, Stay available | 0 | writes went on (1,177 confirmed while it was down) |
+| Both copies stopped 40 seconds, Never lose a write | 0 | **no write confirmed** while both were down; reads went on; the waiting writes went through when they came back |
+| One copy stopped, Never lose a write | 0 | writes went on through the other (2,003 confirmed in 40 seconds) |
+| The database's disk destroyed, restored by an operator | **0** of 4,056 | out 105 seconds |
+| The database's disk destroyed, nothing done by hand | **0** of 4,231 | the second copy had reached further and was used; out **89 seconds** |
+
+No transfer was ever half applied, and no write appeared twice.
 
 ## Restore-tested
 
@@ -78,12 +123,20 @@ for when each happens.
 
 What the figures above cover, and what they do not:
 
-- **Within the recovery point.** A machine lost mid-write loses up to about a minute of writes that
-  had not yet reached the archive.
-- **Availability.** There is no hot standby for a project. A machine failure is covered by a
-  restore, measured above, rather than by a replica already running.
-- **Account isolation.** Both copies of your backups are in the same cloud provider account that
-  runs the service. Replication into a separate account is not built yet.
+- **Stay available, while the copy is behind.** If the second-zone copy stops keeping up, writes
+  go on and you are told. A server lost in that window can lose up to about a minute of writes,
+  the archive's own gap. Never lose a write has no such window.
+- **A cancelled commit.** If a client gives up on a commit while it waits for the copy, Postgres
+  warns that the transaction may already be committed. That is Postgres's own behavior and true of
+  every synchronous copy.
+- **Availability.** There is no hot standby for a project. A lost machine is covered by a restore,
+  measured above, rather than by a replica already running. Writes are refused for about 1.5
+  seconds just after a restore, while the database finishes coming up.
+- **Not yet drilled.** A whole server lost for good and its projects brought up on another one.
+  The parts are in place (the data volume survives the instance, and a failed instance is moved to
+  new hardware by the cloud provider), and the drill is next.
+- **Account isolation.** Both copies of your backups, and the second-zone copy, are in the same
+  cloud provider account that runs the service. Replication into a separate account is not built yet.
 - **Uptime commitment.** Plans do not carry an SLA today. Live status is published at
   [status.snoutdata.com](https://status.snoutdata.com), which reports green only when it has
   checked, and will publish an uptime figure once it has a long enough record to mean something.
