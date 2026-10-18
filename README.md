@@ -127,6 +127,7 @@ assistant's butterfly, ship in the official build at no charge and are not in th
 | [snoutdata/snout-functions](https://github.com/snoutdata/snout-functions) | Functions runtime: TypeScript on Deno's web platform, each function in V8 isolates of its own |
 | [snoutdata/snout-containers](https://github.com/snoutdata/snout-containers) | Runs OCI containers with gVisor, project-isolated networks, resource limits, restarts, and logs |
 | [snoutdata/snout-lepis](https://github.com/snoutdata/snout-lepis) | Distributed Postgres across plain Postgres nodes, behind a wire-protocol router. Built in the open |
+| [snoutdata/snout-psyche](https://github.com/snoutdata/snout-psyche) | The AI gateway for the whole stack: your own provider keys, with usage in your own Postgres |
 | [snoutdata/apt](https://github.com/snoutdata/apt) | The signed Debian/Ubuntu apt repository |
 
 ## License
