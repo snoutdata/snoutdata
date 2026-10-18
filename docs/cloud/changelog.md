@@ -13,6 +13,9 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-17
 
+- **Ready and running show green in the dashboard.** The dot beside a project that is ready, a
+  product that is on, a token that is live or a step that is done was the same near-black as the
+  text; it is green now, so a healthy project is told apart from a paused one at a glance.
 - **A function stopped for its CPU limit says so in its log.** A request whose function kept the
   CPU past its limit was answered 500 "it reached its CPU limit", but when the function never let
   its event loop turn (a tight loop), nothing appeared in the Logs tab, `snoutdata functions logs`
