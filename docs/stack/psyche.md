@@ -186,7 +186,8 @@ per million tokens as providers publish them:
 `cache_read` and `cache_write` default to the input price, `request` adds a fee per call, and
 `long_context` (`{"above": 272000, "input": ..., "output": ...}`) is the second tier some models
 have. Without one, Psyche looks the model up in the price list it ships, which today holds the
-Amazon Bedrock models it has been run against, in `us-west-2`, from AWS's own price list. Prices
+Amazon Bedrock models it has been run against, in `us-west-2`, from AWS's own price list (GPT-5.6
+Luna, which that list does not carry, at the rate it is billed at in production). Prices
 differ by region and by inference profile (a `us.` profile costs 10% more than a `global.` one), so
 the list matches on both. A model priced by neither still works: its calls are logged with no cost,
 and Psyche names it in a warning at start.
