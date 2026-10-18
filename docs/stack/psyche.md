@@ -194,7 +194,8 @@ and Psyche names it in a warning at start.
 
 ## Keys, budgets and rate limits
 
-With a database, the service key manages three more things under `/ai/v1/admin`. Each is a table
+With a database, the service key manages keys, budgets, rate limits and groups under
+`/ai/v1/admin`. Each is a table
 in the `psyche` schema, and a change made there by any means (this API or plain SQL) reaches Psyche
 at once: a trigger announces it and Psyche reloads.
 
@@ -207,7 +208,8 @@ curl -X POST http://localhost:5300/ai/v1/admin/keys -H "Authorization: Bearer $S
   -d '{"name": "ci", "models": ["sonnet"], "expires_in": 2592000}'
 ```
 
-**Budgets** (`/admin/budgets`): what the project or one key may spend in a day, a month (UTC) or the
+**Budgets** (`/admin/budgets`): what the project, one key, each signed-in user, one user or a
+group may spend in a day, a month (UTC) or the
 last N days. Before a call is sent, its worst case (the prompt's size and the reply's cap, at the
 model's price) is reserved against every budget on it, and when it ends it is settled to what the
 provider reported. So calls in flight together cannot spend past a budget, and a long reply cannot
@@ -222,7 +224,7 @@ curl -X POST http://localhost:5300/ai/v1/admin/budgets -H "Authorization: Bearer
   -d '{"name": "ci daily", "amount": 5, "period": "day", "key_id": "<key id>"}'
 ```
 
-**Rate limits** (`/admin/limits`): requests and tokens a minute, for the project or one key. Over a
+**Rate limits** (`/admin/limits`): requests and tokens a minute, for any of the same. Over a
 limit, a call gets 429 with the code `rate_limit_exceeded` and a `retry-after`; every response to a
 limited call carries OpenAI's `x-ratelimit-*` headers.
 
@@ -236,10 +238,29 @@ no `max_output_tokens`), Psyche sends 4,096, or less when that is all the budget
 to 256, below which the call is refused. One thing a budget does not catch, stated rather than
 hidden: the rows a crash did not write are not counted after a restart.
 
+## Calling from the browser
+
+Your app's signed-in users can call models directly: the anon key as `apikey` and the user's own
+access token as the Bearer token, the way the data API takes them, with no backend of yours in
+between. Since anyone can reach that door, Psyche takes no such call until the project has **a hard
+budget of its own and a hard budget for every user**, and until then it refuses with a sentence
+saying which is missing. The anon key alone calls nothing.
+
+```bash
+curl -X POST http://localhost:5300/ai/v1/admin/budgets -H "Authorization: Bearer $SERVICE_KEY" \
+  -d '{"name": "each user", "amount": 0.50, "period": "day", "every_user": true}'
+```
+
+A budget or limit with `"every_user": true` gives each user one of their own; one naming a `user_id`
+replaces it for that user. A **group** (`/admin/groups`, and `PUT /admin/members/<user id>` with a
+`group_id`) is a team inside your app whose members share one budget. A key with an `owner` counts
+against that user's budgets and limits too.
+
+Each user can read their own usage through RLS: their keys (never the hash), calls, daily totals,
+group, and the budgets and limits that apply to them, so "your AI usage" is a query from the app.
+
 ## What is coming
 
-- **Your app's signed-in users** calling it from the browser with the project's anon key, each with
-  a budget and limits of their own, and their own usage readable through row-level security.
 - **Routing**: fallbacks across providers, accounts and regions, decided before the first byte
   reaches you.
 - **The Anthropic Messages API in**, at `/ai/v1/messages`, so tools that speak Anthropic's API can
