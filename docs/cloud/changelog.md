@@ -13,6 +13,11 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-18
 
+- **Psyche, an AI gateway, is in the open.** One OpenAI-compatible endpoint, `/ai/v1`, in front of
+  OpenAI-style providers, Anthropic and Amazon Bedrock, with your own provider keys and a request log
+  in your own Postgres. It is early and not in SnoutData Cloud yet: build it yourself from
+  [snoutdata/snout-psyche](https://github.com/snoutdata/snout-psyche). See
+  [AI Gateway (Psyche)](/stack/psyche).
 - **Every write is copied to a second zone before it is confirmed.** A project's writes are sent as
   they are made to a server of ours in another availability zone of the region, and a commit is
   confirmed only once that server holds it. Losing a server, its disk or its zone no longer loses

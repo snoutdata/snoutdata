@@ -3,7 +3,7 @@ id: overview
 title: The SnoutData stack
 sidebar_label: Overview
 slug: /stack
-description: What every SnoutData project runs, hosted or in your own Docker. Postgres 18 with SnoutTime and pgvector, a REST and GraphQL data API, auth, file storage, realtime, functions and push, behind one gateway, and Lepis to spread a database over several nodes. Open source.
+description: What every SnoutData project runs, hosted or in your own Docker. Postgres 18 with SnoutTime and pgvector, a REST and GraphQL data API, auth, file storage, realtime, functions and push, behind one gateway, Lepis to spread a database over several nodes, and Psyche, an AI gateway (early, not in Cloud yet). Open source.
 ---
 
 import {Cards, Scene} from '@site/src/components/Art';
@@ -32,6 +32,7 @@ part is open source.
 	{title: 'Push', to: '/stack/push', stack: 'push', text: 'Notifications to iPhone, Android and the web, from one API and from SQL.'},
 	{title: 'SnoutTime', to: '/stack/snouttime/overview', mark: 'timeseries', text: 'Time series in plain Postgres: series tables, sealed columnar partitions, rollups.'},
 	{title: 'Clusters (Lepis)', to: '/stack/lepis/overview', stack: 'cluster', text: 'One database over several Postgres nodes, with one connection string. Tables spread by a key, moved online.'},
+	{title: 'AI Gateway (Psyche)', to: '/stack/psyche', stack: 'api', text: 'One OpenAI-compatible endpoint in front of OpenAI-style providers, Anthropic and Bedrock, with your own keys. Early, not in Cloud yet.'},
 ]} />
 
 ## Where it runs
@@ -43,6 +44,7 @@ part is open source.
 | Socket.IO | yes | yes |
 | Containers | Plus and Pro ([containers](/stack/containers)) | an opt-in profile, on a machine with gVisor |
 | Clusters (Lepis) | yes ([clusters in Cloud](/stack/lepis/cloud)) | the router in front of your own Postgres ([run it yourself](/stack/lepis/self-hosting)) |
+| AI Gateway (Psyche) | not yet | build it from source, early ([AI gateway](/stack/psyche)) |
 | Every write copied to a second zone, continuous backups, point-in-time restore | yes ([durability](/cloud/durability)) | your own (`pg_dump`, volume backups) |
 | Sleeps when idle, wakes on connect | yes | no |
 | Plans, the dashboard, status page | yes | no |
@@ -71,6 +73,7 @@ Moving between the two is a database dump and the files, since the schemas are t
 | Push | [snoutdata/snout-push](https://github.com/snoutdata/snout-push) |
 | SnoutTime | [snoutdata/snouttime](https://github.com/snoutdata/snouttime) |
 | Lepis (clusters) | [snoutdata/snout-lepis](https://github.com/snoutdata/snout-lepis) |
+| Psyche (AI gateway) | [snoutdata/snout-psyche](https://github.com/snoutdata/snout-psyche) |
 | JavaScript client | [snoutdata/snout-client](https://github.com/snoutdata/snout-client) (`@snoutdata/client` on npm) |
 
 What changed, part by part, is in the [changelog](/cloud/changelog).
