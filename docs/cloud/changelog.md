@@ -21,7 +21,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 - **Psyche gains prices, keys, budgets and rate limits.** Every call in its request log carries
   what it cost. Keys of its own (`psy_…`, stored hashed) can be limited to some models; budgets per
   project or key reserve a call's worst case before it is sent, so calls in flight together cannot
-  spend past one; and rate limits answer with OpenAI's `x-ratelimit-*` headers. See
+  spend past one, and a reply with no cap of its own is sent one that fits; and rate limits answer with OpenAI's `x-ratelimit-*` headers. See
   [AI Gateway (Psyche)](/stack/psyche#keys-budgets-and-rate-limits).
 - **Every write is copied to a second zone before it is confirmed.** A project's writes are sent as
   they are made to a server of ours in another availability zone of the region, and a commit is

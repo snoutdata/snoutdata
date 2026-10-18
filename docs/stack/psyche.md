@@ -231,10 +231,10 @@ curl -X POST http://localhost:5300/ai/v1/admin/limits -H "Authorization: Bearer 
   -d '{"name": "ci", "key_id": "<key id>", "requests_per_minute": 60}'
 ```
 
-Two things a budget does not catch, stated rather than hidden: a reply with no cap at all (an
-OpenAI-style provider called without `max_tokens`, for a model with no `max_output_tokens`) is
-reserved at 4,096 tokens and can run past that once; and the rows a crash did not write are not
-counted after a restart.
+Under a hard budget a reply always has a cap. When a call names no `max_tokens` (and the model has
+no `max_output_tokens`), Psyche sends 4,096, or less when that is all the budget has room for, down
+to 256, below which the call is refused. One thing a budget does not catch, stated rather than
+hidden: the rows a crash did not write are not counted after a restart.
 
 ## What is coming
 
