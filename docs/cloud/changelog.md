@@ -13,6 +13,10 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-19
 
+- **Psyche: when a key was last used.** The key list gives each key's last call (from the request
+  log) and its last day of use (from the daily totals, kept for good), beside when it was made. The
+  request log's next page no longer repeats the last row of the page before.
+
 - **Psyche: credits, model access and billing-period budgets.** A signed-in user's credits pay once
   their own budgets are full; a model can be limited to the users and groups granted it; and a
   budget can count from a billing period's first day. See

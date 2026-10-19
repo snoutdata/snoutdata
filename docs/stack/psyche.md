@@ -202,7 +202,8 @@ at once: a trigger announces it and Psyche reloads.
 
 **Keys** (`/admin/keys`): a `psy_` key for a person, an app or an agent, optionally limited to some
 models and given an expiry. Only its hash is stored, so it is shown once, when it is made. A key
-sees only its models on `/models`, and each log row names the key that made it.
+sees only its models on `/models`, and each log row names the key that made it. The list shows when
+each key was made and when it was last used.
 
 ```bash
 curl -X POST http://localhost:5300/ai/v1/admin/keys -H "Authorization: Bearer $SERVICE_KEY" \
