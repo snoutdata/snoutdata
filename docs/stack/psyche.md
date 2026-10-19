@@ -86,13 +86,14 @@ Then point any OpenAI client at `http://localhost:5300/ai/v1` with a service-rol
 
 ## Configuration
 
-Every setting is an environment variable. Nothing secret has a default: without its JWT secret and
-its providers file the server refuses to start, and says which one is missing.
+Every setting is an environment variable. Nothing secret has a default: without its JWT secret, and
+without a providers file or a database to keep its providers in, the server refuses to start and
+says what is missing.
 
 | Variable | Default | Secret | What it is |
 | --- | --- | --- | --- |
 | `PSYCHE_JWT_SECRET` | (required) | yes | The project's JWT secret, which callers' tokens are verified with. At least 32 characters. |
-| `PSYCHE_PROVIDERS_FILE` | (required) | no | The providers and models file (below). |
+| `PSYCHE_PROVIDERS_FILE` | (required without `DATABASE_URL`) | no | The providers and models file (below). With a database it seeds the providers and models tables, and may be left out. |
 | `PSYCHE_ADDR` | `0.0.0.0:5300` | no | Where the API listens. |
 | `PSYCHE_EGRESS` | `public` | no | `public`: https to public addresses only. `private`: anywhere, http included, for a server beside its own model servers. |
 | `PSYCHE_FIRST_BYTE_TIMEOUT_S` | `300` | no | How long to wait for a provider's response to begin. |
@@ -238,10 +239,30 @@ no `max_output_tokens`), Psyche sends 4,096, or less when that is all the budget
 to 256, below which the call is refused. One thing a budget does not catch, stated rather than
 hidden: the rows a crash did not write are not counted after a restart.
 
+## Providers and models in your database
+
+With a database, your providers and models are rows of `psyche.providers` and `psyche.models`, and
+those rows are what Psyche serves. A providers file, if you keep one, is written into them at each
+start. Add and change them with the service key, or in SQL, and the change is served at once:
+
+```bash
+curl -X PUT http://localhost:5300/ai/v1/admin/providers/openai -H "Authorization: Bearer $SERVICE_KEY" \
+  -d '{"kind": "openai", "base_url": "https://api.openai.com/v1", "credential": "openai"}'
+curl -X PUT http://localhost:5300/ai/v1/admin/models/fast -H "Authorization: Bearer $SERVICE_KEY" \
+  -d '{"provider": "openai", "upstream": "gpt-4o-mini", "price": {"input": 0.15, "output": 0.6}}'
+```
+
+A model takes the same fields as in the file, plus `"enabled": false` to stop serving it, and its
+name may contain `/`. A model that could not be served is refused with the reason, and nothing is
+stored. `GET /ai/v1/admin/models` shows the price each model is charged at and where it comes from.
+A provider from the providers file stays the file's, because its key may come from Psyche's
+environment: the admin API will not change it. A model from the file can be edited (its price, its
+limits, whether it is served), and the file then leaves your edit alone.
+
 ## Stored credentials
 
 With a database, a provider can name a stored credential (`"credential": "openai"`) instead of the
-environment variable its key is in, and the service key sets it with
+environment variable its key is in (in the file, or on a provider you made through the admin API), and the service key sets it with
 `PUT /ai/v1/admin/credentials/openai` and `{"api_key": "…"}` (or AWS credentials for Bedrock). Psyche
 checks it against the provider first, with a request that spends no tokens, and stores it only if
 the provider takes it. The next call uses it, with no restart. A stored credential is never shown

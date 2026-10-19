@@ -13,6 +13,10 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-18
 
+- **Psyche keeps its providers and models in your database.** Add a provider or a model, change a
+  price or stop serving a model through the admin API or in SQL, and the next call sees it with no
+  restart; the providers file becomes optional and only seeds the tables. See
+  [Providers and models in your database](/stack/psyche#providers-and-models-in-your-database).
 - **Psyche, an AI gateway, is in the open.** One OpenAI-compatible endpoint, `/ai/v1`, in front of
   OpenAI-style providers, Anthropic and Amazon Bedrock, with your own provider keys and a request log
   in your own Postgres. It is early and not in SnoutData Cloud yet: build it yourself from
