@@ -259,6 +259,13 @@ A provider from the providers file stays the file's, because its key may come fr
 environment: the admin API will not change it. A model from the file can be edited (its price, its
 limits, whether it is served), and the file then leaves your edit alone.
 
+## Credits and model access
+
+A signed-in user can have credits (`psyche.credits`), which pay for a call only when their own
+budgets are full, never past the project's; the log marks each call credits paid. A model can be
+limited to the users and groups granted it (`"access": "granted"` and `psyche.model_grants`); anyone
+else is refused it and does not see it in `/ai/v1/models`.
+
 ## Stored credentials
 
 With a database, a provider can name a stored credential (`"credential": "openai"`) instead of the

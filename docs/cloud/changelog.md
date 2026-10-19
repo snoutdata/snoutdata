@@ -11,6 +11,13 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-10-19
+
+- **Psyche: credits, model access and billing-period budgets.** A signed-in user's credits pay once
+  their own budgets are full; a model can be limited to the users and groups granted it; and a
+  budget can count from a billing period's first day. See
+  [Credits and model access](/stack/psyche#credits-and-model-access).
+
 ## 2026-10-18
 
 - **Psyche keeps its providers and models in your database.** Add a provider or a model, change a
