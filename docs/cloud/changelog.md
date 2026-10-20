@@ -35,6 +35,16 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   credit balance), calls now fail with a 502 `provider_billing` and no `retry-after`, instead of a
   429 that told clients to wait and try again.
 
+- **Monthly budgets, and whose limit refused.** Your AI gateway's budgets can now run a month at a
+  time from a day you choose (`"period": "monthly"` with `"starts_on"`), starting again on their own
+  on each anniversary, so a budget kept to a billing period never needs resetting. A refusal from a
+  budget or a rate limit now says whose it was in `scope` (`project`, `key`, `user` or `group`).
+  See [budgets](/stack/psyche).
+
+- **Clearer messages when the assistant is out of budget.** The dashboard's assistant now says whose
+  budget stopped a request (yours, your team's, or SnoutData AI's own daily limit, which is not
+  yours) and, for too many requests at once, when to try again, instead of the gateway's raw text.
+
 - **The AI tab's model guide** spaces its fields, ends on **Save**, and the models table shows each
   price to the cent ($0.10 rather than $0.1).
 

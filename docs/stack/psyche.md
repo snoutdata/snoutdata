@@ -261,12 +261,14 @@ curl -X POST http://localhost:5300/ai/v1/admin/keys -H "Authorization: Bearer $S
 ```
 
 **Budgets** (`/admin/budgets`): what the project, one key, each signed-in user, one user or a
-group may spend in a day, a month (UTC) or the
-last N days. Before a call is sent, its worst case (the prompt's size and the reply's cap, at the
+group may spend in a day, a month (UTC), the
+last N days, or a month at a time from a day of your choosing (`"period": "monthly"` with
+`"starts_on"`: a billing period that starts again on its own, on each anniversary of that day). Before a call is sent, its worst case (the prompt's size and the reply's cap, at the
 model's price) is reserved against every budget on it, and when it ends it is settled to what the
 provider reported. So calls in flight together cannot spend past a budget, and a long reply cannot
-run through one. A hard budget refuses with 429, the code `budget_exceeded` and a sentence saying how
-much is left; a soft one lets the call through and names itself in `x-psyche-budget-warning`. A
+run through one. A hard budget refuses with 429, the code `budget_exceeded`, a sentence saying how
+much is left, and `scope`: whose budget it was (`project`, `key`, `user` or `group`), so your app can
+tell its user's own budget from yours; a soft one lets the call through and names itself in `x-psyche-budget-warning`. A
 budget cannot be kept for a model with no price, so such a call is refused. In our test, 300 calls
 at once on a $0.001 budget: 18 answered, 282 refused, $0.000342 spent. The reservation is
 generous, so near its end a budget refuses some calls that would have fit.
@@ -277,7 +279,8 @@ curl -X POST http://localhost:5300/ai/v1/admin/budgets -H "Authorization: Bearer
 ```
 
 **Rate limits** (`/admin/limits`): requests and tokens a minute, for any of the same. Over a
-limit, a call gets 429 with the code `rate_limit_exceeded` and a `retry-after`; every response to a
+limit, a call gets 429 with the code `rate_limit_exceeded`, its `scope` as for a budget, and a
+`retry-after`; every response to a
 limited call carries OpenAI's `x-ratelimit-*` headers.
 
 ```bash
