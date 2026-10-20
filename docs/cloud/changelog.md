@@ -24,6 +24,11 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   tries it on the provider. An address that serves nothing (a base URL missing its `/v1`, say) used
   to let any key through; now the key is refused with the address that was called and what to check.
 
+- **Out of credit is no longer a rate limit.** When the provider account behind your AI gateway's key
+  has no credit or quota left (OpenAI's `insufficient_quota`, a 402 from OpenRouter, Anthropic's low
+  credit balance), calls now fail with a 502 `provider_billing` and no `retry-after`, instead of a
+  429 that told clients to wait and try again.
+
 - **The AI tab's model guide** spaces its fields, ends on **Save**, and the models table shows each
   price to the cent ($0.10 rather than $0.1).
 

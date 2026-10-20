@@ -90,7 +90,9 @@ snoutdata ai test
   call is cancelled, so nobody pays for tokens no one reads.
 - **Errors say whose fault they are.** Your own bad request gets the provider's status (a 400); a
   provider rate-limiting gets 429 with its `retry-after`; a provider refusing **Psyche's**
-  credential is a 502, never passed on as if your key were wrong; no answer in time is a 504. A
+  credential is a 502, never passed on as if your key were wrong; a provider account with no credit
+  or quota left is a 502 `provider_billing` with no `retry-after`, since waiting will not fix it; no
+  answer in time is a 504. A
   provider error that echoes the key Psyche sent never reaches you or the log.
 - **Outbound calls are checked.** By default Psyche connects only to public https addresses: no
   private ranges, no metadata service, no redirects. `PSYCHE_EGRESS=private` lifts that for a
