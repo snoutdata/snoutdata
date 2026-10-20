@@ -43,7 +43,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   It now uses `https://api.anthropic.com/v1`; a provider added before this needs its address changed
   or adding again.
 
-- **`snoutdata ai`** (CLI 0.18.0): the AI tab from a terminal. Switch the gateway on, add models with
+- **`snoutdata ai`** (CLI 0.18.1): the AI tab from a terminal. Switch the gateway on, add models with
   their provider and key (the key on stdin, checked by the provider first), make keys for servers,
   set the project's and every user's budgets, read usage, and `ai test` one call through the
   project's own address. See [the CLI reference](/developers/cli#ai).
