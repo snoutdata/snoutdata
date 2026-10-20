@@ -24,6 +24,12 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   tries it on the provider. An address that serves nothing (a base URL missing its `/v1`, say) used
   to let any key through; now the key is refused with the address that was called and what to check.
 
+- **Routes and fallbacks in your AI gateway.** A route is one name for several models, tried in turn
+  when one fails for a reason that is not your request's (a rate limit, a provider error, an account
+  out of credit). Make one with `snoutdata ai routes set chat --models claude-sonnet,gpt-4o` (CLI
+  0.18.1 or newer) or `PUT /ai/v1/admin/routes/chat`, and call `chat` as you would a model. OpenRouter's
+  `models` fallback list works too. See [routes and fallbacks](/stack/psyche#what-works-today).
+
 - **Out of credit is no longer a rate limit.** When the provider account behind your AI gateway's key
   has no credit or quota left (OpenAI's `insufficient_quota`, a 402 from OpenRouter, Anthropic's low
   credit balance), calls now fail with a 502 `provider_billing` and no `retry-after`, instead of a

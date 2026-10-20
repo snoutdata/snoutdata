@@ -58,6 +58,15 @@ snoutdata ai test
 
 ## What works today
 
+- **Routes and fallbacks.** A route is one name for several models, tried in turn: the next is
+  asked only when the one before failed for a reason that was not your request's (a rate limit, a
+  provider error, no answer in time, a provider account refused or out of credit, a budget too
+  small for that model). A provider error or a short rate limit is asked once more first; nothing
+  is retried once the reply has started. Sort a route `order` (as written) or `price` (the cheapest
+  first). OpenRouter's `models` list works the same way on any request. The answer names the model
+  that replied (`x-psyche-model`) and the route (`x-psyche-route`), and each try is its own row in
+  the request log.
+
 - **The OpenAI API.** `POST /ai/v1/chat/completions` and `POST /ai/v1/completions`, streamed or
   not, `POST /ai/v1/embeddings`, and `GET /ai/v1/models`. Each is also served at
   `/v1/...`, for clients whose base URL ends in `/v1`, so the official OpenAI SDKs work by changing
@@ -341,8 +350,8 @@ group, and the budgets and limits that apply to them, so "your AI usage" is a qu
 
 ## What is coming
 
-- **Routing**: fallbacks across providers, accounts and regions, decided before the first byte
-  reaches you.
+- **Routing by health**: targets cooled down after failures, sorted by measured speed, spread across
+  accounts by their remaining quota, and kept on the one holding a conversation's prompt cache.
 - **The Anthropic Messages API in**, at `/ai/v1/messages`, so tools that speak Anthropic's API can
   use it too.
 - **More of it in the dashboard**: routes, provider health and a playground, and the same screens in
