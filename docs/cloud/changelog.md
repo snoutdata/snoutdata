@@ -20,6 +20,10 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   signed-in users' browsers, and 30 days of usage by model are on the same tab. See
   [In SnoutData Cloud](/stack/psyche#in-snoutdata-cloud).
 
+- **A provider key is checked at the right address.** Before your AI gateway stores a provider key it
+  tries it on the provider. An address that serves nothing (a base URL missing its `/v1`, say) used
+  to let any key through; now the key is refused with the address that was called and what to check.
+
 - **The AI tab's model guide** spaces its fields, ends on **Save**, and the models table shows each
   price to the cent ($0.10 rather than $0.1).
 
