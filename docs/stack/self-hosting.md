@@ -2,7 +2,7 @@
 id: self-hosting
 title: Run the stack yourself
 sidebar_label: Self-hosting
-description: The whole SnoutData stack on one machine with Docker Compose. Postgres, auth, a REST and GraphQL API, storage, Realtime, functions and push behind one gateway, from the same open-source servers SnoutData Cloud runs.
+description: The whole SnoutData stack on one machine with Docker Compose. Postgres, auth, a REST and GraphQL API, storage, Realtime, functions, push and an AI gateway behind one gateway, from the same open-source servers SnoutData Cloud runs.
 ---
 
 # Run the stack yourself
@@ -25,7 +25,7 @@ Measured with the default profiles on a 2-core Arm machine: about 170 MB of memo
 
 ```bash
 git clone https://github.com/snoutdata/snout-stack && cd snout-stack
-docker run --rm ghcr.io/snoutdata/snout-stack:0.1.11 init > .env
+docker run --rm ghcr.io/snoutdata/snout-stack:0.1.12 init > .env
 docker compose up -d --wait
 ```
 
@@ -72,11 +72,12 @@ including creating the [extensions](/stack/extensions) the image offers, and is 
 | `objects` | an S3 API over a folder on the machine, where files are kept (optional) |
 | `images` | [snout-images](https://github.com/snoutdata/snout-images), image resizing (optional) |
 | `push` | [snout-push](https://github.com/snoutdata/snout-push), push notifications (optional) |
+| `ai` | [snout-psyche](https://github.com/snoutdata/snout-psyche), the [AI gateway](/stack/psyche) at `/ai/v1` (optional) |
 
-`objects`, `images` and `push` are on by default. Take `objects` out of `COMPOSE_PROFILES` in `.env` to keep
+`objects`, `images`, `push` and `ai` are on by default. Take `objects` out of `COMPOSE_PROFILES` in `.env` to keep
 files in your own S3 (AWS, R2 and the like: `S3_ENDPOINT`, `S3_BUCKET`, `S3_REGION` and the keys, with
-`S3_CREATE_BUCKET=false`), `images` to run without image resizing, and `push` to run without push
-notifications.
+`S3_CREATE_BUCKET=false`), `images` to run without image resizing, `push` to run without push
+notifications, and `ai` to run without the AI gateway.
 
 ## Functions
 

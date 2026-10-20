@@ -11,6 +11,18 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-10-20
+
+- **AI in your project.** Every project can now run its own AI gateway (Psyche), on every plan: open
+  the project in the dashboard, choose **AI** and turn it on. A guide adds models from Amazon Bedrock,
+  Anthropic, OpenAI, OpenRouter, your own Ollama or any OpenAI-compatible server, with your own keys,
+  which stay in the project. Keys for servers and tools, two hard budgets that open it to your
+  signed-in users' browsers, and 30 days of usage by model are on the same tab. See
+  [In SnoutData Cloud](/stack/psyche#in-snoutdata-cloud).
+
+- **The self-hosted stack has the AI gateway too.** `snout-stack` 0.1.12 adds it as the `ai` profile at
+  `/ai/v1`, on by default in a new stack. See [Self-hosting](/stack/self-hosting).
+
 ## 2026-10-19
 
 - **Psyche: when a key was last used.** The key list gives each key's last call (from the request

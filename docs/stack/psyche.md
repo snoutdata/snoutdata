@@ -2,7 +2,7 @@
 id: psyche
 title: AI Gateway (Psyche)
 sidebar_label: AI Gateway (Psyche)
-description: Psyche is an OpenAI-compatible AI gateway for Postgres-backed apps. One endpoint in front of OpenAI-style providers, Anthropic and Amazon Bedrock, with your own provider keys and a request log in your own Postgres. Built in the open, early, and not in SnoutData Cloud yet.
+description: Psyche is an OpenAI-compatible AI gateway for Postgres-backed apps. One endpoint in front of OpenAI-style providers, Anthropic and Amazon Bedrock, with your own provider keys and a request log in your own Postgres. Early, built in the open, in every SnoutData Cloud project and the self-hosted stack.
 ---
 
 # AI Gateway (Psyche)
@@ -15,11 +15,36 @@ written in Rust, at the path `/ai/v1`.
 Psyche routes calls to models; it is not a model itself, and it never answers on its own.
 
 :::caution Early, built in the open
-Psyche is not production ready yet, and it is **not in SnoutData Cloud yet**: a hosted project does
-not run it today. You can build it and run it yourself from its source at
-[github.com/snoutdata/snout-psyche](https://github.com/snoutdata/snout-psyche) (Apache-2.0); there is
-no published image yet. What works today is below, and what is coming is at the end of this page.
+Psyche is not production ready yet. In SnoutData Cloud you switch it on per project, on every plan
+(below); in the self-hosted stack it is the `ai` profile; and its source is at
+[github.com/snoutdata/snout-psyche](https://github.com/snoutdata/snout-psyche) (Apache-2.0). What works
+today is below, and what is coming is at the end of this page.
 :::
+
+## In SnoutData Cloud
+
+Each project can run its own Psyche, beside its database in the project's own pod, at
+`https://<ref>.api.snoutdata.com/ai/v1`. Its providers, models, keys, budgets and request log are
+tables in the project's database, in the `psyche` schema.
+
+1. **Switch it on.** In the dashboard, open the project and choose **AI**, then **Turn on AI**. It is
+   ready in about a minute, and the database restarts once while it joins.
+2. **Add a model.** **Add your first model** opens a guide for where the model runs: Amazon Bedrock,
+   Anthropic, OpenAI, OpenRouter, your own Ollama, or any server that speaks OpenAI's API, with that
+   provider's own steps and links. Your key is checked with the provider before it is kept, stored in
+   the project's database, and never shown again.
+3. **Call it from a server or a tool** with a key from the **Keys** card: it is the OpenAI API key, and
+   the project's `/ai/v1` address is the base URL.
+4. **Call it from the browser** once the project has two hard budgets, one for the whole project and
+   one for each signed-in user (the **Calling from your app** card). Your users then call with their
+   own access token as the Bearer token; the app key alone calls nothing.
+
+A call to a paused project wakes it, as any call does, and waits while it starts. A project that has
+been cold for a while restores from storage first, which can take longer than a browser is willing to
+wait for an answer, so a page that calls a model should be ready to try again.
+
+Switching it off stops the server and keeps its tables, so turning it back on finds the models, keys
+and records where they were.
 
 ## What works today
 
@@ -83,6 +108,10 @@ docker run -p 5300:5300 \
 ```
 
 Then point any OpenAI client at `http://localhost:5300/ai/v1` with a service-role token as its key.
+
+In the [self-hosted stack](./self-hosting) (`snout-stack` 0.1.12 and later) it is the `ai` profile, on by
+default in a stack made from then on, at `<API_EXTERNAL_URL>/ai/v1`, with its tables in the project's
+database. `AI_EGRESS=private` in `.env` lets it reach an Ollama on the same machine or network.
 
 ## Configuration
 
@@ -304,8 +333,10 @@ group, and the budgets and limits that apply to them, so "your AI usage" is a qu
   reaches you.
 - **The Anthropic Messages API in**, at `/ai/v1/messages`, so tools that speak Anthropic's API can
   use it too.
-- **In SnoutData Cloud**, one per project beside its database, with its keys, budgets and log in the
-  project's own Postgres.
+- **More of it in the dashboard**: routes, provider health and a playground, and the same screens in
+  Studio and the `snoutdata` CLI.
+- **`db.ai` in `@snoutdata/client`**: chat, streams and embeddings from your app in one call each,
+  with the signed-in user's token sent for you.
 
 The source and its own README are at
 [github.com/snoutdata/snout-psyche](https://github.com/snoutdata/snout-psyche).
