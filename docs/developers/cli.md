@@ -269,6 +269,51 @@ It is kept in memory, so it starts again if the project's host restarts. `--sinc
 `10m`, `2h`, `1d` or a time. Both read through your sign-in; the project's server key never
 leaves the control plane. See [seeing what Realtime is doing](/stack/realtime#seeing-what-realtime-is-doing).
 
+### `ai`
+
+```
+snoutdata ai [--ref REF]
+snoutdata ai enable|disable
+snoutdata ai models [add|remove]
+… | snoutdata ai models add [NAME] --source SOURCE --model ID [--price-in N --price-out N] --stdin
+snoutdata ai providers [remove NAME]
+snoutdata ai keys [create --name N [--models a,b] [--expires DAYS] | revoke ID]
+snoutdata ai budgets [set project|users --amount N [--period day|month] [--soft] | remove ID]
+snoutdata ai usage [--by model|day|key|user|provider] [--days 30]
+snoutdata ai test [--model M] [--prompt TEXT]
+```
+
+The project's own [AI gateway](/stack/psyche#in-snoutdata-cloud), the same controls as the
+dashboard's **AI** tab. `ai` alone says whether it is on, its address, the models it serves, its
+budgets and the last 30 days' spend. `enable` adds the gateway to the project, which restarts the
+database once; `disable` takes it away and keeps its tables, so turning it on again finds everything
+where it was.
+
+`models add` adds a model, and its provider too when that provider is new to the project.
+`--source` is where the model runs: `bedrock`, `anthropic`, `openai`, `openrouter`, `ollama` or
+`compatible` (any server that speaks OpenAI's API, with `--base-url`). `--model` is the model's id as
+that provider names it; without it, the command prints that provider's steps for finding the key, the
+id and the price, and stops. The key is read from stdin, never a flag, and the provider checks it
+before it is kept: a key it refuses is reported in the provider's words and nothing is left behind.
+For Bedrock, give `--region`, and either a Bedrock API key on stdin or `--access-key-id` with the
+secret access key on stdin. A second model from a provider already connected needs no key.
+
+```
+snoutdata ai enable
+snoutdata ai models add --source openai --model gpt-4o-mini --price-in 0.15 --price-out 0.60 --stdin < openai.key
+snoutdata ai budgets set project --amount 5
+snoutdata ai budgets set users --amount 0.50
+snoutdata ai test
+```
+
+Leave out both prices to take the shipped catalogue's; a model nothing prices is refused to signed-in
+users. `keys create` prints a key for a server once (only its hash is kept); it is the OpenAI API key,
+with the project's `/ai/v1` address as the base URL. `budgets set project` and `budgets set users` set
+the two hard budgets a browser call needs (`--soft` only warns), and change the one already there
+for that period rather than adding another. `test` makes a key for one call, sends a chat
+completion through the project's own address as an app would, prints the reply, and revokes the key.
+Everything goes through your sign-in; the project's server key never leaves the control plane.
+
 ### `auth anonymous`
 
 ```

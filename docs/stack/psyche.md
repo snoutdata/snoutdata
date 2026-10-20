@@ -46,6 +46,16 @@ wait for an answer, so a page that calls a model should be ready to try again.
 Switching it off stops the server and keeps its tables, so turning it back on finds the models, keys
 and records where they were.
 
+The same from a terminal, with the [`snoutdata` CLI](/developers/cli#ai) (0.18.0 or newer):
+
+```
+snoutdata ai enable
+snoutdata ai models add --source openai --model gpt-4o-mini --stdin < openai.key
+snoutdata ai budgets set project --amount 5
+snoutdata ai budgets set users --amount 0.50
+snoutdata ai test
+```
+
 ## What works today
 
 - **The OpenAI API.** `POST /ai/v1/chat/completions` and `POST /ai/v1/completions`, streamed or
@@ -334,7 +344,7 @@ group, and the budgets and limits that apply to them, so "your AI usage" is a qu
 - **The Anthropic Messages API in**, at `/ai/v1/messages`, so tools that speak Anthropic's API can
   use it too.
 - **More of it in the dashboard**: routes, provider health and a playground, and the same screens in
-  Studio and the `snoutdata` CLI.
+  Studio.
 - **`db.ai` in `@snoutdata/client`**: chat, streams and embeddings from your app in one call each,
   with the signed-in user's token sent for you.
 

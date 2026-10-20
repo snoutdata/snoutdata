@@ -23,6 +23,16 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 - **The AI tab's model guide** spaces its fields, ends on **Save**, and the models table shows each
   price to the cent ($0.10 rather than $0.1).
 
+- **Anthropic models from the guide reach Anthropic.** The guide gave Anthropic's address without
+  `/v1`, so every call to a model added that way failed, and the key check passed whatever was typed.
+  It now uses `https://api.anthropic.com/v1`; a provider added before this needs its address changed
+  or adding again.
+
+- **`snoutdata ai`** (CLI 0.18.0): the AI tab from a terminal. Switch the gateway on, add models with
+  their provider and key (the key on stdin, checked by the provider first), make keys for servers,
+  set the project's and every user's budgets, read usage, and `ai test` one call through the
+  project's own address. See [the CLI reference](/developers/cli#ai).
+
 - **The self-hosted stack has the AI gateway too.** `snout-stack` 0.1.12 adds it as the `ai` profile at
   `/ai/v1`, on by default in a new stack. See [Self-hosting](/stack/self-hosting).
 
