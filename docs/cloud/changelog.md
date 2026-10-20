@@ -20,6 +20,9 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   signed-in users' browsers, and 30 days of usage by model are on the same tab. See
   [In SnoutData Cloud](/stack/psyche#in-snoutdata-cloud).
 
+- **The AI tab's model guide** spaces its fields, ends on **Save**, and the models table shows each
+  price to the cent ($0.10 rather than $0.1).
+
 - **The self-hosted stack has the AI gateway too.** `snout-stack` 0.1.12 adds it as the `ai` profile at
   `/ai/v1`, on by default in a new stack. See [Self-hosting](/stack/self-hosting).
 
