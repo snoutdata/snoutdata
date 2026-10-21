@@ -13,6 +13,18 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-21
 
+- **`@snoutdata/client` 0.5.0: `db.ai` calls your project's AI gateway.** List the models it
+  serves, get a chat reply whole or as it is written, and make embeddings, with the signed-in
+  person's own token from a browser, or the server key or a `psy_` gateway key from a server. A
+  refusal comes back as `error`, with the gateway's own sentence and its code
+  (`budget_exceeded`, `model_not_found`).
+
+- **A self-hosted stack's metadata store runs Postgres 18.** The small database storage and
+  Realtime keep their list of projects in now runs 18, on a volume of its own, `metadata-data-18`.
+  It holds nothing of yours: `setup` registers the project again on the next start, and the old
+  `metadata-data` volume is left as it was, for you to remove. Your project's own database is not
+  touched and keeps the major it was made with.
+
 - **Images built from a Dockerfile upload straight to storage.** `snoutdata containers deploy
   --dockerfile` and Studio's **Deploy from a folder** now send the built image to your project's own
   storage and the project picks it up from there, so an image of any allowed size (up to the 1 GB

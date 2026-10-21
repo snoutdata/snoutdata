@@ -115,7 +115,7 @@ stack](/stack/cli-local-stack) walks through it, step by step.
   `GATEWAY_CLIENT_ADDRESS_HEADER` to the header the proxy writes the caller's address into.
 - **Mail.** Set the `SMTP_*` values in `.env` so sign-up confirmations, links and codes are sent.
   Until then nobody can confirm a sign-up, unless you set `AUTH_MAILER_AUTOCONFIRM=true`.
-- **Backups.** The data is in Docker volumes: `db-data` (the project), `metadata-data` and
+- **Backups.** The data is in Docker volumes: `db-data` (the project), `metadata-data-18` and
   `objects-data` (the files). Back up `.env` with them. A dump while it runs:
   `docker compose exec db pg_dump -U snoutpod_admin -Fc <SNOUT_REF> > project.dump`.
 - **Upgrades.** In the stack's folder:
