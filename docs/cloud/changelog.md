@@ -11,6 +11,14 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-10-21
+
+- **A model that keeps failing is stepped around.** Your AI gateway now measures each model from its
+  own calls, and one that fails three times in a row (its provider down, slow, unreachable,
+  rate-limiting or out of credit) is cooled down, so a route asks a model that answers first; a test
+  call brings it back once its provider recovers. Routes can also be sorted by `latency` or
+  `throughput`, as measured. See [Health](/stack/psyche#what-works-today).
+
 ## 2026-10-20
 
 - **AI in your project.** Every project can now run its own AI gateway (Psyche), on every plan: open

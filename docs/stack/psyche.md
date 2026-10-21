@@ -62,10 +62,21 @@ snoutdata ai test
   asked only when the one before failed for a reason that was not your request's (a rate limit, a
   provider error, no answer in time, a provider account refused or out of credit, a budget too
   small for that model). A provider error or a short rate limit is asked once more first; nothing
-  is retried once the reply has started. Sort a route `order` (as written) or `price` (the cheapest
-  first). OpenRouter's `models` list works the same way on any request. The answer names the model
-  that replied (`x-psyche-model`) and the route (`x-psyche-route`), and each try is its own row in
-  the request log.
+  is retried once the reply has started. Sort a route `order` (as written), `price` (the cheapest
+  first), or `latency` or `throughput` (the fastest first, as measured; a model not measured yet goes
+  first, so it gets measured). OpenRouter's `models` list works the same way on any request. The
+  answer names the model that replied (`x-psyche-model`) and the route (`x-psyche-route`), and each
+  try is its own row in the request log.
+
+- **Health.** Each model is measured from its own calls: time to the first byte, tokens a second,
+  and the last five minutes of requests, failures and provider rate limits. Three failures in a row
+  that were the model's (a provider error, no answer, no connection, a rate limit, a refused or empty
+  account) cool it down: a route asks every other model first, while a call that names it alone
+  still gets it, so a cooldown never fails a call by itself. After 10 seconds the next call to reach
+  it is its probe; a failed probe doubles the cooldown, up to five minutes, and an answer brings it
+  back. A provider's 429 with `retry-after` cools it for exactly that long. `GET /ai/v1/admin/health`
+  (service key) lists every model's state, readings and what the provider says is left on its
+  rate limits; with a database they are kept in `psyche.provider_stats` and read back at start.
 
 - **The OpenAI API.** `POST /ai/v1/chat/completions` and `POST /ai/v1/completions`, streamed or
   not, `POST /ai/v1/embeddings`, and `GET /ai/v1/models`. Each is also served at
@@ -363,8 +374,8 @@ group, and the budgets and limits that apply to them, so "your AI usage" is a qu
 
 ## What is coming
 
-- **Routing by health**: targets cooled down after failures, sorted by measured speed, spread across
-  accounts by their remaining quota, and kept on the one holding a conversation's prompt cache.
+- **More routing**: `auto` (the model that fits the request, by a policy you set), spreading across
+  accounts by their remaining quota, and keeping a conversation on the one holding its prompt cache.
 - **The Anthropic Messages API in**, at `/ai/v1/messages`, so tools that speak Anthropic's API can
   use it too.
 - **More of it in the dashboard**: routes, provider health and a playground, and the same screens in
