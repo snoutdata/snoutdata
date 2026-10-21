@@ -277,7 +277,7 @@ snoutdata ai enable|disable
 snoutdata ai models [add|remove]
 … | snoutdata ai models add [NAME] --source SOURCE --model ID [--price-in N --price-out N] --stdin
 snoutdata ai providers [remove NAME]
-snoutdata ai routes [set NAME --models a,b [--sort price] | remove NAME]
+snoutdata ai routes [set NAME --models a,b [--sort price|latency|throughput] | remove NAME]
 snoutdata ai keys [create --name N [--models a,b] [--expires DAYS] | revoke ID]
 snoutdata ai budgets [set project|users --amount N [--period day|month] [--soft] | remove ID]
 snoutdata ai usage [--by model|day|key|user|provider] [--days 30]
@@ -312,9 +312,10 @@ users. `keys create` prints a key for a server once (only its hash is kept); it 
 with the project's `/ai/v1` address as the base URL. `budgets set project` and `budgets set users` set
 the two hard budgets a browser call needs (`--soft` only warns), and change the one already there
 for that period rather than adding another. `routes set` (CLI 0.18.1 or newer) makes a name that
-stands for several models, tried in the order given (or the cheapest first with `--sort price`), each
-next one only when the one before failed for a reason that was not the request's own; call it as you
-would a model. `test` makes a key for one call, sends a chat
+stands for several models, tried in the order given (or the cheapest first with `--sort price`, or
+the fastest as measured with `--sort latency` or `--sort throughput`, CLI 0.18.2 or newer), each
+next one only when the one before failed for a reason that was not the request's own, and a model
+cooling down after repeated failures last; call it as you would a model. `test` makes a key for one call, sends a chat
 completion through the project's own address as an app would, prints the reply, and revokes the key.
 Everything goes through your sign-in; the project's server key never leaves the control plane.
 

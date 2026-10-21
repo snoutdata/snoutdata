@@ -23,7 +23,9 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   own calls, and one that fails three times in a row (its provider down, slow, unreachable,
   rate-limiting or out of credit) is cooled down, so a route asks a model that answers first; a test
   call brings it back once its provider recovers. Routes can also be sorted by `latency` or
-  `throughput`, as measured. See [Health](/stack/psyche#what-works-today).
+  `throughput`, as measured. The dashboard's **AI** tab shows each model's last five minutes beside
+  it in **Models**: answering or cooling down, its calls, failures and time to the first byte. See
+  [Health](/stack/psyche#what-works-today).
 
 ## 2026-10-20
 

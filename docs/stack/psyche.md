@@ -76,7 +76,9 @@ snoutdata ai test
   it is its probe; a failed probe doubles the cooldown, up to five minutes, and an answer brings it
   back. A provider's 429 with `retry-after` cools it for exactly that long. `GET /ai/v1/admin/health`
   (service key) lists every model's state, readings and what the provider says is left on its
-  rate limits; with a database they are kept in `psyche.provider_stats` and read back at start.
+  rate limits; with a database they are kept in `psyche.provider_stats` and read back at start. In
+  the dashboard, a Cloud project's **AI** tab shows each model's last five minutes beside it in
+  **Models**.
 
 - **The OpenAI API.** `POST /ai/v1/chat/completions` and `POST /ai/v1/completions`, streamed or
   not, `POST /ai/v1/embeddings`, and `GET /ai/v1/models`. Each is also served at
@@ -378,8 +380,7 @@ group, and the budgets and limits that apply to them, so "your AI usage" is a qu
   accounts by their remaining quota, and keeping a conversation on the one holding its prompt cache.
 - **The Anthropic Messages API in**, at `/ai/v1/messages`, so tools that speak Anthropic's API can
   use it too.
-- **More of it in the dashboard**: routes, provider health and a playground, and the same screens in
-  Studio.
+- **More of it in the dashboard**: routes and a playground, and the same screens in Studio.
 - **`db.ai` in `@snoutdata/client`**: chat, streams and embeddings from your app in one call each,
   with the signed-in user's token sent for you.
 
