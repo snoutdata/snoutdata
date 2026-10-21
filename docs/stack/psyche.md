@@ -388,6 +388,21 @@ against that user's budgets and limits too.
 Each user can read their own usage through RLS: their keys (never the hash), calls, daily totals,
 group, and the budgets and limits that apply to them, so "your AI usage" is a query from the app.
 
+From JavaScript, `@snoutdata/client` (0.5.0 and later) does this for you: `db.ai` sends the
+signed-in user's token.
+
+```js
+const { data, error } = await db.ai.chat({ model: 'chat', messages: [{ role: 'user', content: 'Hello' }] })
+
+const { data: chunks } = await db.ai.stream({ model: 'chat', messages })
+for await (const chunk of chunks) {
+  // each chunk is OpenAI's; the last one carries the usage
+}
+```
+
+`db.ai.models()` lists what the user may call, and `db.ai.embed()` makes embeddings. A refusal is
+`error`, with Psyche's own sentence, its `code` (`budget_exceeded`, `model_not_found`) and the status.
+
 ## What is coming
 
 - **More routing**: spreading across accounts by their remaining quota, keeping a conversation on
@@ -395,8 +410,6 @@ group, and the budgets and limits that apply to them, so "your AI usage" is a qu
 - **The Anthropic Messages API in**, at `/ai/v1/messages`, so tools that speak Anthropic's API can
   use it too.
 - **More of it in the dashboard**: routes and a playground, and the same screens in Studio.
-- **`db.ai` in `@snoutdata/client`**: chat, streams and embeddings from your app in one call each,
-  with the signed-in user's token sent for you.
 
 The source and its own README are at
 [github.com/snoutdata/snout-psyche](https://github.com/snoutdata/snout-psyche).
