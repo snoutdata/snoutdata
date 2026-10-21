@@ -27,6 +27,13 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   it in **Models**: answering or cooling down, its calls, failures and time to the first byte. See
   [Health](/stack/psyche#what-works-today).
 
+- **`auto` chooses the model for you.** Tell your AI gateway what a model can take (its window, and
+  whether it takes tools, images and a JSON schema, as `fits` on the model), then send
+  `"model": "auto"`: it leaves out every model that cannot take the request and tries the rest
+  cheapest first, or in the order a route named `auto` sets. `auto:floor` and `auto:nitro` are the
+  cheapest and the fastest. Routes check the same facts before they try a model, and each request
+  log row says which models were left out and why. See [auto](/stack/psyche#what-works-today).
+
 ## 2026-10-20
 
 - **AI in your project.** Every project can now run its own AI gateway (Psyche), on every plan: open

@@ -67,6 +67,20 @@ snoutdata ai test
   first, so it gets measured). OpenRouter's `models` list works the same way on any request. The
   answer names the model that replied (`x-psyche-model`) and the route (`x-psyche-route`), and each
   try is its own row in the request log.
+- **`auto`, and what a model can take.** A model may say what it can take, in `fits`: its window in
+  tokens, and whether it takes tools, images and a reply held to a JSON schema. Before a route, a
+  fallback list or `auto` sends anything, it leaves out every model whose facts say it cannot take
+  the request; when none can, the call is refused with each model's reason. Send `"model": "auto"`
+  and Psyche chooses among the models that wrote `fits`, cheapest first, or as a route named `auto`
+  says (its targets and its sort). `auto:floor` is always the cheapest first and `auto:nitro` always
+  the fastest. No model decides: the same request under the same measurements goes the same way, and
+  each log row's `routing` says the order tried and why any model was left out.
+
+  ```bash
+  curl -X PUT http://localhost:5300/ai/v1/admin/models/sonnet -H "Authorization: Bearer $SERVICE_KEY" \
+    -d '{"provider": "anthropic", "upstream": "claude-sonnet-4-5",
+         "fits": {"context": 200000, "tools": true, "images": true, "json_schema": true}}'
+  ```
 
 - **Health.** Each model is measured from its own calls: time to the first byte, tokens a second,
   and the last five minutes of requests, failures and provider rate limits. Three failures in a row
@@ -376,8 +390,8 @@ group, and the budgets and limits that apply to them, so "your AI usage" is a qu
 
 ## What is coming
 
-- **More routing**: `auto` (the model that fits the request, by a policy you set), spreading across
-  accounts by their remaining quota, and keeping a conversation on the one holding its prompt cache.
+- **More routing**: spreading across accounts by their remaining quota, keeping a conversation on
+  the one holding its prompt cache, and a `balanced` policy for `auto`.
 - **The Anthropic Messages API in**, at `/ai/v1/messages`, so tools that speak Anthropic's API can
   use it too.
 - **More of it in the dashboard**: routes and a playground, and the same screens in Studio.
