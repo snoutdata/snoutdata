@@ -309,6 +309,16 @@ curl -X PUT http://localhost:5300/ai/v1/admin/models/fast -H "Authorization: Bea
 A model takes the same fields as in the file, plus `"enabled": false` to stop serving it, and its
 name may contain `/`. A model that could not be served is refused with the reason, and nothing is
 stored. `GET /ai/v1/admin/models` shows the price each model is charged at and where it comes from.
+A provider may take `"auth_header"`, the header its key is sent in instead of a Bearer token. That
+is for a model server behind a gate that checks a header of its own, such as an Ollama on another
+machine reached through a tunnel, with a firewall rule refusing any request that does not carry the
+secret:
+
+```bash
+curl -X PUT http://localhost:5300/ai/v1/admin/providers/home-ollama -H "Authorization: Bearer $SERVICE_KEY" \
+  -d '{"kind": "openai", "base_url": "https://ollama.example.com/v1", "credential": "home-ollama", "auth_header": "x-gate-key"}'
+```
+
 A provider from the providers file stays the file's, because its key may come from Psyche's
 environment: the admin API will not change it. A model from the file can be edited (its price, its
 limits, whether it is served), and the file then leaves your edit alone.
