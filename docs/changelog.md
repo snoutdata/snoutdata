@@ -14,6 +14,65 @@ the notes for the version you just got the first time it opens after an update. 
 
 Downloads for every version are on [GitHub](https://github.com/snoutdata/studio/releases).
 
+## 1.0.55 (2026-10-21)
+
+**The assistant**
+
+- **SnoutData AI uses your sign-in.** The assistant reaches our models with the account you are
+  signed in to, so there is no API key to keep, and Settings no longer shows one. A key saved by an
+  earlier version is removed.
+- **A refusal says whose budget it was**: yours, your team's shared budget, or SnoutData AI's own
+  daily limit (which leaves yours untouched). A rate limit says when to try again.
+- The embedding model is no longer offered in the chat model list.
+
+**Projects**
+
+- **Local projects run snout-stack 0.1.11.** The server key reads the tables the database's owner
+  made, a function's log lines start with its project, and a function stopped for its CPU limit
+  says so. Rotating a local project's keys signs them for the roles its database has.
+- **Drop a file on a storage bucket** and it uploads into it.
+- **A container built from a Dockerfile** uploads to the project's own storage, so an image over
+  100 MB no longer fails on the way in.
+- The Dashboard panel follows a project you start or stop from the tray.
+- **Show in Connections**, **Open in Connections** and **Run a statement** bring back a cloud
+  project's connection you had deleted.
+- A cluster's home node can fail over to its replica, and the Shards section shows it.
+- Extensions list ten at a time, and deleting a project lives in its Settings.
+
+**Smaller changes**
+
+- The window can be dragged while Liby is out, and the getting-started card no longer covers her.
+- An agent sees the `list_connections` tool once.
+
+## 1.0.54 (2026-10-15)
+
+**Open source**
+
+- **Studio's source is public** at [github.com/snoutdata/studio](https://github.com/snoutdata/studio),
+  under the Apache-2.0 licence. Updates come from the same place they always did.
+- **Help → About** lists the licence of every bundled dependency.
+
+**Projects**
+
+- **Local projects run snout-stack 0.1.7**, with the API at `/v1/data`, `/v1/identity`,
+  `/v1/files`, `/v1/live` and `/v1/fn`, the `Snout-Key` header, and the **app key** and
+  **server key**. Projects you already made keep working as they are.
+- **Snout Containers** appear in a cloud project's tab.
+- A project you stop from the app stays stopped, and a read made while a project restarts is asked
+  again instead of failing.
+- **Move** copies a database out of Cloud whole again, and Postgres 18 projects no longer refuse a
+  move.
+
+**Safer by default**
+
+- An agent's approval card shows what a call changes, and a destructive or security action is
+  asked every time. An agent is held to the same per-connection access for app actions as for its
+  queries.
+- Read-only runs are enforced by the database itself.
+- A password in a connection string is kept in the keychain and never shown to a model, and a
+  saved password never follows a connection to a new host or user name.
+- Spreadsheet exports neutralise a cell that would run as a formula.
+
 ## 1.0.53 (2026-10-11)
 
 **Liby**
