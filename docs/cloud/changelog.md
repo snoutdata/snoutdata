@@ -13,6 +13,12 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-21
 
+- **Images built from a Dockerfile upload straight to storage.** `snoutdata containers deploy
+  --dockerfile` and Studio's **Deploy from a folder** now send the built image to your project's own
+  storage and the project picks it up from there, so an image of any allowed size (up to the 1 GB
+  compressed limit) uploads the same way wherever you are. Update the CLI and Studio to get it; older
+  versions keep working as before.
+
 - **A model that keeps failing is stepped around.** Your AI gateway now measures each model from its
   own calls, and one that fails three times in a row (its provider down, slow, unreachable,
   rate-limiting or out of credit) is cooled down, so a route asks a model that answers first; a test
