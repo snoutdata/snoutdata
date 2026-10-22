@@ -13,6 +13,13 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-22
 
+- **A container sees its own memory.** Inside, it used to see the whole machine's, so Node set a
+  heap limit larger than the container and could fill it before collecting. It now sees its memory
+  less the sandbox's share (448 MB of a Pro container's 512 MB); this applies to each container the
+  next time it is deployed or restarted. See [containers](/stack/containers).
+- **Containers warn before they run out of memory.** At 80% of its memory a container opens an
+  alert on the project and emails you, at 90% the alert is critical, and a container stopped for
+  running out says so for an hour.
 - **Storage per project is now 5 GB on Plus and 10 GB on Pro and Business** (it was 8 GB and
   20 GB); Free stays at 500 MB. Files keep the same allowance as the database. See
   [limits](/cloud/limits).

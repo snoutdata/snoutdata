@@ -226,7 +226,10 @@ Each container runs in its own gVisor sandbox and user namespace, on a network o
 own: it reaches the public internet and your project's other containers, and nothing private: not
 the machine, not the cloud's metadata service, not another project's containers. It sends over
 IPv4 only: IPv6 is dropped at the firewall, so no address family gets around the limits below. A container over
-its memory is stopped and restarted. On a downgrade, the containers past the new plan's number are
+its memory is stopped and restarted. Inside, the container sees its own memory, less the sandbox's
+share (448 MB of a Pro container's 512 MB), so a runtime that sizes itself from it, like Node's heap,
+fits. When a container holds 80% of its memory, or is stopped for running out, the project's alerts
+say so and you are emailed. On a downgrade, the containers past the new plan's number are
 stopped and kept, and start again on an upgrade.
 
 ### What a container may send
