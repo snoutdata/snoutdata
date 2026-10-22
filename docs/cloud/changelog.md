@@ -13,6 +13,9 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-22
 
+- **Storage per project is now 5 GB on Plus and 10 GB on Pro and Business** (it was 8 GB and
+  20 GB); Free stays at 500 MB. Files keep the same allowance as the database. See
+  [limits](/cloud/limits).
 - **The AI gateway's errors reach you again.** A provider that refuses the gateway's key, fails or
   does not answer in time is now a 503 with the gateway's sentence and its `code`
   (`provider_auth`, `provider_billing`, `upstream_error`, `timeout`). Since yesterday these were

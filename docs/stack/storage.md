@@ -83,11 +83,11 @@ const { data } = db.files.space('avatars').publicLink('ada.png', {
 
 | | Free | Plus | Pro |
 | --- | --- | --- | --- |
-| Files, in total | 500 MB | 8 GB | 20 GB |
+| Files, in total | 500 MB | 5 GB | 10 GB |
 | One upload, at most | 50 MB | 500 MB | 5 GB |
 
 Files have their own allowance, the same size as the database's storage row: a project on Plus may
-hold 8 GB of data **and** 8 GB of files. The files total is measured every fifteen minutes, and a
+hold 5 GB of data **and** 5 GB of files. The files total is measured every fifteen minutes, and a
 project over either one is made read-only until it is back under, the same as for its database.
 
 ## Where the bytes actually go

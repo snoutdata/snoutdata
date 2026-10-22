@@ -226,7 +226,7 @@ With `--json`:
     "tier": "plus",
     "used": 1,
     "maxProjects": 5,
-    "maxStorageBytes": 8589934592,
+    "maxStorageBytes": 5368709120,
     "mayCreate": true
   }
 }

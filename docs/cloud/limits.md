@@ -24,7 +24,7 @@ Per project, unless the row says otherwise.
 | | Free | Plus | Pro |
 | --- | --- | --- | --- |
 | Projects | 1 | 2 | 5 |
-| Storage | 500 MB | 8 GB | 20 GB |
+| Storage | 500 MB | 5 GB | 10 GB |
 | Connections | 50 | 100 | 200 |
 | API requests a minute | 600 | 3,000 | 6,000 |
 | Memory | 512 MB | 1 GB | 2 GB |
