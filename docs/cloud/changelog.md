@@ -13,6 +13,14 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-22
 
+- **Maintenance restarts are gentler.** When we have to restart a project's database (a new image,
+  a service switched on), new connections now wait for it instead of being refused, queries
+  already running get up to 10 seconds to finish, and idle connections are closed cleanly so your
+  pool reopens them. A connection your pool holds open can still have one statement refused with
+  error `57P01` if it is sent at the moment that connection closes; retrying on `57P01` makes a
+  restart invisible to your app. In our tests no write was lost, and the longest wait was 10 seconds.
+- **A plan change reaches your database without a restart.** The storage cap, WAL size and
+  temporary-file limit of your plan now apply to a running database within a minute.
 - **A container sees its own memory.** Inside, it used to see the whole machine's, so Node set a
   heap limit larger than the container and could fill it before collecting. It now sees its memory
   less the sandbox's share (448 MB of a Pro container's 512 MB); this applies to each container the
