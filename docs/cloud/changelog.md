@@ -11,6 +11,19 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-10-22
+
+- **The AI gateway's errors reach you again.** A provider that refuses the gateway's key, fails or
+  does not answer in time is now a 503 with the gateway's sentence and its `code`
+  (`provider_auth`, `provider_billing`, `upstream_error`, `timeout`). Since yesterday these were
+  502 and 504, which Cloudflare's edge in front of your project replaces with its own "error code:
+  502" page. The same goes for "This project's service could not be reached" and the container
+  upload errors.
+- **`snoutdata` 0.18.3** reads the AI gateway's `code`, so a refused provider key exits as a server
+  failure instead of "not ready, ask again", and a provider with no credit left exits as `quota`.
+- **Functions:** a 502 or 504 your function returns reaches the caller as Cloudflare's own page;
+  [answer with another status](/stack/functions#how-it-runs) to keep your body.
+
 ## 2026-10-21
 
 - **Free and Plus: every write on the server's disk at once and in object storage within a

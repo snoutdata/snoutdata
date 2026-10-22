@@ -187,6 +187,11 @@ of the machine or of anyone else's project. A request reaches it only through th
 door, which proves itself with a secret the runtime checks before anything else, so no function can
 call another project's functions by going round it. [Security](/cloud/security) says the same.
 
+Requests reach your project through Cloudflare's edge, which replaces a **502** or **504** from a
+function with its own short error page, so whatever body you returned with it is lost. To hand the
+caller an error they can read, answer with another status: 503 for "try again later", 500 for a
+failure of your own, or a 4xx for the request.
+
 ## Not built yet
 
 - **WebSockets served by a function.** The front door answers an upgrade on `/v1/fn` with
