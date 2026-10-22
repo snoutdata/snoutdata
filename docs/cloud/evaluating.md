@@ -21,7 +21,7 @@ AWS `us-west-2` (Oregon), on machines we run ourselves. Backups are replicated c
 
 | | |
 | --- | --- |
-| Recovery point (RPO) | Zero confirmed writes lost with a server, disk or zone lost: every write is copied to another zone as it is made (driven with a disk destroyed under load, 0 of 4,231 lost). On the default setting, up to about a minute only while that copy is behind |
+| Recovery point (RPO) | Every write is on the server's disk at once and in object storage within a minute; a failed server keeps its disk. Losing the disk or its zone can lose up to about a minute. With Never lose a write, zero (driven with a disk destroyed under load, 0 of 4,231 lost) |
 | Never lose a write | Pro and Business: a copy in two other zones, and writes wait rather than be kept in one place |
 | Recovery time (RTO) | 1.1 to 1.4 seconds with the data on the machine; about 10 to 21 seconds from object storage; 89 seconds for a lost disk, with nothing done by hand |
 | Backups kept | 7 days on Free and Plus, 14 on Pro, never fewer than two full backups |

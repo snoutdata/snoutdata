@@ -99,9 +99,9 @@ share of the data is unavailable until then.
 
 ## Durability
 
-Every node's commits are copied to another availability zone before they are confirmed, as for any
-project, and the project's [durability setting](/cloud/durability#the-second-zone-copy) applies to
-all of its nodes. Backups, retention and restore testing are per node, as on
+The project's [durability setting](/cloud/durability#never-lose-a-write) applies to all of its
+nodes: with Never lose a write, every node's commits are in another availability zone before they
+are confirmed. Backups, retention and restore testing are per node, as on
 [backups and recovery](/cloud/durability).
 
 ## Alerts
@@ -138,8 +138,8 @@ which restarts the database once. The rows are untouched, and the project is a p
 
 A cluster's nodes and replicas run on the same machine as its home node, each in its own container
 with its plan's memory and CPU. A replica covers a crashed node and damaged files; the loss of the
-machine, its disk or its zone is covered by the copy in another zone and a restore, which takes
-minutes rather than seconds. Spreading a cluster's nodes over several machines is the next step. The
+machine, its disk or its zone is covered by a restore from object storage (and, with Never lose a
+write, the copies in other zones), which takes minutes rather than seconds. Spreading a cluster's nodes over several machines is the next step. The
 scale-out figures on [tested and measured](/stack/lepis/measured) were taken with Lepis run on
 its own, each node on its own machine.
 

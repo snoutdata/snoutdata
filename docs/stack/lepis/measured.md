@@ -84,10 +84,10 @@ between nodes, and every confirmed write was counted afterwards.
   nobody involved.
 - **A damaged page on disk** (2026-10-11): found by its checksum, the node replaced by its replica,
   every row matching a digest taken before the damage.
-- **A lost disk** (2026-10-18): every commit, cluster nodes included, is held in a second
-  availability zone before it is confirmed. A database's disk destroyed under load came back in 89
-  seconds with none of 4,231 confirmed writes lost (a plain database; see
-  [backups and recovery](/cloud/durability#the-second-zone-copy)).
+- **A lost disk** (2026-10-18): with Never lose a write, every commit, cluster nodes included, is
+  held in another availability zone before it is confirmed. A database's disk destroyed under load
+  came back in 89 seconds with none of 4,231 confirmed writes lost (a plain database; see
+  [backups and recovery](/cloud/durability#never-lose-a-write)).
 
 ## Still open
 

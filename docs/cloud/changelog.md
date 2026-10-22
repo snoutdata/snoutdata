@@ -13,6 +13,11 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-21
 
+- **Free and Plus: every write on the server's disk at once and in object storage within a
+  minute.** The copy of every write in another availability zone is now part of *Never lose a
+  write* on Pro and Business only. On Free and Plus, a server that fails keeps its disk; losing the
+  disk itself or its zone can cost up to about a minute of confirmed writes, as the backups page
+  says.
 - **`@snoutdata/client` 0.5.0: `db.ai` calls your project's AI gateway.** List the models it
   serves, get a chat reply whole or as it is written, and make embeddings, with the signed-in
   person's own token from a browser, or the server key or a `psy_` gateway key from a server. A

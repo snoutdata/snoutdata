@@ -45,7 +45,7 @@ part is open source.
 | Containers | Plus and Pro ([containers](/stack/containers)) | an opt-in profile, on a machine with gVisor |
 | Clusters (Lepis) | yes ([clusters in Cloud](/stack/lepis/cloud)) | the router in front of your own Postgres ([run it yourself](/stack/lepis/self-hosting)) |
 | AI Gateway (Psyche) | yes, switched on per project, early ([AI gateway](/stack/psyche)) | the `ai` profile, early |
-| Every write copied to a second zone, continuous backups, point-in-time restore | yes ([durability](/cloud/durability)) | your own (`pg_dump`, volume backups) |
+| Continuous backups, point-in-time restore, every write in two other zones on Pro | yes ([durability](/cloud/durability)) | your own (`pg_dump`, volume backups) |
 | Sleeps when idle, wakes on connect | yes | no |
 | Plans, the dashboard, status page | yes | no |
 
