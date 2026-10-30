@@ -25,7 +25,7 @@ realtime and storage keep running beside your database. Scale is capacity, not f
 your project running when a server is lost is our job on every plan, whatever its instances.
 
 Instance 1 is the one beside your database, on your project's own server. Each instance after it
-runs on a server Metis chooses.
+is an **API Stack Copy**: instance 2, instance 3.
 
 ## How a call is routed
 
