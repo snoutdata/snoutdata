@@ -13,12 +13,13 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-10-30
 
-- **Metis, where your app's API runs.** A project scaled to more than one instance now has its
-  instances placed by **Metis**: it chooses the servers, keeps the region's routers in step so each
-  call goes to a running instance (and to another one when an instance refuses), and moves an
-  instance to another server only after the new one has run and answered for 30 seconds, so a
-  project never has fewer instances than it was scaled to. Nothing to switch on: it is what runs when
-  you use Scale. [Scaling and routing (Metis)](../stack/metis).
+- **Metis, the servers and instances behind your app's API.** A project scaled to more than one
+  instance now runs on **Metis**: it starts a server when one is needed, places the instances and
+  keeps them running, moves an instance to another server only after the new one has run and
+  answered for 30 seconds (so a project never has fewer instances than it was scaled to), and drains
+  and retires servers. The routing every router holds, sending each call to a running instance (and
+  to another one when an instance refuses), is its output. Nothing to switch on: it is what runs when
+  you use Scale. [Servers and instances (Metis)](../stack/metis).
 
 ## 2026-10-28
 

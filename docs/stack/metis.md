@@ -1,16 +1,17 @@
 ---
 id: metis
-title: Scaling and routing (Metis)
-sidebar_label: Scaling and routing (Metis)
-description: Metis is SnoutData Cloud's placement and routing layer. It decides which servers run each instance of a project's app API, keeps every router's table in step with that, and moves an instance to another server with the new one answering before the old one stops. You use it through Scale.
+title: Servers and instances (Metis)
+sidebar_label: Servers and instances (Metis)
+description: Metis runs the servers and instances behind a SnoutData Cloud project's app API. It starts a server when one is needed, places instances and keeps them running, moves them with the new one answering before the old one stops, and drains and retires servers. Routing is its output, pushed to every router. You use it through Scale.
 ---
 
-# Scaling and routing (Metis)
+# Servers and instances (Metis)
 
-**Metis** decides where your project's app API runs. When you [scale](/cloud/infrastructure#scale)
-a project to more than one instance, Metis chooses the servers that run them, keeps the routers
-that carry each call in step with that choice, and moves an instance to another server when we
-rearrange servers, with the new instance answering before the old one stops.
+**Metis** runs the servers and the instances behind your project's app API. When you
+[scale](/cloud/infrastructure#scale) a project to more than one instance, Metis starts a server when
+one is needed, places your instances on servers and keeps them running, moves them to fill servers
+(the new instance answering before the old one stops), and drains and retires a server it no longer
+needs. The routing every router holds is one of its outputs.
 
 Metis is part of SnoutData Cloud. It places the services in front of your database and never
 touches the database itself: your database stays on its own server, kept as its
@@ -33,8 +34,9 @@ region's routers. Each router holds a table of where every instance runs, and it
 for each call. When an instance refuses a call, the router sends it to another instance of the same
 project.
 
-Metis pushes that table to the routers; a router never asks Metis for it. So Metis is never in a
-call's path: a call goes from the router to an instance, and Metis decides only what the table says.
+That routing comes from Metis: it is where Metis has placed your instances, pushed to the routers; a
+router never asks Metis for it. So Metis is never in a call's path: a call goes from the router to an
+instance.
 
 ## How instances are placed and kept running
 
@@ -71,26 +73,3 @@ There is nothing to switch on: Metis is what runs when you use **Scale**.
 - **From a terminal**, `snoutdata projects scale [REF] --instances N` does the same, plan first
   ([CLI reference](/developers/cli#projects)).
 - **For an agent**, the `scale_project` tool ([For an agent](/developers/agent)).
-
-## Measured
-
-From the drills we ran on 2026-10-30, each on throwaway projects in us-west-2, and one check on the
-live service the same day:
-
-- **Balanced:** 40 of 40 calls through one router answered, spread across two servers (90 and 91
-  packets).
-- **Every kind of call:** the data API, auth, storage (64 MB up and down, byte for byte), a function,
-  containers and a realtime websocket held for 20 seconds all answered through the router.
-- **An instance stopped** while 40 calls ran: 40 of 40 answered, the router retrying on the other
-  instance.
-- **A server silent to the router** under load: 20 of 20 calls answered, the slowest in 2.746 s.
-- **The router's extra hop**, 50 calls each way within the region: p50 2 ms through the router and
-  2 ms straight to the server; p95 4 ms and 7 ms.
-- **A move:** the instance on the emptier of two half-full servers moved with two instances running
-  at once and never fewer than one, and the emptied server was retired at once.
-- **On the live service:** a project on a Business plan, scaled to 2 through the same call the
-  dashboard makes, got its second instance on a newly prepared server, both live routers routed it
-  to both instances, and 40 of 40 calls from the internet answered 200.
-
-The method and every run are in the research note,
-[How Metis Places and Routes a Project's API](https://snoutdata.com/research/how-metis-places-and-routes-a-projects-api).
