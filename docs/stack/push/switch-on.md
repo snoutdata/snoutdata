@@ -25,7 +25,7 @@ npx snoutdata products enable push --ref <ref>
 
 ## Step 2: see what is ready
 
-The Push tab then shows a card per platform:
+The Push page then has a tab per platform, each with its card (Web Push is on Overview):
 
 | Card | Shows | What it needs from you |
 | --- | --- | --- |

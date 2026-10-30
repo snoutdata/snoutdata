@@ -21,8 +21,8 @@ AWS `us-west-2` (Oregon), on machines we run ourselves. Backups are replicated c
 
 | | |
 | --- | --- |
-| Recovery point (RPO) | Every write is on the server's disk at once and in object storage within a minute; a failed server keeps its disk. Losing the disk or its zone can lose up to about a minute. With Never lose a write, zero (driven with a disk destroyed under load, 0 of 4,231 lost) |
-| Never lose a write | Pro and Business: a copy in two other zones, and writes wait rather than be kept in one place |
+| Recovery point (RPO) | With two-zone writes, zero while the copy in another zone is up (driven with the disk destroyed under load: no confirmed write lost). On one zone, every write is on the server's disk at once and in object storage within a minute, and a failed server keeps its disk; only losing the disk or its zone could cost up to about a minute |
+| Two-zone writes | Pro and Business: a copy in another zone before a commit is confirmed; if that copy is down, writes wait up to 20 seconds, then go on as on one zone until it is back |
 | Recovery time (RTO) | 1.1 to 1.4 seconds with the data on the machine; about 10 to 21 seconds from object storage; 89 seconds for a lost disk, with nothing done by hand |
 | Backups kept | 7 days on Free and Plus, 14 on Pro, never fewer than two full backups |
 | Point-in-time restore | Pro: any moment in the last 7 days, into a new project |

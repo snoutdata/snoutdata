@@ -13,8 +13,8 @@ on this page was measured on the live system.
 
 | | |
 | --- | --- |
-| **RPO** (recovery point) | Every write is on the server's disk at once and in object storage within a minute. A server that fails keeps its disk. Losing the disk or its zone can lose up to about a minute of confirmed writes (measured at 56 seconds). |
-| **Durability setting** | *Stay available* (every plan) or *Never lose a write* (Pro and Business, a copy in two other zones). See [Never lose a write](#never-lose-a-write). |
+| **RPO** (recovery point) | With *two-zone writes* (Pro and Business), zero: a write is confirmed only once a second zone holds it. On *one zone*, every write is on the server's disk at once and in object storage within a minute, and a server that fails keeps its disk; only losing the disk or its whole zone could cost up to about a minute of writes (measured at 56 seconds). |
+| **Durability setting** | *One zone* (every plan) or *two-zone writes* (Pro and Business, a copy in another zone). See [Two-zone writes](#two-zone-writes). |
 | **RTO** (recovery time) | **1.1 to 1.4 seconds** when the data is still on the machine; **about 10 to 21 seconds** when it comes back from object storage; **89 seconds** for a lost disk, restored with nothing done by hand. |
 | **Backups** | Write-ahead log archived continuously; a full backup at most every 24 hours. |
 | **Retention** | 7 days on Free and Plus, 14 on Pro, and never fewer than two full backups. |
@@ -32,45 +32,55 @@ archive and replays it to the end.
 
 The archive trails the database by up to about a minute (measured at 56 seconds, 2026-09-05). That
 gap matters only if the database's disk or its zone is lost: the disk outlives the server it is
-attached to. *Never lose a write* closes the gap for the plans that have it.
+attached to. *Two-zone writes* close the gap for the plans that have them.
 
 Every restore replays to the end of what was kept, on every plan. What Pro adds is the ability to
 *choose* the moment, which is for "put it back to before I ran that".
 
-## Never lose a write
+## Two-zone writes
 
-On Pro and Business, a project can be set to **Never lose a write** in the dashboard under
-**Settings, Durability**. Every write is then sent as it is made to servers of ours in **two other
-availability zones** of the region, which hold the write-ahead log and nothing else, and a commit
-is confirmed only once one of them has it on disk. It adds about a millisecond to each commit.
+On Pro and Business, a project has **two-zone writes** on unless you turn them off in the dashboard
+(the **Two-zone writes** switch on **Stack, Scaling**). Every write is then sent as it is made to a server of
+ours in **another availability zone** of the region, which holds the write-ahead log and nothing
+else, and a commit is confirmed only once that server has it on disk. It adds about a millisecond
+to each commit. A project that has just been made, or has just moved up to Pro, is protected this
+way once that server has caught up with it, usually within a few minutes; until then it is
+protected as on *one zone*.
 
-When the database's disk or its whole zone is lost, it is restored from object storage and those
-copies supply everything the archive had not received. The machine holding your database does this
-by itself: it notices the lost disk, holds the restore, has each copy say how far it reached, takes
-the furthest, and only then restores. You are told, and so are we.
+When the database's disk or its whole zone is lost, it is restored from object storage and the copy
+supplies everything the archive had not received. The machine holding your database does this by
+itself: it notices the lost disk, holds the restore, has the copy say how far it reached, and only
+then restores. You are told, and so are we.
 
-| | Stay available (default, every plan) | Never lose a write (Pro and Business) |
+**When the copy itself is down.** Commits wait for it for up to 20 seconds, so a short interruption
+confirms nothing that only one zone holds. Past 20 seconds, writes go on rather than stop: they are
+confirmed on the database's own disk and reach object storage within a minute, as on *one zone*,
+and the moment the copy is back, commits wait for it again. We restart a stopped copy,
+and replace one that is gone, without anybody asking: measured at two minutes for a restart and
+four and a half for a new server. So *two-zone writes* hold while the copy is up; while it is being
+brought back, your project is protected as on *one zone*.
+
+| | One zone (every plan) | Two-zone writes (Pro and Business) |
 | --- | --- | --- |
 | Where a confirmed write is | the server's disk, and object storage within a minute | also on a disk in another zone, before it is confirmed |
-| One copy down | not applicable | writes go on through the other copy |
-| Both copies down | not applicable | writes wait, reads go on, and you and we are told |
-| Lost if the disk or zone is lost | up to about a minute | nothing |
+| The copy down up to 20 seconds | not applicable | writes wait, then go through |
+| The copy down longer | not applicable | writes go on, on the server's disk and in object storage within a minute, until the copy is back |
+| Lost if the disk or zone is lost | up to about a minute | nothing, while the copy is up |
 
-The copies are verified: each one checks the database's own certificate before it accepts a byte,
-so nothing but your database can feed it. Until 2026-10-21 every plan had one such copy; since then
-it is Pro and Business only.
+The copy is verified: it checks the database's own certificate before it accepts a byte, so
+nothing but your database can feed it. Since 2026-10-22 each project with two-zone writes has one
+such copy.
 
-**Driven on the live system, 2026-10-18,** with a load of writers, readers and two-row transfers
-running through the public endpoint and every operation logged and checked:
+**Driven on the live system, 2026-10-22,** with a load of writers running and every operation
+logged and checked. In every case no confirmed write was lost, duplicated or half applied:
 
-| What was done | Confirmed writes lost | What clients saw |
-| --- | --- | --- |
-| Both copies stopped 40 seconds, Never lose a write | 0 | **no write confirmed** while both were down; reads went on; the waiting writes went through when they came back |
-| One copy stopped, Never lose a write | 0 | writes went on through the other (2,003 confirmed in 40 seconds) |
-| The database's disk destroyed, restored by an operator | **0** of 4,056 | out 105 seconds |
-| The database's disk destroyed, nothing done by hand | **0** of 4,231 | the second copy had reached further and was used; out **89 seconds** |
-
-No transfer was ever half applied, and no write appeared twice.
+| What was done | What clients saw |
+| --- | --- |
+| The copy stopped for 10 seconds | no write confirmed while it was down; the waiting writes went through when it came back |
+| The copy stopped for 90 seconds | commits waited about 15 seconds, then 3,233 went on; protection came back by itself |
+| The copy's server stopped | started again by us, protected again 120 seconds later |
+| The copy's server destroyed | replaced by a new one, protected again 270 seconds after the loss |
+| The database's server and its disk destroyed | the copy supplied what the archive lacked; back in 56 seconds |
 
 ## Restore-tested
 
@@ -118,9 +128,9 @@ for when each happens.
 
 What the figures above cover, and what they do not:
 
-- **Stay available, when a disk or zone is lost.** Up to about a minute of confirmed writes, the
-  archive's own gap. A failed server alone loses nothing, since its disk outlives it. Never lose a
-  write has no such window.
+- **One zone, when a disk or zone is lost.** Up to about a minute of confirmed writes, the
+  archive's own gap. A failed server alone loses nothing, since its disk outlives it. Two-zone
+  writes have no such window.
 - **A cancelled commit.** If a client gives up on a commit while it waits for the copy, Postgres
   warns that the transaction may already be committed. That is Postgres's own behavior and true of
   every synchronous copy.
@@ -130,7 +140,7 @@ What the figures above cover, and what they do not:
 - **Not yet drilled.** A whole server lost for good and its projects brought up on another one.
   The parts are in place (the data volume survives the instance, and a failed instance is moved to
   new hardware by the cloud provider), and the drill is next.
-- **Account isolation.** Both copies of your backups, and the copies in other zones, are in the same
+- **Account isolation.** Both copies of your backups, and the copy in another zone, are in the same
   cloud provider account that runs the service. Replication into a separate account is not built yet.
 - **Uptime commitment.** Plans do not carry an SLA today. Live status is published at
   [status.snoutdata.com](https://status.snoutdata.com), which reports green only when it has

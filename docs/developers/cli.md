@@ -170,10 +170,19 @@ snoutdata projects pause  [--ref REF] [--no-wait]
 snoutdata projects resume [--ref REF] [--no-wait]
 snoutdata projects delete [--ref REF] [--no-wait]
 snoutdata projects show   [--ref REF]
+snoutdata projects scale  [REF] [--instances N] [--yes]
 ```
 
 `pause`, `resume` and `delete` wait until the project is paused, ready or gone, printing each
 state it passes through; `--no-wait` returns as soon as the change is asked for.
+
+`scale` gives the project's app API (auth, the data API and the router) more capacity, as `N`
+instances: 1 up to what your plan allows (2 on Pro, 3 on Business). It prints the plan first
+and asks before it changes anything; `--yes` applies it without asking, and with nothing to ask at (a
+script, CI) it is required. Without `--instances` it says how many the project runs and how many the
+plan allows. A refusal is printed as the control plane gives it, with the exit code of its kind (over
+the plan: quota; not open to the account yet: forbidden; no room in the region: no capacity). Your
+database is not copied by this ([Scale](../cloud/infrastructure#scale)).
 
 `show` is one project whole: its state, the Postgres version it runs, which products are on, the
 names of its functions and function secrets, and its custom domains. Never a password or a key.
@@ -628,6 +637,25 @@ The environment a project's functions run with. Every function in the project ge
 **Nothing prints a value back**: `list` gives names, sizes and when each was last set, and there
 is no `get`. `NAME=value` puts the value in your shell history and in `ps`, so `--stdin` is what a
 CI job should use.
+
+### `cluster table auto`, `cluster autopilot`
+
+```
+snoutdata cluster table auto --keyspace K [--schemas a,b] [--min-bytes N] [--plan] [--yes] [--project REF]
+snoutdata cluster autopilot [off|advise|auto] [--interval-ms N] [--yes] [--project REF]
+```
+
+`table auto` chooses a distribution key for every table in the schemas named (`public` unless
+`--schemas` says otherwise), prints each table with what it chose and why, and distributes what it
+can in one job. It moves data, so it asks first, or takes `--yes`; `--plan` changes nothing.
+
+`autopilot` without a mode says the cluster's autopilot in a sentence (off until you set it) and what
+it decided last; with a mode it sets it. `auto` asks first, or takes `--yes`. In SnoutData Cloud,
+`auto` runs each recommendation through the same checks as a move of yours
+([Operating a cluster](/stack/lepis/operations#the-autopilot)).
+
+Since 0.19.0. The rest of `snoutdata cluster` is in [Clusters in Cloud](/stack/lepis/cloud) and
+[Operating a cluster](/stack/lepis/operations).
 
 ### `mcp`
 

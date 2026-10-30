@@ -30,8 +30,10 @@ snoutdata cluster enable --project <ref> --plan    # what it does, changing noth
 snoutdata cluster enable --project <ref>           # asks, then does it
 ```
 
-It restarts the database once, to put the router beside it. Your data stays where it is: the
-project is now a cluster of one node, its home, and nothing moves until you add a node.
+The database keeps running: the router and your project's own services (the data API, auth, push
+and the AI gateway) start in pods of their own beside it, and the services may refuse a request for
+a few seconds while they move. Your data stays where it is: the project is now a cluster of one node, its home, and
+nothing moves until you add a node.
 
 ## Add a node
 
@@ -45,6 +47,11 @@ The new node starts as a copy of your database, joins the cluster, and takes an 
 distributed tables, all on its own. It takes a minute or two, and the page shows each step while it
 happens. Writes to a range pause for a moment when it moves; nothing else stops. `snoutdata cluster
 scale --nodes N --project <ref>` sets the number of nodes in one go, the home included.
+
+With no table spread yet there is nothing for it to take, so it waits as a standby: it holds a copy
+of your database and serves nothing until a table is spread onto it. The Cluster tab says
+**Standing by** beside it, with a grey dot rather than a green one, and that is normal; it takes its
+share as soon as you spread a table.
 
 ## Spread a table
 
@@ -99,8 +106,8 @@ share of the data is unavailable until then.
 
 ## Durability
 
-The project's [durability setting](/cloud/durability#never-lose-a-write) applies to all of its
-nodes: with Never lose a write, every node's commits are in another availability zone before they
+The project's [durability setting](/cloud/durability#two-zone-writes) applies to all of its
+nodes: with two-zone writes, every node's commits are in another availability zone before they
 are confirmed. Backups, retention and restore testing are per node, as on
 [backups and recovery](/cloud/durability).
 
@@ -131,21 +138,15 @@ scale --nodes 1 --project <ref>`), then **Turn clustering off**, or:
 snoutdata cluster disable --project <ref>
 ```
 
-The data is checked, the catalog forgets the keyspaces and tables, and the router leaves the pod,
-which restarts the database once. The rows are untouched, and the project is a plain project again.
-
-## Where the nodes run, today
-
-A cluster's nodes and replicas run on the same machine as its home node, each in its own container
-with its plan's memory and CPU. A replica covers a crashed node and damaged files; the loss of the
-machine, its disk or its zone is covered by a restore from object storage (and, with Never lose a
-write, the copies in other zones), which takes minutes rather than seconds. Spreading a cluster's nodes over several machines is the next step. The
-scale-out figures on [tested and measured](/stack/lepis/measured) were taken with Lepis run on
-its own, each node on its own machine.
+The data is checked, the catalog forgets the keyspaces and tables, the router stops, and your
+services move back into the database's pod, which can restart the database once (not when it has
+not been restarted since clustering was turned on), and they may refuse a request for a few seconds
+while they move. The rows are untouched, and the project is a plain project again.
 
 ## From a coding agent
 
 The CLI's [MCP server](/developers/agent) has `cluster_status`, `cluster_advice`, `cluster_plan`,
 `cluster_run`, `cluster_jobs`, `cluster_watch_job`, `cluster_cancel_job` and `cluster_resume_job`,
 each taking the project. `cluster_run` without confirmation returns the plan and runs nothing, and
-with it runs only an operation planned in the last 15 minutes for the same project.
+with it runs only an operation planned in the last 15 minutes for the same project. Since CLI 0.19.0
+they take `table.auto` too.

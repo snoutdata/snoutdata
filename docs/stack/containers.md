@@ -267,7 +267,7 @@ snoutdata containers egress clear                             # the public inter
 
 Each destination is a host name, an IPv4 address or an IPv4 range, then `:port` or
 `:port,port`; with no port, any port. Up to 32. On the dashboard it is the **Container network**
-card on the project's Settings tab.
+card on the project's Containers page.
 
 A host name is looked up every minute, and an address it gave stays allowed for an hour after it
 stops giving it, so a name that rotates through a set of addresses keeps working. A name that

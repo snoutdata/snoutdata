@@ -3,7 +3,7 @@ id: overview
 title: The SnoutData stack
 sidebar_label: Overview
 slug: /stack
-description: What every SnoutData project runs, hosted or in your own Docker. Postgres 18 with SnoutTime and pgvector, a REST and GraphQL data API, auth, file storage, realtime, functions and push, behind one gateway, Lepis to spread a database over several nodes, and Psyche, an AI gateway (early). Open source.
+description: What every SnoutData project runs, hosted or in your own Docker. Postgres 18 with SnoutTime and pgvector, a REST and GraphQL data API, auth, file storage, realtime, functions and push, behind one gateway, Lepis to spread a database over several nodes, and Psyche, an AI gateway. Open source.
 ---
 
 import {Cards, Scene} from '@site/src/components/Art';
@@ -32,7 +32,7 @@ part is open source.
 	{title: 'Push', to: '/stack/push', stack: 'push', text: 'Notifications to iPhone, Android and the web, from one API and from SQL.'},
 	{title: 'SnoutTime', to: '/stack/snouttime/overview', mark: 'timeseries', text: 'Time series in plain Postgres: series tables, sealed columnar partitions, rollups.'},
 	{title: 'Clusters (Lepis)', to: '/stack/lepis/overview', stack: 'cluster', text: 'One database over several Postgres nodes, with one connection string. Tables spread by a key, moved online.'},
-	{title: 'AI Gateway (Psyche)', to: '/stack/psyche', stack: 'api', text: 'One OpenAI-compatible endpoint in front of OpenAI-style providers, Anthropic and Bedrock, with your own keys, switched on per project. Early.'},
+	{title: 'AI Gateway (Psyche)', to: '/stack/psyche', stack: 'api', text: 'One OpenAI-compatible endpoint in front of OpenAI-style providers, Anthropic and Bedrock, with your own keys, switched on per project.'},
 ]} />
 
 ## Where it runs
@@ -44,8 +44,8 @@ part is open source.
 | Socket.IO | yes | yes |
 | Containers | Plus and Pro ([containers](/stack/containers)) | an opt-in profile, on a machine with gVisor |
 | Clusters (Lepis) | yes ([clusters in Cloud](/stack/lepis/cloud)) | the router in front of your own Postgres ([run it yourself](/stack/lepis/self-hosting)) |
-| AI Gateway (Psyche) | yes, switched on per project, early ([AI gateway](/stack/psyche)) | the `ai` profile, early |
-| Continuous backups, point-in-time restore, every write in two other zones on Pro | yes ([durability](/cloud/durability)) | your own (`pg_dump`, volume backups) |
+| AI Gateway (Psyche) | yes, switched on per project ([AI gateway](/stack/psyche)) | the `ai` profile |
+| Continuous backups, point-in-time restore, every write in another zone on Pro | yes ([durability](/cloud/durability)) | your own (`pg_dump`, volume backups) |
 | Sleeps when idle, wakes on connect | yes | no |
 | Plans, the dashboard, status page | yes | no |
 

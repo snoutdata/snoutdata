@@ -25,12 +25,6 @@ It runs in two places:
   [github.com/snoutdata/snout-lepis](https://github.com/snoutdata/snout-lepis). See
   [run it yourself](/stack/lepis/self-hosting).
 
-:::caution Built in the open, not production ready yet
-Everything on these pages runs and is tested against real Postgres 17 and 18, and the measured
-results are on [tested and measured](/stack/lepis/measured). Lepis has not yet carried anyone's real
-workload, and its interfaces may still change. Try it, and tell us what you find.
-:::
-
 ## When a cluster helps
 
 A cluster is for a database that one machine can no longer hold or keep up with, where most work

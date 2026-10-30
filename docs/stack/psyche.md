@@ -2,7 +2,7 @@
 id: psyche
 title: AI Gateway (Psyche)
 sidebar_label: AI Gateway (Psyche)
-description: Psyche is an OpenAI-compatible AI gateway for Postgres-backed apps. One endpoint in front of OpenAI-style providers, Anthropic and Amazon Bedrock, with your own provider keys and a request log in your own Postgres. Early, built in the open, in every SnoutData Cloud project and the self-hosted stack.
+description: Psyche is an OpenAI-compatible AI gateway for Postgres-backed apps. One endpoint in front of OpenAI-style providers, Anthropic and Amazon Bedrock, with your own provider keys and a request log in your own Postgres. In every SnoutData Cloud project and the self-hosted stack.
 ---
 
 # AI Gateway (Psyche)
@@ -14,12 +14,9 @@ written in Rust, at the path `/ai/v1`.
 
 Psyche routes calls to models; it is not a model itself, and it never answers on its own.
 
-:::caution Early, built in the open
-Psyche is not production ready yet. In SnoutData Cloud you switch it on per project, on every plan
-(below); in the self-hosted stack it is the `ai` profile; and its source is at
-[github.com/snoutdata/snout-psyche](https://github.com/snoutdata/snout-psyche) (Apache-2.0). What works
-today is below, and what is coming is at the end of this page.
-:::
+In SnoutData Cloud you switch it on per project, on every plan (below); in the self-hosted stack it
+is the `ai` profile; and its source is at
+[github.com/snoutdata/snout-psyche](https://github.com/snoutdata/snout-psyche) (Apache-2.0).
 
 ## In SnoutData Cloud
 
@@ -333,6 +330,22 @@ curl -X PUT http://localhost:5300/ai/v1/admin/providers/openai -H "Authorization
 curl -X PUT http://localhost:5300/ai/v1/admin/models/fast -H "Authorization: Bearer $SERVICE_KEY" \
   -d '{"provider": "openai", "upstream": "gpt-4o-mini", "price": {"input": 0.15, "output": 0.6}}'
 ```
+
+To pick a model rather than know its id, ask the provider for its own list, with the credential
+its calls use; the `POST` form takes a provider and key that are not saved yet and keeps neither:
+
+```bash
+curl http://localhost:5300/ai/v1/admin/providers/openai/upstream-models -H "Authorization: Bearer $SERVICE_KEY"
+# {"object": "list", "data": [{"id": "gpt-5-mini", "owned_by": "system", "created": 1754425777, "kind": "chat"}, …]}
+curl -X POST http://localhost:5300/ai/v1/admin/upstream-models -H "Authorization: Bearer $SERVICE_KEY" \
+  -d '{"provider": {"kind": "openai", "base_url": "https://api.openai.com/v1"}, "credential": {"api_key": "sk-…"}}'
+```
+
+Each entry is the provider's `id`, with `name`, `owned_by`, `created`, `kind` (`chat`, `embedding`
+or `completion`) and `context_window` when known, chat models first and newest first. It covers
+every OpenAI-style provider (`GET {base}/models`), Anthropic, and Bedrock (its inference profiles,
+such as `us.openai.gpt-5.6-luna`, and the models it serves on demand). A provider that refuses or
+has no list answers an error with a sentence, and the key never appears in it.
 
 A model takes the same fields as in the file, plus `"enabled": false` to stop serving it, and its
 name may contain `/`. A model that could not be served is refused with the reason, and nothing is

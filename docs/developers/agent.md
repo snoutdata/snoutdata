@@ -384,6 +384,7 @@ turns that off.
 | `create_project` | `name` (required), `region`, `teamId` | Makes a database and waits for it to be ready. |
 | `get_connection_url` | `ref` (required) | The `postgres://` URL. **It contains a live password.** |
 | `pause_project` | `ref` (required) | Stops a project and waits until it is paused. Its data is kept and the next connection wakes it. |
+| `scale_project` | `ref` (required), `instances`, `confirm` | More capacity for the app API (auth, the data API, the router): 1 to 3 instances. Not failover. Without `confirm: true` it only returns the plan; without `instances`, what the plan allows. |
 | `resume_project` | `ref` (required) | Starts a paused project without waiting for a connection, and waits until it is ready. |
 | `push_migrations` | `ref` (required), `dir`, `dryRun` | Runs the `.sql` files in a folder. Needs nothing installed. |
 | `usage` | `ref` (required), `days` | Storage and compute against the plan's limit. **Read it before a migration or a bulk insert**: a project that goes over is made read-only. |

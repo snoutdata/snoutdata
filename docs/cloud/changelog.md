@@ -11,6 +11,165 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-10-30
+
+- **Metis, where your app's API runs.** A project scaled to more than one instance now has its
+  instances placed by **Metis**: it chooses the servers, keeps the region's routers in step so each
+  call goes to a running instance (and to another one when an instance refuses), and moves an
+  instance to another server only after the new one has run and answered for 30 seconds, so a
+  project never has fewer instances than it was scaled to. Nothing to switch on: it is what runs when
+  you use Scale. [Scaling and routing (Metis)](../stack/metis).
+
+## 2026-10-28
+
+- **Logs in Stack, and the Audit log.** **Logs** is the last item under Stack, a tab per service
+  (Postgres, Data API, Auth, Storage, Functions). What was Activity is the **Audit log**, under
+  Settings: who did what to the project, and when. Old links still open both, and Recents stays
+  folded until you open it.
+- **Scaling, one page.** Scale and Where it runs are one page, **Scaling**, first under Stack: the
+  project's map, with Scale (the number of instances) and **Two-zone writes** in a small panel
+  beside it, and each service on one line under it. *Never lose a write* is now called **two-zone
+  writes**, and *Stay available* is **one zone**: the same settings, named for what they do. The database's own copies and nodes are on the
+  map, the Overview and the Cluster page. The Overview's map card is now called **Stack map**. Small
+  maps are tighter too: on the Cluster page and the Overview, a mark's name sits beside it rather
+  than under it, so the map takes less room.
+- **A shorter project menu.** The menu's groups are now Data and **Stack**, with Settings last.
+  **Database** also holds Cluster (first, for a project with a cluster), Backups and **Access** (the
+  password and who may sign in to the database). **Stack** is what was Build, plus Containers, and
+  starts with **Scale**: the number of instances, with **Never lose a write** as a switch on the same
+  page, and a **Where it runs** tab with the map, the nodes and the services. **Settings** holds
+  General, Domains, Activity, Logs and Delete project. There is no Infrastructure or Operate any more,
+  and old links still open the page they meant.
+- **A project's menu, in groups.** The menu down the side of a project is now grouped as Data, Build
+  and Operate, and an item with pages of its own opens them under it: **Database** holds Tables, SQL
+  editor, Extensions, Cron jobs and Time series; **Auth** holds Users, Sign-in methods and Email
+  templates; **Observability** holds Activity and Logs; **Infrastructure** holds Overview, Scale,
+  Durability and, for a project with a cluster, Cluster; **Settings** holds General, Database access
+  and Delete project. The same pages show as tabs across the top of each one. **Recents** under
+  Overview lists the last pages you opened, and the search finds every page of the project you are in.
+  Some things moved: export and restoring to a moment are on **Backups**, Durability is under
+  Infrastructure, the Container network card is on **Containers**, and the control plane's log is
+  **Activity**. Old links still open the page they meant.
+- **Long pages in tabs.** Realtime (Overview, Streamed tables, Subscriptions), AI (Overview, Models,
+  Calling from your app, Keys, Usage), Push (Overview, Apple, Android), Functions (Deployed, Calls),
+  Logs (one tab per service) and the Data API (Settings, Docs) are split into tabs instead of one long
+  scroll. Each tab has its own link, and the search finds it.
+- **The autopilot can run moves on its own.** The Autopilot setting on the Cluster tab's
+  Recommendations card now has **Auto**, and `snoutdata cluster autopilot auto` is no longer refused:
+  every minute, when nothing else is running, the cluster runs the advisor's recommendation as a job
+  of its own, through the same checks as a move of yours (no split on its own over 1 GB, and room on
+  every node). A move the checks refuse is not tried again until the advisor recommends something
+  else, and a keyspace you placed by hand is never touched. It is off until you choose it, and asks
+  first. [Operating a cluster](../stack/lepis/operations#the-autopilot).
+- **The CLI shows the Cloud's autopilot.** `snoutdata` 0.19.1: on a Cloud cluster,
+  `snoutdata cluster autopilot` shows the mode you chose and what the Cloud last did with the
+  recommendation (ran it as a job, did not run it and why, or is starting it), where 0.19.0 read
+  Auto as advise.
+- **More room on a new node.** When no other node can take it, **Give it more room** and **Take load
+  off** on the Cluster tab's Detailed view add a cluster node instead, if your plan has a project slot
+  free: it joins and takes an even share of every distributed table. Each says so and opens the plan
+  first. [Operating a cluster](../stack/lepis/operations#ranges).
+
+## 2026-10-27
+
+- **Scale your app's API.** **Scale**, on a project's Infrastructure tab, gives auth, the data API
+  and the router more capacity: up to 2 instances on Pro and 3 on Business. Your database is not
+  copied by this, and it is not failover, which is ours to keep on every plan. The plan is shown before
+  anything changes, the instances appear on the map and in their own card, and
+  `snoutdata projects scale <ref> --instances N` does the same from a terminal.
+  [Scale](./infrastructure#scale).
+- **The CLI has a cluster's new commands.** `snoutdata` 0.19.0 adds `cluster table auto`, which
+  chooses every table's distribution key and says why for each, and `cluster autopilot`, which says
+  the autopilot's mode and sets it (in SnoutData Cloud it advises only, and `auto` is refused with the
+  reason). [CLI reference](../developers/cli#cluster-table-auto-cluster-autopilot).
+- **A cluster chooses its own keys.** **Choose keys for me**, on the Tables card of the Cluster
+  tab's Detailed view, reads your schema and picks every table's distribution key: the column most
+  tables reference (an account or tenant id), or else the primary key. Small tables the others join
+  become copies on every node, and anything that cannot be spread safely stays on the home node. The
+  plan says what it chose for every table and why before anything moves. Tables linked by foreign
+  keys now move together, which one at a time was refused. A foreign key between two distributed
+  tables must also join their distribution keys, as the docs said; one that does not is refused
+  instead of putting a row and the row it references on different nodes.
+  [Operating a cluster](../stack/lepis/operations#let-the-router-choose-the-keys).
+- **An autopilot for a cluster, off until you turn it on.** The Autopilot setting on the
+  Recommendations card, in the Cluster tab's Detailed view, set to **advise**, has the router note
+  the recommendation it would run every minute, without running it; **off** turns it back off, and
+  the card says which it is. It never touches a keyspace you placed by hand. In SnoutData Cloud it
+  advises only. [Operating a cluster](../stack/lepis/operations#the-autopilot).
+- **Step in from the map.** On the Cluster tab's Detailed view, pick the home or a node on the
+  cluster map, and what you can do with it (Take load off, Drain, Remove) appears under the map,
+  each opening its plan first. [Operating a cluster](../stack/lepis/operations#nodes).
+- **Step in on a cluster in one click.** On the Cluster tab's Detailed view, **Give it more room**
+  on a distributed table splits its biggest range and sends half to the emptiest node, and **Take
+  load off** on a node moves its biggest range to the emptiest node. Each opens the usual plan first,
+  and says why when it cannot help. [Operating a cluster](../stack/lepis/operations#ranges).
+- **The cluster map shows the data.** On the Cluster tab's map, each node says how much data it
+  holds, and is drawn a little larger or smaller for it. While a job moves rows, a moving line runs
+  from the node they leave to the node they go to, saying how far it has got: copying, catching up,
+  cutting over, checking. [Clusters in SnoutData Cloud](../stack/lepis/cloud).
+- **A node standing by says so.** A cluster node with no spread table to take a share of holds a
+  copy of your database and serves nothing until you spread one. The Cluster tab's node lists now
+  say **Standing by** beside it, with a grey dot and a note saying why, where they showed the word
+  "joining"; green is only for a node serving its share.
+  [Clusters in SnoutData Cloud](../stack/lepis/cloud#add-a-node).
+
+## 2026-10-26
+
+- **The whole project on its Overview.** A project's Overview now opens with one map of everything it
+  runs: the database with its backups beside it, a cluster's router and every node, its copy in
+  another zone, and each service as a small tile in the zone where it runs, shared ones marked so.
+  Each zone is a panel, and a note per zone says what runs there and how it is ("in sync", "standing
+  by", "reported 10 s ago"), green only for what is live. **Details** opens the tab that was called
+  Where it runs, now **Infrastructure**, with the same map over its cards.
+  [Your project's infrastructure](./infrastructure).
+- **The network drawings, redrawn.** The Cluster tab's map and Where it runs now draw each copy of
+  your database as a database and the cluster's router as a small switch with its lights. Every
+  link is one continuous line with data moving along it and its words beside it. A server's last
+  report is a quiet note after each mark's words, turning amber or red only when it is late. A
+  project in one zone gets no frame inside the card. On a phone the drawing keeps its size and,
+  when it does not fit, scrolls sideways inside its card.
+- **Where it runs.** Every project has a new tab under Manage: where its database runs (region and
+  zone), its copy in another zone when it is set to Never lose a write, its nodes, and each service
+  beside it, with whether each is well and how long ago its server last reported. Keeper and replica
+  states read as plain sentences, nodes roll up to one line until one differs, and a server is never
+  named. [Your project's infrastructure](./infrastructure).
+- **Making a project a cluster no longer restarts its database.** The cluster router and your
+  project's own services (the data API, auth, push and the AI gateway) now start in pods of their
+  own beside the database, which keeps running; the services may refuse a request for a few seconds
+  while they move. Turning clustering off moves the services back into the database's pod, which
+  can restart the database once. See [clusters in SnoutData Cloud](/stack/lepis/cloud).
+- **A map of your cluster.** The Cluster tab opens with a drawing of the cluster on both the Simple
+  and Detailed views: the router, the home node, every node and replica, and how each is joined,
+  each with its state in words and how recently its server reported. A node that has joined but
+  holds no data yet says it is standing by. The tab now names what does the clustering, Lepis,
+  with a link to its documentation.
+- **Never lose a write, described as it works: one copy in another zone.** Since 2026-10-22 a
+  project on *Never lose a write* (Pro and Business, the default there) has one copy of every write
+  in another availability zone, not two, and the backups page now says so. A commit is confirmed
+  once that copy has it. If the copy is down, commits wait for it for up to 20 seconds, then go on,
+  confirmed on the database's own disk and in object storage within a minute, until the copy is
+  restarted or replaced, which happens by itself (measured at two minutes and four and a half); then
+  commits wait for it again.
+- **The dashboard's Durability setting says the same.** Under **Settings, Durability** and in the
+  dialog that changes it, *Never lose a write* still described a copy in two other zones with writes
+  waiting while neither answered. It now describes the one copy in another zone and the 20-second
+  wait, as above.
+
+## 2026-10-25
+
+- **Your project's own models in the dashboard's assistant.** When the project on screen has its AI
+  gateway switched on, the assistant's model list shows its models after SnoutData AI's, each group
+  saying who pays: SnoutData AI's use your plan's balance, your project's are billed by its provider
+  on your project's own key, and its budgets and request log apply. A paused project's models are
+  not listed, and listing them never wakes it.
+- **Adding a model to your project's AI gateway: pick it from the provider's list.** In the
+  dashboard's "Add a model" guide, the model's id is now a searchable list of the models your
+  provider offers, read with the key you gave (OpenAI and every service that speaks its API,
+  Anthropic, and Amazon Bedrock, inference profiles included). Choosing one fills in the name your
+  app asks for, which you can still change. An id that is not listed can still be typed, and so can
+  any id when the provider cannot list its models. The same list is in the AI gateway's admin API,
+  `GET /ai/v1/admin/providers/<name>/upstream-models`.
+
 ## 2026-10-22
 
 - **Maintenance restarts are gentler.** When we have to restart a project's database (a new image,
@@ -149,9 +308,9 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   price or stop serving a model through the admin API or in SQL, and the next call sees it with no
   restart; the providers file becomes optional and only seeds the tables. See
   [Providers and models in your database](/stack/psyche#providers-and-models-in-your-database).
-- **Psyche, an AI gateway, is in the open.** One OpenAI-compatible endpoint, `/ai/v1`, in front of
+- **Psyche, an AI gateway, is open source.** One OpenAI-compatible endpoint, `/ai/v1`, in front of
   OpenAI-style providers, Anthropic and Amazon Bedrock, with your own provider keys and a request log
-  in your own Postgres. It is early and not in SnoutData Cloud yet: build it yourself from
+  in your own Postgres. Build it yourself from
   [snoutdata/snout-psyche](https://github.com/snoutdata/snout-psyche). See
   [AI Gateway (Psyche)](/stack/psyche).
 - **Psyche stores provider credentials.** A provider can take its key from Psyche rather than the

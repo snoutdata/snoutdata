@@ -93,7 +93,7 @@ Keep the client ID and secret that Google shows you.
 
 ### 2. In your project
 
-On the dashboard's Auth tab, under **Sign in with Google**, paste the client ID and secret and
+On the dashboard, under **Auth, Sign-in methods**, in **Sign in with Google**, paste the client ID and secret and
 press **Turn on Google sign-in**. Or from a terminal, with the secret on stdin so it stays out of
 your shell history:
 
@@ -125,7 +125,7 @@ from the first request, and a guest can add an email address later without losin
 
 ### Turn it on
 
-Guest sign-in is off until you switch it on, on the dashboard's Auth tab under **Guest sign-in**,
+Guest sign-in is off until you switch it on, on the dashboard under **Auth, Sign-in methods**, in **Guest sign-in**,
 or from a terminal:
 
 ```bash
@@ -219,8 +219,8 @@ Confirm, password reset, magic link, invite and email change are sent for you, f
 domain, with no mail server to set up. Out of the box each is plain HTML with one button and the
 link written out beneath it, naming your site URL.
 
-**Use your own.** Replace any of the five with your own subject and HTML: on the dashboard's Auth
-tab, under **Email templates**, press **Edit** on one (the editor opens on the current text, with a
+**Use your own.** Replace any of the five with your own subject and HTML: on the dashboard under **Auth,
+Email templates**, press **Edit** on one (the editor opens on the current text, with a
 preview beside it), or from a terminal:
 
 ```bash

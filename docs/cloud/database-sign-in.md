@@ -23,7 +23,7 @@ your application.
 
 The project's owner gives access, in the dashboard or with the CLI.
 
-- **Dashboard:** open the project, then **Settings**, **Database access**, **Give access**.
+- **Dashboard:** open the project, then **Database**, **Access**, **Give access**.
 - **CLI:**
 
   ```
@@ -86,7 +86,7 @@ refuses an issuer that differs by a character.
 
 ## Take access away
 
-In the dashboard, **Settings**, **Database access**, then the person's **Take away**; or:
+In the dashboard, **Database**, **Access**, then the person's **Take away**; or:
 
 ```
 snoutdata db access revoke teammate@example.com
