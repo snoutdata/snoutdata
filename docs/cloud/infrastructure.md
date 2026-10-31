@@ -2,7 +2,7 @@
 id: infrastructure
 title: Your project's infrastructure
 sidebar_label: Infrastructure
-description: The map on every project's Overview and on its Scaling page. Where your database, its copies, its backups and its services run, whether each is well, how fresh each reading is, and Scale, which runs your app's API on more than one server.
+description: The map on every project's Overview and on its Scaling page. Where your database, its copies, its backups and its services run, whether each is well, how fresh each reading is, Scale, which runs your app's API on more than one server, and the maintenance window, when a running database may move to another server.
 ---
 
 # Your project's infrastructure
@@ -91,3 +91,20 @@ From a terminal, `snoutdata projects scale` does the same, plan first
 ([CLI reference](../developers/cli#projects)). Scale is refused, with the reason, for a project over
 its plan, a project spread over several nodes (a cluster), a project scaled a moment ago, and when a
 region has no room for another instance right now.
+
+## Maintenance window
+
+A project's **maintenance window** is the hours when we may move its database to another server
+while it runs. It is on the project's **Settings**, **General**, which shows the window, where its
+hours and its timezone come from, and the next window in your own local time.
+
+- **The default** is 2 to 6 AM in the owner's timezone. A team project follows the timezone of the
+  person who owns it.
+- **The owner's timezone** is the one their browser, Studio or `snoutdata login` reports at each
+  sign-in. Set one by hand on the **Account** page (Settings, in the menu under your name) and that
+  one is kept. Before any timezone is known, the window is in the local time of the project's region.
+- **A project's own window.** An owner can give a project its own start and end hours, as whole
+  local hours (an end earlier than the start runs across midnight), and its own timezone. **Use the
+  default** puts the default back. Changes show on the project's audit log.
+
+Studio's tab for a cloud project shows and changes the same window, under **Settings**.

@@ -11,6 +11,16 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-10-31
+
+- **Maintenance windows.** Each project has a **maintenance window**, the hours when we may move its
+  database to another server while it runs. The default is 2 to 6 AM in the owner's timezone, which
+  is taken from the browser, Studio or `snoutdata login` at each sign-in, or set by hand on the
+  **Account** page and then kept. Before any timezone is known, the window follows the project
+  region's local time. An owner can give a project its own hours and timezone under **Settings**,
+  **General**, where the next window is shown in your local time, or from Studio's project tab.
+  [Maintenance window](./infrastructure#maintenance-window).
+
 ## 2026-10-30
 
 - **Metis, the servers and instances behind your app's API.** A project scaled to more than one
