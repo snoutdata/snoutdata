@@ -204,6 +204,10 @@ than guessed at.
 A `projects list` row shows `read-only` rather than `ready` when the project is over its storage
 limit, because that is the state you need to know about.
 
+When a running project's server is not answering, `projects list` shows `(server not answering)`
+beside its state and `projects show` says its server is not answering beside it; `--json` carries
+it as `serverSilent`. The state stays what the server last reported.
+
 ### `products`
 
 ```

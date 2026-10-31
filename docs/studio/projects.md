@@ -81,8 +81,9 @@ in the `.env` in its folder, which is their only copy.
 ![The Dashboard panel with Local and Cloud groups, the orders project expanded into its menu with Overview open in place, and the project's tab on Overview: status with Start and Stop, storage against the plan, and the last 30 days](/screenshots/studio-projects-overview.png)
 
 Each project is a row with a status dot: green when it is running or ready, amber while it is
-starting or stopping, grey when it is stopped or paused, red if something is wrong. Expand it and
-it shows the same menu the online dashboard has:
+starting or stopping, grey when it is stopped or paused, red if something is wrong. A running cloud
+project whose server is not answering says so beside its name, and its Overview says so under the
+state. Expand it and it shows the same menu the online dashboard has:
 
 - **Database**: Overview, Database, Extensions, Cron, Time series.
 - **Services**: Auth, Storage, Data API, Functions, Realtime, Push.
@@ -105,6 +106,7 @@ A project opens as a tab in the editor area, one tab per project, with the menu 
 ### Overview
 
 - **Status**: the state, with **Start** and **Stop**. A production project asks before it stops.
+  When a cloud project's server is not answering, it says so under the state.
 - **The numbers**: for a cloud project, its size against your plan's limit and the last 30 days
   (database size, backup size, connections, compute). For a local one, its size, open
   connections, files in storage and how long it has been up, and the health of every service.
