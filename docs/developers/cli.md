@@ -206,7 +206,7 @@ limit, because that is the state you need to know about.
 
 When a running project's server is not answering, `projects list` shows `(server not answering)`
 beside its state and `projects show` says its server is not answering beside it; `--json` carries
-it as `serverSilent`. The state stays what the server last reported.
+it as `serverSilent`. The state shown is the last one its server sent before it stopped answering.
 
 ### `products`
 

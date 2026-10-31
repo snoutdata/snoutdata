@@ -16,7 +16,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 - **When a project's server is not answering.** A running project whose server is not answering
   says so beside its state: on the dashboard's project card, project list and project page, in
   Studio's Dashboard panel and project tab, and in `snoutdata projects list` and `projects show`
-  (`serverSilent` in `--json`). The state itself stays what the server last reported.
+  (`serverSilent` in `--json`). The state shown is the last one its server sent before it stopped answering.
   [CLI](../developers/cli#projects).
 - **Maintenance windows.** Each project has a **maintenance window**, the hours when we may move its
   database to another server while it runs. The default is 2 to 6 AM in the owner's timezone, which
