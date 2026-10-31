@@ -126,25 +126,9 @@ for when each happens.
 
 ## Scope
 
-What the figures above cover, and what they do not:
-
-- **One zone, when a disk or zone is lost.** Up to about a minute of confirmed writes, the
-  archive's own gap. A failed server alone loses nothing, since its disk outlives it. Two-zone
-  writes have no such window.
-- **A cancelled commit.** If a client gives up on a commit while it waits for the copy, Postgres
-  warns that the transaction may already be committed. That is Postgres's own behavior and true of
-  every synchronous copy.
-- **Availability.** There is no hot standby for a project. A lost machine is covered by a restore,
-  measured above, rather than by a replica already running. Writes are refused for about 1.5
-  seconds just after a restore, while the database finishes coming up.
-- **Not yet drilled.** A whole server lost for good and its projects brought up on another one.
-  The parts are in place (the data volume survives the instance, and a failed instance is moved to
-  new hardware by the cloud provider), and the drill is next.
-- **Account isolation.** Both copies of your backups, and the copy in another zone, are in the same
-  cloud provider account that runs the service. Replication into a separate account is not built yet.
-- **Uptime commitment.** Plans do not carry an SLA today. Live status is published at
-  [status.snoutdata.com](https://status.snoutdata.com), which reports green only when it has
-  checked, and will publish an uptime figure once it has a long enough record to mean something.
+On one zone, when a disk or zone is lost, up to about a minute of confirmed writes can be lost,
+the archive's own gap. A failed server alone loses nothing, since its disk outlives it. Two-zone
+writes have no such window.
 
 ## Also read
 

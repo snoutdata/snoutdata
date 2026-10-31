@@ -131,9 +131,8 @@ drill have their own page: **[Backups and recovery](durability)**.
 ## Monitoring, and telling you
 
 A dozen checks run against the fleet every fifteen minutes and email us when an answer changes.
-Their public half is the status page above, under four rules: nothing identifying, one tenant's
-problem is not an outage, never green unless we know, and no uptime percentage while the record is
-this young.
+Their public half is the status page above, under three rules: nothing identifying, one tenant's
+problem is not an outage, and never green unless we know.
 
 **Disclosed limitation:** those logs are not shipped to a central platform today, so an
 investigation is a pull rather than a dashboard, and the health check cannot report its own death.

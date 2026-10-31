@@ -2,7 +2,7 @@
 id: evaluating
 title: Evaluating SnoutData Cloud
 sidebar_label: Evaluating Cloud
-description: The questions to ask before putting production data on SnoutData Cloud, answered in one place. Regions, backups, retention, RPO and RTO, point-in-time restore, status and incidents, uptime commitments, compliance, the changelog, and leaving.
+description: The questions to ask before putting production data on SnoutData Cloud, answered in one place. Regions, backups, retention, RPO and RTO, point-in-time restore, status and incidents, compliance, the changelog, and leaving.
 ---
 
 # Evaluating SnoutData Cloud
@@ -36,13 +36,7 @@ All of it is on [backups and recovery](durability).
 
 [status.snoutdata.com](https://status.snoutdata.com) shows hosted databases, project APIs, creating
 projects, sign-in, the dashboard and the rest, checked every fifteen minutes, with 90 days of
-history, incidents and maintenance. It never shows green without a fresh reading. It publishes no
-uptime percentage yet, because the record only starts on 2026-09-11.
-
-## Is there an SLA?
-
-No plan carries a signed uptime commitment today. There is no hot standby, so recovery is a restore
-and not a failover, though no confirmed write is lost in it. Both are on [limits](limits).
+history, incidents and maintenance. It never shows green without a fresh reading.
 
 ## Who can see my data?
 
