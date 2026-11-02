@@ -14,6 +14,8 @@ from one choice per table: whether it is distributed, and by which column.
 
 Pick the column your queries filter on most, the one most of your work belongs to: usually the
 account, tenant, customer or device id. Rows with the same value always live together on one node.
+[Distribution keys](/stack/lepis/keys) explains why this one choice decides so much, how a chain of
+foreign keys stays on one node, and the design check that reads your schema for you.
 
 A good key:
 

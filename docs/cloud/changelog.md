@@ -11,6 +11,18 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-11-02
+
+- **The design check.** The Cluster tab has a **Design check** card, and Studio's Cluster section a
+  **Design check** group. Each reads your tables, foreign keys and indexes and says what to change
+  so related rows stay on one node: a table in a chain with no distribution key column (with the SQL
+  that adds and fills it), a foreign key that leaves the key out, a lookup that should be copied to
+  every node, a foreign key or key with no index (with the `create index`). A finding that an
+  operation fixes has a **Review** button. The plan of every table operation shows the same check
+  for its tables before anything moves. In the CLI, `snoutdata cluster check` (and `cluster_check`
+  for agents) arrives with the next release, which also renames `--column` to `--distribution-key`
+  (the old name keeps working). [Distribution keys](../stack/lepis/keys).
+
 ## 2026-10-31
 
 - **When a project's server is not answering.** A running project whose server is not answering

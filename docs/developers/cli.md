@@ -661,6 +661,18 @@ it decided last; with a mode it sets it. `auto` asks first, or takes `--yes`. In
 Since 0.19.0. The rest of `snoutdata cluster` is in [Clusters in Cloud](/stack/lepis/cloud) and
 [Operating a cluster](/stack/lepis/operations).
 
+### `cluster check`
+
+```
+snoutdata cluster check [--project REF] [--json]
+```
+
+The [design check](/stack/lepis/keys#the-design-check): every table's distribution key, foreign keys,
+unique keys and indexes, read from the schema, each finding with its fix (SQL to run, or the
+command that does it). It runs nothing and exits 1 when something must be fixed, so a CI job can
+gate on it. `table distribute` and `spread` take the key as `--distribution-key` (`--column`, its old
+name, still works). Both arrive with the next CLI release after 0.19.1.
+
 ### `mcp`
 
 ```

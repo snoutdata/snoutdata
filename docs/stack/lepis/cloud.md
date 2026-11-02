@@ -58,14 +58,15 @@ share as soon as you spread a table.
 A table stays on the home node until you spread it. **Spread a table** in the dashboard, or:
 
 ```sh
-snoutdata cluster spread public.orders --column account_id --key-type bigint --project <ref> --plan
-snoutdata cluster spread public.orders --column account_id --key-type bigint --project <ref>
+snoutdata cluster spread public.orders --distribution-key account_id --key-type bigint --project <ref> --plan
+snoutdata cluster spread public.orders --distribution-key account_id --key-type bigint --project <ref>
 ```
 
 That makes a keyspace for the key (shared with other tables keyed the same way, so they are
 colocated), distributes the table by it, and rebalances so every node has its share. Choose the
-column with [tables and queries](/stack/lepis/tables-and-queries): a primary key on the table must
-include it.
+column with [distribution keys](/stack/lepis/keys) and [tables and queries](/stack/lepis/tables-and-queries):
+a primary key on the table must include it. The **Design check** card on the Cluster tab reads your
+schema and says, table by table, what to change before you spread it.
 
 A small lookup table that distributed tables join to is better copied to every node:
 

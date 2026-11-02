@@ -90,14 +90,27 @@ it before it takes any range. A node is removed only once it holds nothing.
 
 ```sh
 snoutdata cluster keyspace create tenant --key-type bigint --ranges 8
-snoutdata cluster table distribute public.orders --column tenant_id --keyspace tenant
+snoutdata cluster table distribute public.orders --distribution-key tenant_id --keyspace tenant
 snoutdata cluster table reference public.countries
 snoutdata cluster table global public.countries         # back to the home node only
 snoutdata cluster keyspace drop tenant                  # once no table uses it
 ```
 
 Distributing a table that already has rows creates it on the other nodes and moves its rows out to
-their owners.
+their owners. `--distribution-key` was called `--column` before, and the old name still works.
+
+### Check the design first
+
+```sh
+snoutdata cluster check
+```
+
+The [design check](/stack/lepis/keys#the-design-check) reads every table's distribution key, foreign
+keys, unique keys and indexes, and says what to change: a table under a distributed one that has no
+key column, a foreign key that leaves the key out, a lookup that should be a reference table, a
+foreign key with no index. Each finding has its fix, as SQL or as the command that does it. It runs
+nothing, and exits 1 when something must be fixed. Every `table` operation's plan carries the same
+check for the tables it touches.
 
 ### Let the router choose the keys
 
