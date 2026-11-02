@@ -671,7 +671,7 @@ The [design check](/stack/lepis/keys#the-design-check): every table's distributi
 unique keys and indexes, read from the schema, each finding with its fix (SQL to run, or the
 command that does it). It runs nothing and exits 1 when something must be fixed, so a CI job can
 gate on it. `table distribute` and `spread` take the key as `--distribution-key` (`--column`, its old
-name, still works). Both arrive with the next CLI release after 0.19.1.
+name, still works). Both arrived in 0.20.0.
 
 ### `mcp`
 

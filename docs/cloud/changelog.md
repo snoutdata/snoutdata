@@ -20,7 +20,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   every node, a foreign key or key with no index (with the `create index`). A finding that an
   operation fixes has a **Review** button. The plan of every table operation shows the same check
   for its tables before anything moves. In the CLI, `snoutdata cluster check` (and `cluster_check`
-  for agents) arrives with the next release, which also renames `--column` to `--distribution-key`
+  for agents) arrives in `snoutdata` 0.20.0, which also renames `--column` to `--distribution-key`
   (the old name keeps working). [Distribution keys](../stack/lepis/keys).
 
 ## 2026-10-31
