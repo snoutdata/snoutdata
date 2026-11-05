@@ -13,6 +13,10 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-11-05
 
+- **A dedicated project moves up a size when its data outgrows memory.** Data read back from disk soon
+  after leaving memory counts as pressure on the server, along with busy CPUs and low available memory.
+- **`snoutdata` names what it could not reach.** A network failure says the address and the reason, and
+  a read that fails on the network is tried again.
 - **`snoutdata upgrade` on a global npm install.** It recognises the install and upgrades it with npm.
 - **Settings, Permissions shows the page again.** It had been blank for every project since it
   shipped on 2026-11-04.
