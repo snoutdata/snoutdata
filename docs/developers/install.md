@@ -45,7 +45,8 @@ curl -fsSL https://snoutdata.com/install.sh | SNOUTDATA_INSTALL_DIR=/usr/local/b
 
 To **update**, run the same line again: it overwrites the binary in place. To **uninstall**,
 delete the file. There is nothing else on the machine except `~/.snoutdata/auth.json`, which is
-your session, and `snoutdata logout` removes that.
+your session (and an `auth.NAME.json` beside it for each [profile](/developers/cli#profiles)), and
+`snoutdata logout --all` removes them.
 
 ### Windows
 

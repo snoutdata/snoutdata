@@ -93,8 +93,21 @@ the database shrinks or the plan changes. The decision is made when a size measu
 and the host samples every fifteen minutes, so there is a short window where the plan says one
 thing and the database is still doing the other.
 
-`snoutdata usage` warns at 80% and says plainly what happens at 100%. `snoutdata db url` prints a
+The owner is emailed when the database reaches 70%, 85% and 95% of its limit, and when it goes
+read-only; the same alert shows on the dashboard and in `snoutdata cluster alerts`. `snoutdata usage`
+warns from 80%, says plainly what happens at 100%, and gives the growth over the last week with the
+day the limit is reached at that rate. `snoutdata db url` prints a
 warning to stderr, and `projects list` shows `read-only` instead of `ready`.
+
+## Getting more storage
+
+- **Move to a bigger plan.** Plus holds 5 GB a project, Pro 10 GB and Business 20 GB.
+- **Run it on dedicated servers.** A dedicated project's limit comes from its servers, not its
+  plan: it may hold what their disks have room for, less the space kept for the system and for the
+  database's write-ahead log. A Small server holds about 13 GB, a Medium about 26 GB and a Large
+  about 42 GB. We can give your account larger disks; ask us. `snoutdata usage` and the dashboard
+  show the limit that applies to each project.
+- **Need more than that?** Contact us.
 
 ## Pausing and waking
 
@@ -186,9 +199,11 @@ machine, that is [SnoutData Studio](../getting-started/install), where they neve
 
 Named here so you do not go looking:
 
-- **`snoutdata sql`**, a statement runner in the CLI. Deliberately absent until it goes through
-  the engine's guard.
 - **Branches, read replicas, larger compute sizes, and more regions.**
+- **Exporting metrics to Prometheus, OpenTelemetry or CloudWatch.** Usage, alerts and query
+  statistics are in the dashboard, in the CLI with `--json`, and in `pg_stat_statements`.
+- **Private connectivity (PrivateLink or VPC peering).** A project is reached over the internet at
+  `<ref>.db.snoutdata.com`, always over TLS, with its password or a database token.
 - **A domain of your own on a project.** Every project answers at `<ref>.db.snoutdata.com` and
   `<ref>.api.snoutdata.com`, and pointing your own name at one is built but has never issued a
   real certificate, so it is not offered.

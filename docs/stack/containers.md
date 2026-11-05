@@ -96,7 +96,7 @@ copied). A slimmer base (alpine, distroless, a `-slim` tag) usually fixes one th
 | | |
 | --- | --- |
 | `PORT` | The port to listen on. `8080` unless you deploy with `--port`. |
-| `DATABASE_URL` | Your project's database, as its owner, over TLS. |
+| `DATABASE_URL` | Your project's database, as its owner, inside the machine your container runs on. |
 | `SNOUTDATA_URL`, `SNOUTDATA_APP_KEY`, `SNOUTDATA_SERVER_KEY` | Your project's API address and its two keys. |
 | Your secrets | Everything set with `snoutdata secrets set`, the same environment your functions get. |
 
@@ -116,13 +116,17 @@ const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL, max: 5 })
 const { rows } = await pool.query('select id, body from messages where sent = false')
 ```
 
-It connects over TLS with `sslmode=require`, which every driver accepts. Node's `pg` 8 checks the
-server's certificate with it and prints a warning that its next major version will not; pass
-`ssl: { rejectUnauthorized: true }` beside the connection string to keep that check either way.
+It reaches your database at `198.18.54.32:5432` inside the machine your container runs on, never
+over the internet or through your project's public address, which is why it says
+`sslmode=disable`: the connection never leaves the machine, and the password is still checked. The
+same address is your own project's database in every one of your containers, and no other
+project's containers can reach yours through it. Your project's
+[IP allow-list](/cloud/security#choose-which-addresses-may-connect) does not apply to it.
 
 It connects as your project's **owner role**. Row-level security policies do not apply to a
 table's owner, so this connection reads and writes everything. That is right for a container you
-wrote yourself and trust with the whole project.
+wrote yourself and trust with the whole project. When the project's password is reset, the
+container starts again with the new `DATABASE_URL` by itself, while the old password still works.
 
 When the container should be able to do less (it runs code you did not write, or touches only a
 few tables), give it a role of its own and hand it that role's connection string instead:
@@ -134,11 +138,11 @@ grant select, insert, update on public.messages, public.wa_session to whatsapp_b
 ```
 
 ```bash
-snoutdata secrets set DATABASE_URL='postgresql://whatsapp_bot:<password>@<host>:<port>/<database>?sslmode=require'
+snoutdata secrets set DATABASE_URL='postgresql://whatsapp_bot:<password>@198.18.54.32:5432/<database>?sslmode=disable'
 ```
 
-Take the host, port and database from your project's own connection string (`snoutdata db url`).
-Your secret replaces ours, and the container restarts with it. That role sees only what you
+The database is your project's ref, as in your project's own connection string (`snoutdata db
+url`). Your secret replaces ours, and the container restarts with it. That role sees only what you
 granted, and your row-level security policies apply to it.
 
 **Keep the pool small.** A container's connections count against your project's connections (100

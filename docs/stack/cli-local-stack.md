@@ -123,7 +123,7 @@ function callable with no key, for a webhook's receiver.
 
 | Works against the local stack | About SnoutData Cloud only |
 | --- | --- |
-| `db url`, `db psql`, `db push` | `projects create/pause/resume/delete`, `usage` |
+| `db url`, `db psql`, `db query`, `db run`, `db slow`, `db push` | `projects create/pause/resume/delete`, `usage` |
 | `gen types typescript` | `domains`, `products`, `auth` |
 | `keys` | `db export`, `db restore`, `db reset-password`, `db access` |
 | `status`, `start`, `stop`, `projects show` | `keys rotate`, `tokens`, `teams` |

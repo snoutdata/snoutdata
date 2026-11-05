@@ -36,13 +36,21 @@ The key may not be `NULL`.
 ## The rules a distributed table follows
 
 - **A primary key or unique constraint must include the distribution key.** Each node can only check
-  its own rows. `primary key (account_id, order_id)`, not `primary key (order_id)`.
+  its own rows. `primary key (account_id, order_id)`, not `primary key (order_id)`. A table that
+  breaks this is refused when you distribute it, so a constraint never silently stops holding; the
+  same goes for an `ON CONFLICT` target, which is one of those constraints.
 - **A foreign key may point at a colocated table** (on the key) **or a reference table**, never at a
   table that lives on another node.
 - **Generate ids with `uuidv7()` or a sequence striped by node**, never a plain `serial` or
   `identity`: sequences are per node, so two nodes would hand out the same values.
 - **Small tables that distributed tables join to should be reference tables**, copied to every node.
   A join with a reference table is always local. A write to one is made on every node at once.
+
+## Partitioned tables
+
+A partitioned table works as on any Postgres while it stays on the home node. Spreading one is not
+supported yet: `cluster table auto` leaves it on the home node, and a spread table cannot take new
+partitions. See [designing a high-write table](high-write-tables) for choosing between the two.
 
 ## Where a statement runs
 

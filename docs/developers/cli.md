@@ -59,10 +59,23 @@ the refusal is never the first you hear of it.
 **A token**, in this order:
 
 1. `SNOUTDATA_ACCESS_TOKEN`
-2. `~/.snoutdata/auth.json`, written by `snoutdata login`
+2. the profile's session: `~/.snoutdata/auth.json`, written by `snoutdata login`, or
+   `~/.snoutdata/auth.NAME.json` for a [profile](#profiles)
 
 The environment wins deliberately, so a script does not behave differently depending on who is
 logged in on the machine running it.
+
+**A profile**, in this order:
+
+1. `--profile`
+2. `SNOUTDATA_PROFILE`
+3. the `profile` in the folder's `.snoutdata/project.json`, which `link` and `init` record
+4. the profile `snoutdata profile use NAME` chose for this machine (kept in `~/.snoutdata/profile`)
+5. the default profile
+
+`snoutdata profile` says which profile a command here would use, and why. `snoutdata profile use
+NAME` makes a signed-in profile the machine's default, so no command needs `--profile`;
+`snoutdata profile use default` goes back.
 
 **A project**, in this order:
 
@@ -82,6 +95,7 @@ environment, never on a command line.
 | `--json` | JSON on stdout, nothing else. |
 | `--quiet` | Drop the progress lines on stderr. Errors still print. |
 | `--timeout SECONDS` | How long anything that waits will wait. |
+| `--profile NAME` | Run as that [profile](#profiles)'s sign-in. |
 | `--help` | Print the usage summary. After a command (`snoutdata init --help`), that command's flags, one line each. |
 | `--version` | Print the version. |
 
@@ -111,17 +125,21 @@ two `DATABASE_URL`s.
 ### `login`, `logout`, `whoami`
 
 ```
-snoutdata login [--email you@example.com] [--provider github] [--device] [--no-browser]
-snoutdata logout
-snoutdata whoami
+snoutdata login [--email you@example.com] [--provider github] [--device] [--no-browser] [--profile NAME]
+snoutdata logout [--all]
+snoutdata whoami [--all]
 snoutdata upgrade [--check]
 ```
 
-`login` opens a browser and completes a PKCE flow against a loopback callback. The provider
-defaults to `google`. The session it writes renews itself as it is used, so it does not run out
-after an hour; `logout` ends it. CI, which has no browser, wants `tokens create` instead.
+`login` opens a sign-in page in your browser, served by the CLI on `127.0.0.1`, with the same three
+ways in as the dashboard: Google, GitHub, and your work email, which goes to your company's identity
+provider when it has one and otherwise sends a six-digit code to that address. Whichever you pick
+completes a PKCE flow back to the CLI, and the page then says whose account you signed in as.
+`--provider google` or `--provider github` skips the page and goes straight to that provider. The
+session it writes renews itself as it is used, so it does not run out after an hour; `logout` ends it.
+CI, which has no browser, wants `tokens create` instead.
 
-`--email` names the account to sign in as. Google offers that account in its chooser, `--sso`
+`--email` names the account to sign in as. The sign-in page fills it in, Google offers it in its chooser, `--sso`
 takes the company domain from it, and whichever way you sign in, a different account coming back
 is reported at once. `whoami` keeps reporting it (and `--json` carries `expectedEmail` and
 `matchesExpected`) until you sign in as the account you asked for.
@@ -135,7 +153,28 @@ not a terminal, or `--json`, or `CI`, or `SNOUTDATA_NO_INTERACTIVE`) nothing is 
 3 at once.
 
 `whoami` says who the credential belongs to and which door it came in by, a session or an access
-token.
+token, and which profile it is when that is not the default. `whoami --all` lists every profile
+signed in on this machine and whose each one is, from the stored files, without calling out.
+`logout` signs out the profile in use; `logout --all` signs out all of them.
+
+#### Profiles
+
+One machine can stay signed in to more than one account, a profile each:
+
+```
+snoutdata login                                  # the default profile
+snoutdata login --profile acme --email you@acme.com
+snoutdata projects list --profile acme
+snoutdata whoami --all
+```
+
+Any command takes `--profile NAME`, and `SNOUTDATA_PROFILE=NAME` sets it for a whole shell. Linking a
+folder with a profile (`snoutdata link --ref REF --profile acme`, or `init --profile acme`) records it
+in `.snoutdata/project.json`, so every later command in that folder runs as that account without
+being told. `--profile` still overrides it for one command. A name is letters, digits, `-` and `_`.
+
+Each profile keeps its own session and renews it in its own file. `SNOUTDATA_ACCESS_TOKEN` still wins
+over every profile.
 
 `upgrade` installs the newest CLI the way this one was installed. A binary from the installer
 downloads the release for this platform, checks it against the release's SHA-256 sums (and refuses
@@ -222,7 +261,7 @@ on or off restarts the database once. A switch asks for the change and the host
 makes it within about a minute, so `products` may show `waiting for the host` for a moment. The
 data API is on every plan, including free. Realtime
 needs no switch: it is on for every project from the start, and `products` and `projects show`
-list it as on (signals and the roster on every plan, table changes on Plus and Pro).
+list it as on (signals and the roster on every plan, table changes on Plus, Pro and Business).
 
 ### `push credentials`
 
@@ -343,6 +382,27 @@ a person in with no email or password, `snout_identity.user_id()` works in your 
 `is_anonymous`. `snoutdata auth` shows whether it is on (`guests`). Changing it restarts the
 project's auth service, which takes about a minute. See [guest sign-in](/stack/auth#guest-sign-in).
 
+### `alerts hooks`
+
+```
+snoutdata alerts hooks [list] [--ref REF]
+snoutdata alerts hooks add <url> [--slack] [--ref REF]
+snoutdata alerts hooks remove <id> [--ref REF]
+snoutdata alerts hooks test <id> [--ref REF]
+```
+
+Where the project's alerts go besides the owner's email: up to five destinations, each a Slack
+incoming webhook (`--slack`, or any `https://hooks.slack.com/services/...` URL) or your own `https://`
+webhook. Every alert the owner is mailed about is sent to each destination once. Lists show each URL
+masked, since a Slack URL is itself a credential.
+
+A webhook gets a JSON POST, `{ "type": "alert", "project": { "ref", "name" }, "alert": { "id",
+"kind", "severity", "message", "resolution", "openedAt", "resolvedAt" }, "link" }`, with the header
+`X-SnoutData-Signature: t=<unix seconds>,v1=<hex>`, where the hex is the HMAC-SHA256 of
+`<t>.<body>` under the secret `add` prints once. Check it, and refuse a `t` more than a few minutes
+old. Redirects are not followed, and a destination that does not answer within five seconds is
+recorded as failed; `list` shows each one's last send.
+
 ### `domains`
 
 ```
@@ -375,6 +435,8 @@ snoutdata link --local [NAME | REF | FOLDER]
 ```
 
 Writes `.snoutdata/project.json` in the current folder, so later commands here need no `--ref`.
+Linked with a [profile](#profiles) (`--profile NAME`), it records that too, and later commands here
+sign in as it.
 
 `--local` links a project running on this machine in the [self-hosted stack](/stack/self-hosting): one
 you set up in Studio (Projects, Local), named by its name or ref, or any stack folder you made by
@@ -382,7 +444,8 @@ hand, named by its path. With no name it takes the folder you are in when that i
 Studio's only local project. The link records the folder; the keys and the database password are
 read from that folder's `.env` on every command and never copied, and no sign-in is needed.
 
-Once linked, these commands act on the local project: `db url`, `db psql`, `db push`,
+Once linked, these commands act on the local project: `db url`, `db psql`, `db query`, `db run`,
+`db slow`, `db push`,
 `gen types typescript`, `keys`, `projects show`, `start`, `stop`, `status` (the stack's containers,
 with `docker compose`), `functions deploy/list/delete` (a folder in the stack's `functions/`) and
 `secrets set/list/unset` (the stack's `functions/.env`). The rest are about SnoutData Cloud and say so.
@@ -412,17 +475,98 @@ Needs `psql` on the machine. If it is missing, the error says so and points at `
 
 This is also how the CLI manages scheduled jobs, which are SQL:
 `snoutdata db psql -- -c "select jobid, jobname, schedule, active from cron.job"`. See
-[Extensions and cron jobs](/stack/extensions).
+[Extensions and cron jobs](/stack/extensions). Without `psql`, [`db query`](#db-query) runs the
+same statement.
+
+### `db query`
+
+```
+snoutdata db query "SQL" [--ref REF]
+```
+
+Runs SQL against the project and prints what it returns as a table on stdout, with nothing
+installed: the CLI connects to the database itself, as `db push` does, and verifies its certificate
+the same way. The command tag of a statement that returns no rows (`CREATE TABLE`, `UPDATE 3`) and
+any notices go to stderr. `--json` gives every statement's columns, rows (as text) and command tag.
+
+```
+snoutdata db query "select id, email from people order by id limit 2"
+id  email
+--  -----------------
+1   ada@example.com
+2   grace@example.com
+(2 rows)
+```
+
+Several statements separated by `;` run in **one transaction**: the first that fails rolls all of
+them back, and the error says which statement it was. A single statement runs on its own, so
+`vacuum` and `create index concurrently` work. Quote the SQL, so the shell leaves `*` alone.
+
+### `db run`
+
+```
+snoutdata db run FILE.sql [--ref REF]
+```
+
+Runs a `.sql` file in **one transaction**, with nothing installed. The file is cut into statements
+where `psql` would cut it and sent one at a time; if one fails, the transaction is rolled back,
+nothing in the database has changed, and the error names the statement, its line in the file and
+what Postgres said. Result sets print as tables, as `db query` prints them. This is the command for
+DDL and checks that are not migrations; for migrations that run once each, use
+[`db push`](#db-push).
+
+- A file that is its own transaction (`BEGIN` first, `COMMIT` last) runs as written.
+- `-- snoutdata:no-transaction` on a line of its own runs each statement as written, outside a
+  transaction, so a failure leaves the statements before it in place. That is what
+  `create index concurrently` next to other statements needs.
+- Refused before anything runs: a `COMMIT` or `ROLLBACK` part way through the file, which would
+  keep what ran before it if a later statement failed, and a psql command (`\i`, `\set`,
+  `\copy`), which only psql runs.
+
+### `db slow`
+
+```
+snoutdata db slow [--limit N] [--ref REF]
+```
+
+The statements that took the most time in all, from `pg_stat_statements`: total time, mean time,
+calls, rows, each one's share of all the time spent, the role that ran it, and the statement
+shortened to one line (`--json` has the whole text). `--limit` defaults to 10. Postgres records
+statements with their values taken out, so no literal is in the list. The extension is loaded on
+every SnoutData database; if it has not been created yet, the command says so and gives the one
+statement that switches it on.
 
 ### `db reset-password`
 
 ```
-snoutdata db reset-password [--ref REF]
+snoutdata db reset-password [--grace MINUTES] [--ref REF]
 ```
 
-Prints a new password for the project's role. It applies within a few seconds, without restarting
-the database: connections already open keep working, and the next one needs the new password. The
+Prints a new password. It applies within a few seconds, without restarting the database, and the
 command says so rather than implying the change is instant.
+
+Each project has two owner logins, `<ref>_owner` and `<ref>_owner_b`, that take turns: the new
+password goes on the one not in use, so **the user name changes with the password** and the old
+password keeps working while your services pick up the new URL. Both logins act as the project's
+owner: what they create belongs to `<ref>_owner`, and `current_user` is `<ref>_owner` either way.
+A project keeps `<ref>_owner` until its first reset.
+
+`--grace` is how many minutes the old password keeps working: 60 when you leave it out, anything
+from 0 to 1440 (24 hours). After the grace, new connections with the old password are refused;
+connections already open keep working. `--grace 0` stops the old password as soon as the change
+applies and ends the connections that signed in with it: use it when a password has leaked.
+
+```bash
+snoutdata db reset-password                # the old password works for another hour
+snoutdata db reset-password --grace 0      # leaked: stop the old one now
+snoutdata db reset-password --grace 1440   # a day for every service to re-read its secret
+```
+
+With `--json` the answer has `user`, `password` and `uri` for the new login, `previousUser`,
+`graceMinutes` and `oldPasswordUntil` (when the old password stops, in UTC). Snout Containers start
+again on the new URL by themselves. The project's owner, and on a team project everybody with Full
+access, get an email saying when the password was reset, by whom, and until when the old one works
+(the email never contains the password).
 
 ### `db access`
 
@@ -442,6 +586,25 @@ level: it reads the project's own tables, including rows row-level security woul
 nothing, and never the `auth`, `storage` or internal schemas. `revoke` says, every time and under
 `--quiet` too, that a token already issued can keep working for up to an hour while the database
 still has the role.
+
+### `db allow`
+
+```
+snoutdata db allow [list] [--ref REF]
+snoutdata db allow add CIDR [--note TEXT] [--ref REF]
+snoutdata db allow remove CIDR [--ref REF]
+snoutdata db allow clear [--ref REF]
+```
+
+The project's IP allow-list: the addresses that may connect to its database (see
+[Choose which addresses may connect](/cloud/security#choose-which-addresses-may-connect)). An empty
+list lets every address connect. `add` takes an IPv4 or IPv6 address or a range such as
+`203.0.113.0/24`, up to 50 entries; adding one that is already listed changes its note. `list`
+prints the entries and your own address as we saw it. Every command warns on stderr, under
+`--quiet` too, when the list leaves out the address you are calling from, because the database
+would then refuse connections from that machine. With `--json`, the answer carries `entries`,
+`yourAddress` and `yourAddressListed`. Reading needs the project's infrastructure settings;
+changing needs Full access or the owner.
 
 ### `db export`
 
@@ -537,20 +700,70 @@ Needs `psql`, and `pg_restore` as well for an archive.
 
 ```
 snoutdata usage [--ref REF] [--days N] [--history]
+snoutdata usage --tables [--limit N] [--ref REF]
 ```
 
 Size, compute and connections against the plan's limit. `--days` defaults to 30 and is capped at
 365. `--history` prints the day-by-day table underneath.
 
+`--tables` adds the largest tables, read from the database itself (no `psql` needed): each one's
+total size with its indexes and TOAST, its indexes alone, and its rows as Postgres estimates them
+from the last `ANALYZE`. A partitioned table is one line, its partitions summed into it.
+`--limit` defaults to 20.
+
 ```
 first light (x8x3sb2hcx4xn)
 7.7 MB of 8.0 GB on plus (0%).
+Growing about 120 kB a day over the last 7 days: full around 2028-03-02 at that rate.
 Over 2 days: 1d 6h of compute, 2 connections.
 ```
+
+**Growth** is the latest size against the earliest one in the week before it, divided by the days
+between them (fewer than seven for a younger project), and "full around" draws a straight line from
+today at that rate. From 80% of the limit, `usage` also links to
+[what happens at the limit](/cloud/limits#storage-over-the-limit-means-read-only).
+
+**Compute** is the time the database was running, by the wall clock, not CPU time: a project that
+was awake all day has 24 hours, and a paused one has none. **Connections** counts every connection
+opened to the database over the window, each time one was opened, not the most open at once.
 
 **A dash in the size column is a day nothing measured it**, which is what a paused project looks
 like. It is not zero, and the current size is the most recent day that has a reading. Compute and
 connections are summed, because there a missing day really did have none.
+
+### `metrics`
+
+```
+snoutdata metrics [--ref REF | --project REF] [--node REF] [--window hour|day|week] [--json]
+```
+
+How hard each of the project's servers is working: the project's own, every cluster node and every
+replica. For each, every figure's latest minute (NOW) and its minimum, mean and maximum over the
+window, taken from every minute in it. `--window` defaults to `hour`. `--node` narrows it to one
+server (a node's or replica's ref, or the project's own ref for its own server). `--project` is the
+same as `--ref`, spelled as the `cluster` commands spell it.
+
+```
+Over the last hour. NOW is the latest minute; MIN, AVG and MAX are over every minute in the window.
+
+Home (x8x3sb2hcx4xn)  last reading 40s ago, CPU limit 2 cores, memory limit 4.0 GB, 100 connections allowed
+FIGURE               NOW      MIN      AVG      MAX
+CPU                  6.2%     1.1%     4.8%     38%
+Memory               1.2 GB   1.1 GB   1.2 GB   1.3 GB
+Disk read            0 B/s    0 B/s    12 KB/s  2.1 MB/s
+Disk write           96 KB/s  40 KB/s  88 KB/s  1.6 MB/s
+Connections          7        5        6        12
+Commits              21.5/s   3.1/s    18.2/s   140/s
+Rollbacks            0/s      0/s      0.02/s   0.4/s
+Statements           108/s    15/s     91/s     702/s
+Mean statement time  0.41 ms  0.22 ms  0.39 ms  3.1 ms
+```
+
+A figure never read in the window is left out, never printed as zero. `--json` returns the same
+figures (`nodes[].figures`, keyed `cpuPercent`, `memoryBytes`, `diskReadBps`, `connections`,
+`commitsPerSec`, `meanStatementMs`, `replicaLagSeconds`, `keeperLagSeconds` and the rest) and the
+series the dashboard charts (`nodes[].points`). What each figure means:
+[Metrics](/cloud/metrics).
 
 ### `start`, `stop`, `status`
 
@@ -687,8 +900,9 @@ databases on your desk; `SNOUTDATA_NO_DESKTOP` opts out. See [for an agent](/dev
 
 | Variable | Does |
 | --- | --- |
-| `SNOUTDATA_ACCESS_TOKEN` | The credential to use. Wins over `~/.snoutdata/auth.json`. |
+| `SNOUTDATA_ACCESS_TOKEN` | The credential to use. Wins over every profile's stored session. |
 | `SNOUTDATA_PROJECT` | The project ref to act on, when there is no `--ref`. |
+| `SNOUTDATA_PROFILE` | The [profile](#profiles) to sign in as, when there is no `--profile`. |
 | `SNOUTDATA_NO_INTERACTIVE` | Never offer sign-in. Fail with exit 3 instead. |
 | `SNOUTDATA_NO_DESKTOP` | Do not look for SnoutData Studio, for sign-in or for `mcp` tools. |
 | `NO_COLOR` | Turn off the bold and dim escape codes. Colour is off anyway when stdout is not a terminal. |

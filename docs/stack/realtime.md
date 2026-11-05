@@ -336,7 +336,7 @@ frame), and treat a `Too many messages per second` closure as the signal to slow
 the roster cost a socket on a server we already run, while a table subscription consumes a
 replication slot and a walsender inside your own database, for as long as it is open. On a free
 project the channel's join callback gets `CHANNEL_ERROR` with "Table changes
-(postgres_changes) are part of the Plus and Pro plans, and this project is not on one of them.
+(postgres_changes) are part of every paid plan (Plus, Pro and Business), and this project is on the free plan.
 Broadcast and presence work on every plan.", which is the plan and not a fault; signals and the roster on the same
 project work. Private channels and signals from the database read your database too, so they come with
 it. Downgrading takes effect the next time your project's tenant is registered, not instantly.

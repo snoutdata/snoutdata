@@ -42,7 +42,7 @@ part is open source.
 | Postgres 18, extensions, SnoutTime | yes | yes |
 | Data API, auth, storage, realtime, functions, push | yes | yes |
 | Socket.IO | yes | yes |
-| Containers | Plus and Pro ([containers](/stack/containers)) | an opt-in profile, on a machine with gVisor |
+| Containers | Plus, Pro and Business ([containers](/stack/containers)) | an opt-in profile, on a machine with gVisor |
 | Clusters (Lepis) | yes ([clusters in Cloud](/stack/lepis/cloud)) | the router in front of your own Postgres ([run it yourself](/stack/lepis/self-hosting)) |
 | AI Gateway (Psyche) | yes, switched on per project ([AI gateway](/stack/psyche)) | the `ai` profile |
 | Continuous backups, point-in-time restore, every write in another zone on Pro | yes ([durability](/cloud/durability)) | your own (`pg_dump`, volume backups) |

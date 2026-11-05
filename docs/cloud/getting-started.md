@@ -89,6 +89,28 @@ export DATABASE_URL="$(snoutdata db url)"
 If the project is paused, connecting to it wakes it. The client waits while that happens. See
 [what pauses, and what it costs](limits#pausing-and-waking).
 
+No `psql` on the machine? `snoutdata db query "select 1"` runs a statement and `snoutdata db run
+file.sql` runs a file in one transaction, both through the CLI's own connection. See
+[the CLI reference](/developers/cli).
+
+### Checking the certificate
+
+`<ref>.db.snoutdata.com` presents a certificate from **Let's Encrypt**, a public authority every
+operating system and language runtime already trusts. So `sslmode=verify-full` works with the
+system's roots, and there is no bundle of ours to download or pin. A team that pins a cloud
+provider's own database bundle (an RDS bundle, for example) replaces it with the system roots for
+SnoutData.
+
+- **Node (`pg`):** `ssl: { rejectUnauthorized: true }` verifies against Node's roots.
+- **psql and other libpq clients, version 16 or later:** add `sslrootcert=system` to the URL with
+  `sslmode=verify-full`. An older libpq reads its roots only from `~/.postgresql/root.crt`, so point
+  `sslrootcert` at your system's bundle file instead.
+
+The URL `db url` prints carries `sslmode=require`, which every driver accepts; tighten it as above.
+The CLI's own connections (`db psql`, `db query`, `db run`, `db push`) always verify the
+certificate: they write Node's roots to `~/.snoutdata/ca-roots.pem` and hand that file to libpq,
+which is all that file is for.
+
 ## Look at what you have
 
 ```bash

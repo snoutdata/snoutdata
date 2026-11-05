@@ -65,7 +65,9 @@ In `--json` mode a failure is one object on stdout: `{"ok":false,"code":"...","e
 ### Where the credential comes from
 
 1. `SNOUTDATA_ACCESS_TOKEN`
-2. `~/.snoutdata/auth.json`, written by `snoutdata login`
+2. the profile's session: `~/.snoutdata/auth.json`, written by `snoutdata login`, or
+   `~/.snoutdata/auth.NAME.json` for a profile. The profile comes from `--profile`, then
+   `SNOUTDATA_PROFILE`, then the folder's link, then the default ([profiles](/developers/cli#profiles))
 
 The environment wins deliberately. Two kinds of credential go in that variable:
 
@@ -94,9 +96,9 @@ A command that needs a project and cannot find one exits 2 saying so.
 | Command | Flags |
 | --- | --- |
 | `snoutdata init` | `--name NAME` `--region REGION` `--env` `--ref REF` |
-| `snoutdata login` | `--email ADDRESS` `--provider github` (default `google`) `--device` `--no-browser` |
-| `snoutdata logout` | |
-| `snoutdata whoami` | |
+| `snoutdata login` | `--email ADDRESS` `--provider google\|github` (default: a page with every way in) `--device` `--no-browser` `--profile NAME` |
+| `snoutdata logout` | `--all` |
+| `snoutdata whoami` | `--all` (every profile signed in here, from the stored files) |
 | `snoutdata upgrade` | `--check` |
 | `snoutdata tokens list` | |
 | `snoutdata tokens create` | `--name NAME` (required) `--expires DAYS` `--project REF` |
@@ -115,10 +117,14 @@ A command that needs a project and cannot find one exits 2 saying so.
 | `snoutdata domains` | `--ref REF`; `add\|verify\|remove HOSTNAME` |
 | `snoutdata teams` | |
 | `snoutdata link` | `--ref REF` (required) |
-| `snoutdata usage` | `--ref REF` `--days N` (default 30, max 365) `--history` |
+| `snoutdata usage` | `--ref REF` `--days N` (default 30, max 365) `--history` `--tables` `--limit N` (default 20) |
+| `snoutdata metrics` | `--ref REF` (or `--project REF`) `--node REF` `--window hour\|day\|week` (default `hour`) |
 | `snoutdata db url` | `--ref REF` |
 | `snoutdata db psql` | `--ref REF` `-- PSQL ARGS...` |
-| `snoutdata db reset-password` | `--ref REF` |
+| `snoutdata db query "SQL"` | `--ref REF`. No psql needed; several statements run in one transaction |
+| `snoutdata db run FILE.sql` | `--ref REF`. No psql needed; one transaction, rolled back at the first error |
+| `snoutdata db slow` | `--limit N` (default 10) `--ref REF` |
+| `snoutdata db reset-password` | `--grace MINUTES` (default 60, 0 to 1440; 0 stops the old password now) `--ref REF`. The user name changes with the password |
 | `snoutdata db access` | `--ref REF` |
 | `snoutdata db access grant EMAIL` | `--level full\|read` (default `read`) `--ref REF` |
 | `snoutdata db access revoke EMAIL\|ROLE` | `--ref REF` |
@@ -390,7 +396,7 @@ turns that off.
 | `usage` | `ref` (required), `days` | Storage and compute against the plan's limit. **Read it before a migration or a bulk insert**: a project that goes over is made read-only. |
 | `export_status` | `ref` (required) | Whether a copy is being taken, and a download link if there is a live one. Starts nothing. |
 | `start_export` | `ref` (required) | Starts a `pg_dump` and returns. Poll `export_status` for the link. |
-| `reset_password` | `ref` (required) | Rotates the database password and returns the new URL. **The old one stops working, usually within fifteen seconds** (longer while the host is busy), including any `DATABASE_URL` already written down; connect with the new one after about fifteen seconds, retrying a refusal for up to two minutes. |
+| `reset_password` | `ref` (required), `graceMinutes` (default 60, 0 to 1440) | Rotates the database password and returns the new URL, whose **user name changes too** (the project's two owner logins take turns). The old password keeps working for `graceMinutes`, then new connections with it are refused; `0` stops it as soon as the change applies and ends its connections, for a leaked password. Connect with the new URL after about fifteen seconds, retrying a refusal for up to two minutes. |
 | `list_teams` | | The teams this account is in, with the id `create_project` takes. |
 | `list_tokens` | | The `sdt_` access tokens: names, prefixes, when each was used. Never the token. |
 | `create_token` | `name` (required), `expires`, `project` | Mints an access token, limited to one project when `project` is a ref. **Returns it once and never again.** |
@@ -453,7 +459,7 @@ An agent that wants to query calls `get_connection_url` and uses a real Postgres
 | A free project cannot be marked production | A free project pauses after a week idle; Plus, Pro and Business never pause | Tell the user |
 | Writes are refused, reads work | Over the plan's storage limit, so the database is read-only | Shrink it, or tell the user to change plan |
 | Connecting takes a few seconds | The project was paused and the connection is waking it | Wait. It is not an error |
-| `psql is not installed` (exit 127) | `db psql` and `db restore` need it (`db push` does not) | Use `db url` and a client you have |
+| `psql is not installed` (exit 127) | `db psql` and `db restore` need it (`db push`, `db query`, `db run` and `db slow` do not) | Run SQL with `db query` or `db run`, or use `db url` and a client you have |
 
 ## What does not exist
 

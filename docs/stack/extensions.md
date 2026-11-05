@@ -2,7 +2,7 @@
 id: extensions
 title: Extensions, scheduled jobs and HTTP from SQL
 sidebar_label: Extensions and cron jobs
-description: Postgres extensions on a SnoutData Cloud project, scheduled SQL jobs with pg_cron (from the dashboard, SQL or the CLI), and outbound HTTP requests from SQL with pg_net.
+description: Postgres extensions on a SnoutData Cloud project, scheduled SQL jobs with pg_cron (from the dashboard, SQL or the CLI), outbound HTTP requests from SQL with pg_net, and the two schemas reserved for SnoutData (snout_ext and lepis).
 ---
 
 # Extensions, scheduled jobs and HTTP from SQL
@@ -48,6 +48,23 @@ Postgres's own rules, so it cannot create or drop them.
 turns tables into series tables partitioned by time, seals old partitions into a compressed column
 store, and keeps rollups current. It runs its own background worker, so it needs no pg_cron job.
 It has its own section: start at [Time series with SnoutTime](/stack/snouttime/overview).
+
+## Reserved schemas
+
+Two schemas in a project's database belong to SnoutData. Do not create, change or drop anything in
+them, and leave them out of your migrations and schema diffs.
+
+| Schema | What it holds |
+| --- | --- |
+| `snout_ext` | The query statistics (`pg_stat_statements` and `pg_stat_statements_info`) and a few functions the database runs for itself. It is on the database's search path, so `select * from pg_stat_statements` works without the schema name. Your roles can read it and cannot create anything in it. |
+| `lepis` | A [cluster](/stack/lepis/cloud)'s catalog: its nodes, which tables are spread and how, and the router's job log. Only on a project that is a cluster, on its home node. Your roles have no access to it; the Cluster tab and `snoutdata cluster` show what it holds. |
+
+The dashboard, Studio and the CLI leave both out of their lists of tables and schemas. A tool that
+lists every schema in the database shows their names, so if your ORM or schema diff tool asks which
+schemas to read, name yours (most read only `public` unless told otherwise).
+
+pgvector's `vector` type and its functions are in `public`, so a column defined as `vector(1536)`
+needs no schema name.
 
 ## Scheduled jobs (pg_cron)
 

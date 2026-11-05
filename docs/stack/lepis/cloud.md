@@ -116,7 +116,8 @@ are confirmed. Backups, retention and restore testing are per node, as on
 
 What happens to a cluster that you must know about is an **alert**: a node lost or damaged, a
 failover done or one that could not run, a node running without its replica, the home node down. It
-stays open until it is over, on the project's Cluster tab and its card, by email to the owner, and in
+stays open until it is over, on the project's Cluster tab and its card, by email to the owner, to any
+Slack channel or webhook set under Settings, Alert destinations (or `snoutdata alerts hooks`), and in
 the CLI:
 
 ```sh
@@ -124,7 +125,26 @@ snoutdata cluster alerts --project <ref>
 snoutdata cluster alerts seen <id> --project <ref>
 ```
 
-Every automatic step, alert or not, is in the tab's activity list.
+Each alert says when it started and, once it is over, when it ended and how long it lasted (in
+UTC in the CLI); one still open says how long it has been going. A copy that fell behind and caught
+up again is mailed too when it lasted 30 seconds or more, with when it started and ended. Every automatic step, alert or not,
+is in the tab's activity list.
+
+## Each node's load
+
+Every node and every replica has its own [metrics](/cloud/metrics), read once a minute and kept for
+eight days: CPU and memory against the node's limits, disk reads and writes, connections,
+transactions per second, mean statement time, and how far its replica and its copy in another zone
+are behind. The project's **Metrics** page lists every node with its latest reading and charts the
+one you pick over the last hour, day or week. From a terminal:
+
+```sh
+snoutdata metrics --project <ref>                       # every node, the last hour
+snoutdata metrics --project <ref> --node <node-ref> --window week
+```
+
+Comparing nodes over a day is how to see whether the data and the traffic are spread evenly: a node
+whose CPU, disk or statement time stands well above the others holds more than its share.
 
 ## Pausing
 

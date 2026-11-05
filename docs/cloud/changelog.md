@@ -11,6 +11,144 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-11-05
+
+- **`snoutdata upgrade` on a global npm install.** It recognises the install and upgrades it with npm.
+- **Settings, Permissions shows the page again.** It had been blank for every project since it
+  shipped on 2026-11-04.
+- **Settings, Permissions picks a team from tiles.** "Shared with" lists Just me and each of your
+  teams as a choice, then Developer or Viewer for what the team starts with, and its button says
+  what it does: Share with, Move it to, or Stop sharing.
+- **A project's page tabs mark the current one with a single pill.**
+- **A password reset with a grace period.** A project has two owner logins, `<ref>_owner` and
+  `<ref>_owner_b`, that take turns: a reset puts the new password on the one not in use, so the
+  user name changes with the password, and the old password keeps working for a grace you choose. `snoutdata db reset-password --grace MINUTES` (default 60, up to 1440),
+  and a choice in the dashboard's and Studio's reset; 0 stops the old password at once and ends its
+  connections, for a leaked password. Both logins act as the owner, so what they create belongs to
+  `<ref>_owner`. The reset email says until when the old password works, and Snout Containers start
+  again on the new URL by themselves.
+- **Containers reach your database inside their machine.** A container's `DATABASE_URL` points at
+  `198.18.54.32:5432` with `sslmode=disable`, a way in that never leaves the machine the container
+  runs on and that only your own project's containers can use. Your
+  [IP allow-list](security#choose-which-addresses-may-connect) does not apply to it. A
+  `DATABASE_URL` secret of your own should point at the same address when the project has an
+  allow-list ([how](../stack/containers#the-database)).
+
+## 2026-11-04
+
+- **Alerts to Slack or your own webhook.** Settings, Alert destinations (or `snoutdata alerts hooks
+  add <url> [--slack]`) sends every alert the owner is mailed about to up to five Slack channels or
+  `https://` webhooks as well. A webhook's JSON is signed (`X-SnoutData-Signature`, HMAC-SHA256
+  under a secret shown once), and each destination shows its last send.
+- **Docs: [designing a high-write table](../stack/lepis/high-write-tables)**, for a table that
+  grows without stopping: keys, unique constraints and upserts on a cluster, lookup tables,
+  partitioning or spreading, indexes and storage. Tables and queries say how a partitioned table
+  behaves on a cluster, and Limits lists metrics export and private connectivity as not built.
+- **Storage on dedicated servers.** A dedicated project's storage limit now comes from its servers'
+  disks instead of its plan, and rises when the disks grow.
+- **Storage warnings by email.** The owner is emailed when a database reaches 70%, 85% and 95% of
+  its storage limit, and when it goes read-only, with the same alert on the dashboard and in
+  `snoutdata cluster alerts`. The limit shown by `usage` and the dashboard's storage card is the
+  project's own, also for a teammate on a lower plan.
+- **Durability warnings by email, with times.** A copy in a second zone (or a node's replica) that
+  fell behind is mailed to the owner, also when it caught up again within the minute, if it lasted
+  30 seconds or more. Every alert mail says when it started and ended.
+- **`snoutdata usage` says where the size is heading:** growth a day over the last week and, at that
+  rate, the day the plan's storage is full; from 80% it links to what happens at the limit. It also
+  says what its compute and connections figures count.
+- **`snoutdata cluster alerts` says when:** each alert's start and end in UTC and how long it lasted,
+  or how long one still open has been going.
+- **`snoutdata profile use NAME`** makes a signed-in profile this machine's default, so commands need
+  no `--profile`; `snoutdata profile` says which profile a command would use and why.
+- **`snoutdata --version`** says when a newer release is out, and to run `snoutdata upgrade`.
+- **`cluster spread --help`** says that every unique constraint, not only the primary key, must
+  include the distribution key, and that a spread is refused otherwise.
+- **Docs:** which authority signs the database's certificate (Let's Encrypt, so `verify-full` works
+  with the system's roots), and how psql and Node check it.
+- **Run SQL from the CLI with no `psql` installed.** `snoutdata db query "SQL"` runs a statement and
+  prints its rows as a table, and `snoutdata db run file.sql` runs a whole file in one transaction:
+  if a statement fails, nothing is changed, and the error says which statement and which line.
+  Both connect to the database themselves, as `db push` does, and take `--json`.
+- **`snoutdata db slow`** lists the statements that took the most time in all, from
+  `pg_stat_statements`: total and mean time, calls, rows and each one's share.
+- **`snoutdata usage --tables`** lists the largest tables, with their indexes and an estimate of
+  their rows, a partitioned table counted once with all its partitions.
+- **A storage card on the project overview.** How much of the plan's storage the database uses,
+  how fast it grew over the last seven days, and the day it is full at that rate, with a link to
+  [what happens at the limit](./limits#storage-over-the-limit-means-read-only). Ask for the largest
+  tables and it lists them with their indexes, a partitioned table counted once with all of its
+  partitions.
+- **Partitions fold under their table.** The table browser lists a partitioned table once, with
+  its partitions under it, closed until you open them, each labelled as a partition with its range.
+- **Cluster alerts say when.** Each alert on the Cluster page shows when it started, when it ended
+  or that it is still going on, and how long it lasted.
+- **Reserved schemas, kept out of your lists.** `snout_ext` (the query statistics) and `lepis` (a
+  cluster's catalog) belong to SnoutData. The dashboard's table browser, API reference and
+  assistant leave them out, the project's roles hold nothing in `lepis`, and
+  [Extensions](../stack/extensions#reserved-schemas) says what each one is.
+- **An email when the database password is reset.** Whether from `snoutdata db reset-password`,
+  the dashboard or Studio, the project's owner, and on a team project everyone with Full access,
+  get an email saying when the password was reset and by whom. The email never contains the
+  password.
+- **Plan names.** Realtime table changes, containers, your own domain and never pausing are on Plus,
+  Pro and Business, and `projects show`, `products`, the dashboard, Studio and the error messages
+  say so.
+- **IP allow-list.** Choose which addresses may connect to a project's database: IPv4 and IPv6
+  addresses and ranges, up to 50, each with a note, in Settings, Database access, or with
+  `snoutdata db allow add|remove|clear`. Anyone else is turned away before they can try the
+  password. An empty list, which every project starts with, lets every address in. The dashboard
+  shows your own address, and the CLI warns when the list leaves it out.
+- **Metrics for every server.** A project's new **Metrics** page (under Stack) shows how hard each
+  of its servers is working, a minute at a time, for the last hour, day or week: CPU and memory
+  against the server's limits, disk reads and writes, connections against the number allowed,
+  commits and rollbacks per second, mean statement time, and how far a replica and the copy in
+  another zone are behind. A cluster lists every node and replica. From a terminal,
+  `snoutdata metrics` prints each figure now and its minimum, mean and maximum over the window.
+  Eight days are kept. [Metrics](metrics).
+- **Permissions for team projects.** Settings, Permissions shows which team a project is shared
+  with, and you can change it after the project is made. Everyone on the team has a team default
+  (Developer, Viewer, or chosen area by area: Database, Auth, Storage, Functions, Realtime and push,
+  AI, Logs, Infrastructure), and anyone can be given access of their own, up to Full access.
+  Teammates on an existing team project keep what they could already do.
+- **Sign in to the database as yourself from any tool.** Log in as `snout_token` with a database
+  token as the password; `snoutdata db token` prints one. Below Full access this is how a teammate
+  reaches the database, the SQL editor included, and their Database permission decides what they
+  can read and change.
+- **The stack map fits its card.** A project spread over two zones no longer scrolls sideways: the
+  map keeps room for a label only at the end of a zone where one goes.
+- **Search every log.** The audit log, team history, function logs, container logs, cron job runs
+  and Postgres statements each have a search box: type three characters or more and the search runs
+  on the server, across the whole history, a page at a time. A field you are typing in now shows
+  focus by its darker border alone.
+- **Every log pages.** A project's function logs, container logs, cron job runs and heaviest
+  Postgres statements show 10 at a time, newest first, with Previous, Next and a choice of 10, 25, 50
+  or 100 a page, like the audit log. Each page is read from the database on its own, so a long
+  history no longer loads all at once, and the cron and statement lists now reach past their old 25
+  and 50.
+- **Clearer project settings.** A project's **Maintenance window** card shows its hours large, the
+  next window in your time and the day as a 24-hour bar with the window on it, which redraws as you
+  pick new hours. The **Liby** card shows what the AI sees of the project, with the three choices as
+  tiles. The **Audit log** is one card with its search, filters and rows lined up.
+- **Dedicated servers.** A Business or Enterprise account can run its projects on servers of its own:
+  each dedicated project has two, in two zones, with its database on one and a copy on the other that
+  takes over if the first stops. The **New project** form chooses **Servers** (Shared or Dedicated), the
+  **Size** (Small, Medium or Large) and the size it **Grows up to**: under sustained load a project
+  moves up a size on its own, and back down when it is quiet, inside its maintenance window. The
+  **Dedicated servers** card sets the most servers the account runs. Ask us to turn them on for your
+  account.
+- **CLI profiles.** The `snoutdata` CLI stays signed in to more than one account, a profile each:
+  `snoutdata login --profile acme` keeps a second sign-in beside the first, and any command takes
+  `--profile acme` (or `SNOUTDATA_PROFILE=acme` for a whole shell) to run as it. A folder linked with a
+  profile (`link --ref REF --profile acme`) remembers it, so every command there runs as that account.
+  `whoami --all` lists the profiles signed in on the machine, and `logout --all` signs out of all of
+  them. Each profile renews its own session; `SNOUTDATA_ACCESS_TOKEN` still wins over every profile.
+  [Profiles](/developers/cli#profiles).
+- **A sign-in page for the CLI.** `snoutdata login` opens a page in the dashboard's design with every
+  way in: Google, GitHub, and your work email (your company's identity provider, or a code sent to the
+  address). It used to go straight to Google. When you are in, the page says which account and which
+  profile, and the command to type next. `--provider google` or `--provider github` still goes
+  straight to one.
+
 ## 2026-11-02
 
 - **The design check.** The Cluster tab has a **Design check** card, and Studio's Cluster section a

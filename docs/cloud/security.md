@@ -123,6 +123,38 @@ A project's own two doors are served by our proxy, which:
 If you are reviewing us and want each of those with what it does and does not cover, ask for the
 security overview described at the end of this page.
 
+### Choose which addresses may connect
+
+A project's **IP allow-list** says which addresses may connect to its database at
+`<ref>.db.snoutdata.com:5432`. List IPv4 and IPv6 addresses and ranges (`203.0.113.4`,
+`203.0.113.0/24`, `2001:db8::/48`), up to 50, each with an optional note. Our proxy turns away a
+connection from any other address as soon as it knows which project the connection is for, before
+the connection reaches your database or anyone can try the password. The client shows
+`this address is not on the project's allow-list`, with the address we saw. The list is empty to
+begin with, and an empty list lets every address connect.
+
+The list sits in front of the password and never replaces it: every connection still needs the
+password or a [database token](/cloud/database-sign-in).
+
+- **Where:** in the dashboard, Settings, Database access, IP allow-list, which shows your own
+  address so you can add it; or `snoutdata db allow add 203.0.113.0/24 --note office` (see the
+  [CLI reference](/developers/cli#db-allow)). The CLI warns you when the list leaves out the address
+  you are calling from.
+- **Who:** anyone who can see the project's infrastructure settings can read the list. Only the
+  project's owner and people with Full access can change it. Every change is on the project's audit
+  log.
+- **From a cloud provider:** list the address your traffic leaves from. For AWS Fargate in a private
+  subnet that is your NAT gateway's Elastic IP. A task with a public IP of its own gets a new
+  address each time it starts, so use a NAT gateway.
+- **What it covers:** connections to the database. Your API (`<ref>.api.snoutdata.com`) is not
+  restricted by it.
+- **Our own connections:** your project's containers reach its database inside the machine they
+  run on, never through the public address, so the list does not apply to them. No other
+  project's containers can use that way in. The dashboard's SQL editor comes from our own servers,
+  and the list lets it through. Both still need the password or a token like anyone else. You
+  change the list in the dashboard or the CLI, never through the database, so a list that leaves
+  you out can always be put right.
+
 ## Backups and recovery
 
 Backups, recovery objectives (RPO and RTO), restore testing, Object Lock and the disaster recovery
