@@ -72,6 +72,20 @@ snoutdata cluster settings                              # read them
 snoutdata cluster settings --set max_write_pause_ms=1000
 ```
 
+## Connection pooling
+
+A cluster pools in transaction mode, distributed tables or not: a client holds a connection to a node
+only while a transaction needs it, and the router keeps up to 64 idle connections per node and role
+for the next client. Drivers' prepared statements and session `SET`s keep working. LISTEN, temporary tables that outlive a transaction, session advisory locks, SQL
+`PREPARE`, cursors `WITH HOLD` and `LOAD` are refused with an error that names the setting.
+
+A client that needs those uses session mode, where it keeps its connections for as long as it is
+connected:
+
+```sh
+snoutdata cluster settings --pool-mode session
+```
+
 ## Nodes
 
 ```sh
