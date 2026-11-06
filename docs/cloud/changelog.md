@@ -19,6 +19,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   the CLI and on your alert hooks.
 - **A project's connection pool grows with its plan.** Free has 20 database connections for 500 clients
   at once, Plus 40 for 1,000, and Pro 80 for 2,000. [Connection pooling](./connection-pooling).
+- **A cluster's router holds the same number on each node,** and a client waits its turn for a connection.
 - **`snoutdata cluster status` shows the pool mode,** the same one `cluster settings` and `--json` report.
 - **A cluster's router that has been gone for an hour leaves its router list.**
 - **Docs: [a map of a cluster](../stack/lepis/overview)**, from the front door to the nodes and their

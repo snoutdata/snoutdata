@@ -29,7 +29,7 @@ The pool grows with the project's plan, and many clients use each of its databas
 | Database connections in the pool | 20 | 40 | 80 |
 
 Each plan's pool has 20 database connections for every 512 MB of the project's memory, and a dedicated
-project's follows the memory of its size. In session mode, each client has a connection of its own, up
+project's follows the memory of its size. A cluster has this many on each of its nodes. In session mode, each client has a connection of its own, up
 to the session mode number on [limits](limits).
 
 ## Choose the mode

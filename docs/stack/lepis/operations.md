@@ -80,6 +80,11 @@ the cluster's list of routers, and joins it again if it comes back.
 The router is a cluster's connection pool, and a cluster has no other. It pools in transaction mode,
 distributed tables or not: a client holds a connection to a node only while a transaction needs it.
 
+The pool holds a set number of connections on each node. A client that needs one while none is free
+waits its turn. In SnoutData Cloud the number grows with the project's plan or size, as on
+[connection pooling](/cloud/connection-pooling#how-big-the-pool-is). On your own servers it is
+`LEPIS_POOL_SIZE`.
+
 After a transaction, a client keeps its connections for 50 ms, so a busy client goes on using its
 own. Then they join the router's idle connections, up to 64 per node and role, for the next client to
 use within 5 minutes. A client that takes back its own finds it as it left it. One another client left
