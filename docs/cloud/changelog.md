@@ -15,6 +15,7 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 - **A new version of the database front door leaves open connections alone.** It takes the new
   connections, and the version it replaced keeps the open ones until they end, for up to 6 hours.
+- **A connection error says only that the project cannot be reached,** and to try again in a moment.
 - **Every project has a connection pool.** Clients share a few database connections and hold one only
   during a transaction. Session mode keeps each client on its own, for LISTEN, temporary tables that
   outlive a transaction, session advisory locks and SQL `PREPARE`: `snoutdata db pool session`, or
