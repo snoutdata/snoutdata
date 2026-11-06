@@ -13,6 +13,8 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-11-06
 
+- **Adding a node to a cluster with spread tables finishes on its own.** The move compares every row
+  it hands over, then each node clears what it no longer owns.
 - **A project's Permissions page lists the people invited to its team,** who get the team default when
   they join.
 - **Rate an answer in the dashboard's assistant.** Thumbs up or down under an answer, and after a thumbs
