@@ -72,19 +72,33 @@ snoutdata cluster settings                              # read them
 snoutdata cluster settings --set max_write_pause_ms=1000
 ```
 
+A cutover waits only for routers heard from in the last 15 seconds. A router gone for an hour leaves
+the cluster's list of routers, and joins it again if it comes back.
+
 ## Connection pooling
 
-A cluster pools in transaction mode, distributed tables or not: a client holds a connection to a node
-only while a transaction needs it, and the router keeps up to 64 idle connections per node and role
-for the next client. Drivers' prepared statements and session `SET`s keep working. LISTEN, temporary tables that outlive a transaction, session advisory locks, SQL
-`PREPARE`, cursors `WITH HOLD` and `LOAD` are refused with an error that names the setting.
+The router is a cluster's connection pool, and a cluster has no other. It pools in transaction mode,
+distributed tables or not: a client holds a connection to a node only while a transaction needs it.
+
+After a transaction, a client keeps its connections for 50 ms, so a busy client goes on using its
+own. Then they join the router's idle connections, up to 64 per node and role, for the next client to
+use within 5 minutes. A client that takes back its own finds it as it left it. One another client left
+is reset with `DISCARD ALL` and given this client's startup settings first. Drivers' prepared
+statements and session `SET`s keep working. LISTEN, temporary tables that outlive a transaction,
+session advisory locks, SQL `PREPARE`, cursors `WITH HOLD` and `LOAD` are refused with an error that
+names the setting.
 
 A client that needs those uses session mode, where it keeps its connections for as long as it is
 connected:
 
 ```sh
 snoutdata cluster settings --pool-mode session
+snoutdata cluster status                         # Pool mode: session
 ```
+
+New connections follow a change within 2 seconds. In SnoutData Cloud it is also the **Connection
+pooling** card on the Cluster tab. The data API's role, `authenticator`, keeps its session in either
+mode, since it pools for itself and uses LISTEN.
 
 ## Nodes
 

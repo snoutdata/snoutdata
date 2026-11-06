@@ -25,7 +25,9 @@ Per project, unless the row says otherwise.
 | --- | --- | --- | --- |
 | Projects | 1 | 2 | 5 |
 | Storage | 500 MB | 5 GB | 10 GB |
-| Connections | 50 | 100 | 200 |
+| Clients connected at once, through the [pool](connection-pooling) | 500 | 1,000 | 2,000 |
+| Database connections in the pool | 20 | 40 | 80 |
+| Connections in [session mode](connection-pooling#the-two-modes) | 50 | 100 | 200 |
 | API requests a minute | 600 | 3,000 | 6,000 |
 | Memory | 512 MB | 1 GB | 2 GB |
 | CPU | 0.5 | 1.0 | 2.0 |
@@ -53,7 +55,7 @@ one rather than for less: a wake is a restore, so the backup is not a copy of a 
 is the free project.
 
 **The three numbers above that look alike are three different budgets**, and a refusal always says
-which one it was. "Connections" is your database's own sessions. "API requests a minute" is a rate
+which one it was. "Clients connected at once" is how many may connect through the pool, which serves them from its database connections. "API requests a minute" is a rate
 at the HTTPS door, counted per project across a minute and answered with `429` and a `retry-after`.
 There is a third, separate from both: how many API requests one project may hold open at the same
 instant (100 on free, 200 on Plus, 400 on Pro). Realtime websockets are not in it: they are counted

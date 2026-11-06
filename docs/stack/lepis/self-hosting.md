@@ -112,6 +112,7 @@ any number of routers run with the same few variables.
 | `LEPIS_ADMIN_ADDR` | none | `host:port` of the admin API; HTTPS off loopback, which needs the certificate |
 | `LEPIS_ADMIN_TOKEN` | required with the admin API | the bearer token for every admin call; at least 16 characters |
 | `LEPIS_MAX_CLIENTS` | `1000` | connections past this are closed at once |
+| `LEPIS_SESSION_ROLES` | `authenticator` | roles, comma separated, whose clients keep their sessions in either [pool mode](/stack/lepis/operations#connection-pooling) |
 | `LEPIS_CATALOG_MAX_AGE_MS` | `10000` | past this without hearing from the home node, the router refuses table statements (`57P03`) rather than route by a catalog a move may have changed |
 | `LEPIS_LOG` | `info` | a log filter: `warn`, `debug`, ... |
 

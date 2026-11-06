@@ -89,6 +89,8 @@ export DATABASE_URL="$(snoutdata db url)"
 If the project is paused, connecting to it wakes it. The client waits while that happens. See
 [what pauses, and what it costs](limits#pausing-and-waking).
 
+The connection string goes through the project's [connection pool](connection-pooling).
+
 No `psql` on the machine? `snoutdata db query "select 1"` runs a statement and `snoutdata db run
 file.sql` runs a file in one transaction, both through the CLI's own connection. See
 [the CLI reference](/developers/cli).

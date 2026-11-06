@@ -11,6 +11,17 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-11-06
+
+- **A project's connection pool grows with its plan.** Free has 20 database connections for 500 clients
+  at once, Plus 40 for 1,000, and Pro 80 for 2,000. [Connection pooling](./connection-pooling).
+- **`snoutdata cluster status` shows the pool mode,** the same one `cluster settings` and `--json` report.
+- **A cluster's router that has been gone for an hour leaves its router list.**
+- **Docs: [a map of a cluster](../stack/lepis/overview)**, from the front door to the nodes and their
+  backups, and [connection pooling on a cluster](../stack/lepis/operations#connection-pooling).
+- **Docs: [connection pooling](./connection-pooling)** on a plain project, and `snoutdata db pool` in
+  the [CLI reference](../developers/cli#db-pool).
+
 ## 2026-11-05
 
 - **A new version of the database front door leaves open connections alone.** It takes the new

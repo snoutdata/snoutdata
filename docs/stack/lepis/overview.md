@@ -5,13 +5,24 @@ sidebar_label: Overview
 description: Lepis spreads one Postgres database over several plain Postgres servers behind a router that speaks the Postgres protocol. One connection string, the same SQL, tables split by a distribution key, ranges moved and split online. What it is, how it works, what it does not do yet, and where it runs.
 ---
 
+import {Scene} from '@site/src/components/Art';
+import {LepisMap} from '@site/src/components/LepisMap';
+
 # Clusters with Lepis
 
 **Lepis** spreads one Postgres database over several Postgres servers, called **nodes**, behind a
-router that speaks the Postgres wire protocol. Your application connects to one address with one
-connection string and sees one database. Underneath, its large tables are split by a column you
-choose, the **distribution key**, and each statement goes to the node that holds its rows. Data
-moves, splits and merges between nodes while the application keeps writing.
+router that speaks the Postgres wire protocol.
+
+<Scene art="cluster" />
+
+- **One database to your application.** It connects to one address with one connection string.
+- **Whole rows, placed by a key.** The rows of its large tables are spread across the nodes, and the
+  value in a column you choose, the **distribution key**, decides which node holds each whole row.
+- **Statements go where the rows are.** Each statement goes to the node that holds its rows.
+- **Moves happen online.** Data moves, splits and merges between nodes while the application keeps
+  writing.
+
+<LepisMap />
 
 The nodes are stock Postgres 17 or 18. Nothing is installed in them: what Lepis needs inside a node
 is plain SQL it writes itself, a schema for its catalog on one node and a CHECK constraint per
@@ -77,13 +88,19 @@ becomes a transaction across nodes and commits on all of them or on none, throug
 **Sign-in.** SCRAM-SHA-256 end to end, and the router never sees a password. Each node session runs
 as the client's own role, so grants and row-level security work as they do on one Postgres.
 
+**Connections.** The router is the cluster's connection pool. In transaction mode, the default, a
+client holds a connection to a node only while a transaction needs it, and between transactions that
+connection waits for the next client. In session mode a client keeps its connections for as long as
+it is connected. See [connection pooling](/stack/lepis/operations#connection-pooling).
+
 ## What works, and what does not yet
 
 **Works:** single-node statements and transactions with everything Postgres offers; reads across
 nodes with `ORDER BY`, `LIMIT`, aggregates, `GROUP BY` and `DISTINCT`; writes across nodes with
 `INSERT … VALUES`, `COPY … FROM STDIN`, `UPDATE` and `DELETE`, committed on every node or none;
 prepared statements and session settings that follow the session from node to node; schema changes
-sent to every node; ranges split, merged and moved online; nodes added and drained.
+sent to every node; a connection pool in the router; ranges split, merged and moved online; nodes
+added and drained.
 
 **Not yet:** a join of two distributed tables that are not colocated, or not on the key;
 `DISTINCT ON`, window functions and `INSERT … SELECT` across nodes; `SERIALIZABLE`, savepoints and

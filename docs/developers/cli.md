@@ -606,6 +606,17 @@ would then refuse connections from that machine. With `--json`, the answer carri
 `yourAddress` and `yourAddressListed`. Reading needs the project's infrastructure settings;
 changing needs Full access or the owner.
 
+### `db pool`
+
+```
+snoutdata db pool [transaction|session] [--ref REF]
+```
+
+How the project's connections reach its database: through its pool, or each client on a connection of
+its own. With no mode, it prints the current one. See [connection pooling](/cloud/connection-pooling).
+A cluster's mode is `cluster settings --pool-mode`. Reading needs the project's infrastructure
+settings; changing needs Full access or the owner.
+
 ### `db export`
 
 ```

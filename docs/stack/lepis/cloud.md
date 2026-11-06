@@ -84,6 +84,10 @@ reaches the nodes. Migrations with `snoutdata db push` and the SQL editor run th
 schema change on a distributed table is made on every node. Auth and Storage keep their tables on
 the home node and connect to it directly.
 
+The router is the project's connection pool, in transaction mode unless you choose session mode on
+the **Connection pooling** card or with `snoutdata cluster settings --pool-mode session --project
+<ref>`. What each mode allows is on [connection pooling](/stack/lepis/operations#connection-pooling).
+
 ## Replicas and failover
 
 A node can have a **replica**: a copy that follows it and takes its place by itself if the node is
