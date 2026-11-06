@@ -15,6 +15,8 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 - **Rate an answer in the dashboard's assistant.** Thumbs up or down under an answer, and after a thumbs
   down you can tell us what you were trying to do.
+- **A planned restart of the database front door shows in your project's alerts,** on the dashboard, in
+  the CLI and on your alert hooks.
 - **A project's connection pool grows with its plan.** Free has 20 database connections for 500 clients
   at once, Plus 40 for 1,000, and Pro 80 for 2,000. [Connection pooling](./connection-pooling).
 - **`snoutdata cluster status` shows the pool mode,** the same one `cluster settings` and `--json` report.
