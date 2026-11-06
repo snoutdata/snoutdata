@@ -13,6 +13,8 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-11-05
 
+- **A project without storage keeps a clean Postgres log.** Its size reading asks about storage only
+  when the project has it.
 - **A dedicated project moves up a size when its data outgrows memory.** Data read back from disk soon
   after leaving memory counts as pressure on the server, along with busy CPUs and low available memory.
 - **`snoutdata` names what it could not reach.** A network failure says the address and the reason, and
