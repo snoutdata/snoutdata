@@ -13,6 +13,8 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-11-06
 
+- **A project's Permissions page lists the people invited to its team,** who get the team default when
+  they join.
 - **Rate an answer in the dashboard's assistant.** Thumbs up or down under an answer, and after a thumbs
   down you can tell us what you were trying to do.
 - **A planned restart of the database front door shows in your project's alerts,** on the dashboard, in
