@@ -126,9 +126,10 @@ for when each happens.
 
 ## Scope
 
-On one zone, when a disk or zone is lost, up to about a minute of confirmed writes can be lost,
-the archive's own gap. A failed server alone loses nothing, since its disk outlives it. Two-zone
-writes have no such window.
+On one zone, up to about a minute of confirmed writes can be lost only if the server's disk or a whole
+availability zone fails at our cloud provider, a rare and catastrophic failure on the provider's side.
+Our [Terms](https://snoutdata.com/terms) (sections 13 and 14) set out what we are responsible for.
+A failed server alone loses nothing, since its disk outlives it. Two-zone writes have no such window.
 
 ## Also read
 

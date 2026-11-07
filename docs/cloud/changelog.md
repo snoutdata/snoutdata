@@ -11,6 +11,11 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-11-07
+
+- **Backups and recovery and the dashboard's Plan page say plainly when writes can be lost:** only if the cloud provider loses a server's disk or a whole availability zone, a rare and
+  catastrophic failure, and the Terms of Service (section 13) say the same.
+
 ## 2026-11-06
 
 - **Adding a node to a cluster with spread tables finishes on its own.** The move compares every row
