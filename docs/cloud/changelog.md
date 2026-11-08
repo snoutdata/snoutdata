@@ -11,6 +11,12 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-11-08
+
+- **The dashboard is in English, French, Spanish and Portuguese.** It opens in your browser's
+  language; pick another under Language in the account menu and it is kept, on the dashboard and on
+  snoutdata.com alike. The assistant answers in your language too.
+
 ## 2026-11-07
 
 - **Backups and recovery and the dashboard's Plan page say plainly when writes can be lost:** only if the cloud provider loses a server's disk or a whole availability zone, a rare and
