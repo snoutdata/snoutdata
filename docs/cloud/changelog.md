@@ -16,6 +16,8 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 - **The dashboard is in English, French, Spanish and Portuguese.** It opens in your browser's
   language; pick another under Language in the account menu and it is kept, on the dashboard and on
   snoutdata.com alike. The assistant answers in your language too.
+- **The Language list opens when you ask for it.** Point at or click Language in the account menu and
+  the list appears beside it.
 
 ## 2026-11-07
 
