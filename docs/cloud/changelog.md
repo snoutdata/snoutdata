@@ -11,6 +11,11 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-11-09
+
+- **The dashboard's assistant logs its conversations for 30 days to improve the service.** Nothing is
+  logged in Studio. The [Privacy Policy](https://snoutdata.com/privacy) has the details.
+
 ## 2026-11-08
 
 - **The dashboard is in English, French, Spanish and Portuguese.** It opens in your browser's
