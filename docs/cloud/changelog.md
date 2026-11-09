@@ -13,6 +13,8 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-11-09
 
+- **A failed renewal keeps your plan while the card is retried.** Your plan, or your team's, returns to
+  Free when the retries end without a payment.
 - **An account is deleted once its projects are.** Delete account in your profile sends you to your
   projects first, and is available when none remain.
 - **The dashboard's assistant logs its conversations for 30 days to improve the service.** Nothing is
