@@ -11,6 +11,17 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-11-10
+
+- **SnoutData AI inside a project.** Add the models in your plan to a project's AI gateway from AI, Models.
+  They sit beside your own keys and in your routes, and calls are paid from your plan.
+- **Internet control for each model.** From AI, Models, choose whether a model reaches nothing, only
+  its provider, or its provider and the web. Web search and fetch tools need the last.
+- **Routes and every model setting on the dashboard.** A new Routes tab in AI lets you name a group
+  of models, choose how calls are shared between them and set what each must meet. Editing a model
+  covers its prices, limits per minute, what it can take and who may use it. Rate limits and
+  key expiry are there too.
+
 ## 2026-11-09
 
 - **The Team screen tells an owner when members exceed paid seats**, and how many to remove.
