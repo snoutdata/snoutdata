@@ -21,6 +21,8 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   of models, choose how calls are shared between them and set what each must meet. Editing a model
   covers its prices, limits per minute, what it can take and who may use it. Rate limits and
   key expiry are there too.
+- **Functions run SQLite 3.54.1.** What a function opens with `node:sqlite`, Deno KV, `localStorage` or
+  the Cache API is SQLite 3.54.1, which fixes CVE-2026-119375.
 
 ## 2026-11-09
 
