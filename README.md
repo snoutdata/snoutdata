@@ -128,6 +128,7 @@ assistant's butterfly, ship in the official build at no charge and are not in th
 | [snoutdata/snout-containers](https://github.com/snoutdata/snout-containers) | Runs OCI containers with gVisor, project-isolated networks, resource limits, restarts, and logs |
 | [snoutdata/snout-lepis](https://github.com/snoutdata/snout-lepis) | Distributed Postgres across plain Postgres nodes, behind a wire-protocol router |
 | [snoutdata/snout-psyche](https://github.com/snoutdata/snout-psyche) | The AI gateway for the whole stack: your own provider keys, with usage in your own Postgres |
+| [snoutdata/snout-metis](https://github.com/snoutdata/snout-metis) | Placement and routing for the stack's services: which copies run on which hosts, and the table every router balances from |
 | [snoutdata/apt](https://github.com/snoutdata/apt) | The signed Debian/Ubuntu apt repository |
 
 ## License
