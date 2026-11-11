@@ -11,6 +11,11 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-11-11
+
+- **Functions resolve DNS with the fixes for RUSTSEC-2026-0487, 0489, 0490 and 0491.** The DNS library
+  behind `fetch` and `Deno.resolveDns` in a function carries them.
+
 ## 2026-11-10
 
 - **SnoutData AI inside a project.** Add the models in your plan to a project's AI gateway from AI, Models.
