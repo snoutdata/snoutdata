@@ -369,7 +369,10 @@ limits, whether it is served), and the file then leaves your edit alone.
 A signed-in user can have credits (`psyche.credits`), which pay for a call only when their own
 budgets are full, never past the project's; the log marks each call credits paid. A model can be
 limited to the users and groups granted it (`"access": "granted"` and `psyche.model_grants`); anyone
-else is refused it and does not see it in `/ai/v1/models`.
+else is refused it and does not see it in `/ai/v1/models`. The service key grants a model with
+`POST /ai/v1/admin/grants` and `{"model": "…", "user_id": "…"}` (or `"group_id"`), lists the grants
+with `GET /ai/v1/admin/grants?model=…`, and takes one back with `DELETE /ai/v1/admin/grants/<id>`.
+The dashboard and Studio do the same from a model's editor.
 
 ## Stored credentials
 

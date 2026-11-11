@@ -21,6 +21,9 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   of models, choose how calls are shared between them and set what each must meet. Editing a model
   covers its prices, limits per minute, what it can take and who may use it. Rate limits and
   key expiry are there too.
+- **Grant a model to chosen users and groups.** A model set to "Only those granted access" lists
+  who it is granted to in its editor, on the dashboard and in Studio, where you add a user or a
+  group and take a grant back. The admin API does the same at `/ai/v1/admin/grants`.
 - **Functions run SQLite 3.54.1.** What a function opens with `node:sqlite`, Deno KV, `localStorage` or
   the Cache API is SQLite 3.54.1, which fixes CVE-2026-119375.
 
