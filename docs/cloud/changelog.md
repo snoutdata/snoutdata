@@ -11,6 +11,15 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-11-12
+
+- **The dashboard's assistant builds with you.** It can now work on your database, write and deploy
+  your functions, turn on auth and set it up, and show you each change on the page as it makes it. It
+  asks before every change, and always before anything that removes data.
+- **A function editor on the dashboard**, under Functions, Code.
+- **[Host your front end](../stack/host-your-front-end)**: putting your app's front end on Cloudflare
+  Pages, Vercel or Netlify.
+
 ## 2026-11-11
 
 - **Functions resolve DNS with the fixes for RUSTSEC-2026-0487, 0489, 0490 and 0491.** The DNS library
