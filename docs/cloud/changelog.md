@@ -11,6 +11,12 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-11-13
+
+- **Functions, Code opens on your first function's code**, also when you come to it from Deployed.
+- **The dashboard's own dropdowns.** Every list you pick from opens a menu in the dashboard's style
+  instead of the browser's, and typing jumps to an option.
+
 ## 2026-11-12
 
 - **A function's log says when the runtime stopped a call.** A call stopped at the function's memory
