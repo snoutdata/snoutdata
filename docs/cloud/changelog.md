@@ -13,6 +13,9 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-11-12
 
+- **A function's log says when the runtime stopped a call.** A call stopped at the function's memory
+  limit, one that ran past its wall clock limit (while the function was still starting, too) and a
+  response cut off at that limit each write an error line to the function's log, naming the limit.
 - **The dashboard's assistant builds with you.** It can now work on your database, write and deploy
   your functions, turn on auth and set it up, and show you each change on the page as it makes it. It
   asks before every change, and always before anything that removes data.
