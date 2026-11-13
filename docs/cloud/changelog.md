@@ -13,6 +13,9 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-11-13
 
+- **Test a function from the dashboard.** Under Functions, Code, Test runs the deployed function
+  once with the method, path, headers and body you write, called with the app key or the server
+  key, and shows its status, answer and what it printed.
 - **Functions, Code opens on your first function's code**, also when you come to it from Deployed.
 - **The dashboard's own dropdowns.** Every list you pick from opens a menu in the dashboard's style
   instead of the browser's, and typing jumps to an option.
