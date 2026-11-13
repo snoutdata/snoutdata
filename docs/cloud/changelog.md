@@ -13,6 +13,8 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-11-13
 
+- **Your language follows your account.** The language you pick in the dashboard's account menu is
+  kept on your account, so the dashboard opens in it on any browser or device you sign in from.
 - **Test a function from the dashboard.** Under Functions, Code, Test runs the deployed function
   once with the method, path, headers and body you write, called with the app key or the server
   key, and shows its status, answer and what it printed.
