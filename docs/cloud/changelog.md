@@ -13,6 +13,8 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-11-14
 
+- **Connecting an app shows which account it gets.** The consent page names the signed-in account,
+  with "Use another account" beside it.
 - **Sign in with a password.** The dashboard also signs in with an email and a password, for
   accounts that have one.
 - **A welcome, and a tour.** The dashboard now opens, once per account, on a welcome that shows
