@@ -11,13 +11,19 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
-## 2026-11-13
+## 2026-11-14
 
 - **Build your backend from ChatGPT or Claude.** Connect SnoutData to ChatGPT, Claude or any app
   that speaks MCP at `https://mcp.snoutdata.com/mcp`, sign in with your SnoutData account, and the
   chat creates projects, writes tables with row-level security, deploys and tests functions and
   sets up auth, with a card for each result. Connected apps are listed on the Access tokens page,
   where one click disconnects them. [How to connect](./chat-apps.md).
+- **The assistant sees each table's row-level security.** When it reads your schema it is told whether
+  row-level security is on for each table and every policy on it, so what it says about who can
+  read a table matches your database.
+
+## 2026-11-13
+
 - **Your language follows your account.** The language you pick in the dashboard's account menu is
   kept on your account, so the dashboard opens in it on any browser or device you sign in from.
 - **Test a function from the dashboard.** Under Functions, Code, Test runs the deployed function
