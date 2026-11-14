@@ -13,6 +13,8 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-11-14
 
+- **Testing a function from a chat is a read or a write.** In ChatGPT and Claude, a GET to your function
+  runs without asking; a request with a body asks first.
 - **Connecting an app shows which account it gets.** The consent page names the signed-in account,
   with "Use another account" beside it.
 - **Sign in with a password.** The dashboard also signs in with an email and a password, for
