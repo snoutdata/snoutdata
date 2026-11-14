@@ -13,6 +13,8 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-11-14
 
+- **Sign in with a password.** The dashboard also signs in with an email and a password, for
+  accounts that have one.
 - **A welcome, and a tour.** The dashboard now opens, once per account, on a welcome that shows
   where everything starts (a project) and the three steps from there: create it, connect your app,
   build your backend. "Show me around" walks you through the home page, and you can take the tour
