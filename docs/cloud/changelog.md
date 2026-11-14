@@ -13,6 +13,11 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-11-13
 
+- **Build your backend from ChatGPT or Claude.** Connect SnoutData to ChatGPT, Claude or any app
+  that speaks MCP at `https://mcp.snoutdata.com/mcp`, sign in with your SnoutData account, and the
+  chat creates projects, writes tables with row-level security, deploys and tests functions and
+  sets up auth, with a card for each result. Connected apps are listed on the Access tokens page,
+  where one click disconnects them. [How to connect](./chat-apps.md).
 - **Your language follows your account.** The language you pick in the dashboard's account menu is
   kept on your account, so the dashboard opens in it on any browser or device you sign in from.
 - **Test a function from the dashboard.** Under Functions, Code, Test runs the deployed function
