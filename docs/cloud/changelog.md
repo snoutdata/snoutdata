@@ -13,9 +13,9 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-11-15
 
-- **The assistant starts you building.** In the dashboard, the assistant's first suggestions are to create
-  your first project, table or function, or to build an app with you, step by step. Once a project has
-  tables, it suggests questions about them.
+- **The assistant suggests your next step.** The assistant's first suggestions in the dashboard follow
+  what your project has: open alerts, tables without row-level security, a first table or function when
+  there is none, sign-in when it is off, and questions about the tables you have.
 
 ## 2026-11-14
 
