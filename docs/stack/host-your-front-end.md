@@ -8,8 +8,10 @@ description: Your app's front end on Cloudflare Pages, Vercel, Netlify or any st
 # Put your front end online
 
 Your project is the back end: the database, its row-level security, sign-in, files and functions.
-Your app's front end (React, Vue, Svelte, plain HTML) is a folder of built files, and it goes on a
-static host you choose. Cloudflare Pages, Vercel and Netlify all work the same way.
+Your app's front end (React, Vue, Svelte, plain HTML) is a folder of built files. The quickest way
+online is a [Site](/stack/sites), served by SnoutData at `https://<name>.snoutpages.dev`:
+`snoutdata sites deploy dist --name my-app`. This page is for putting it on a static host you choose
+instead, with your own domain. Cloudflare Pages, Vercel and Netlify all work the same way.
 
 ## 1. Talk to the project from the browser
 
