@@ -15,6 +15,8 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 - **Recent pages are in search.** Search (Ctrl+K or Cmd+K) in the dashboard opens on the last three
   pages you visited.
+- **Your projects come first in the side menu,** as a card above the pages. Inside a project the side menu
+  has a light green tint.
 
 ## 2026-11-15
 
