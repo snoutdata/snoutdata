@@ -7,6 +7,14 @@ description: Publish your app's front end at <name>.snoutpages.dev, served by Sn
 
 # Sites
 
+:::caution For development, not production yet
+
+Sites are new. Use them for development, prototypes and demos, not for a production app yet: there
+is no uptime commitment and no custom domain, and what is described here may still change. For
+production, put your front end on a host you choose: see [Host your front end](/stack/host-your-front-end).
+
+:::
+
 A site is your project's front end, served by SnoutData at its own address:
 `https://<name>.snoutpages.dev`. Plain HTML, CSS and JavaScript, or a built single-page app (Vite,
 React, Vue, Svelte). It talks to your project the way any front end does, with

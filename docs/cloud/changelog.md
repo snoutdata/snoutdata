@@ -17,7 +17,8 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   or a built single-page app, served by SnoutData: from the new **Sites** page in the dashboard (a
   folder or one HTML file), with `snoutdata sites deploy dist --name my-app`, or by asking the
   assistant to build and publish it. Roll back to an earlier deployment from the same page. Sites per
-  project: 1 on Free, 2 on Plus, 5 on Pro, 50 on Business. [Sites](/stack/sites).
+  project: 1 on Free, 2 on Plus, 5 on Pro, 50 on Business. For development and demos, not for
+  production yet. [Sites](/stack/sites).
 - **Recent pages are in search.** Search (Ctrl+K or Cmd+K) in the dashboard opens on the last three
   pages you visited.
 - **Your projects come first in the side menu,** as a card above the pages. Inside a project the side menu
