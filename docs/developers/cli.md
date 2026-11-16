@@ -418,6 +418,21 @@ records again when the domain has not verified yet, so a script can wait on it. 
 the project's once it is verified; until then it reserves nothing, and an unverified domain is
 released after 7 days.
 
+### `sites`
+
+```
+snoutdata sites [--ref REF]
+snoutdata sites deploy FOLDER [--name NAME] [--ref REF]
+snoutdata sites rollback NAME DEPLOYMENT_ID [--ref REF]
+snoutdata sites delete NAME [--ref REF]
+```
+
+Publish the project's front end at `https://NAME.snoutpages.dev` ([Sites](/stack/sites)). `deploy`
+takes the folder holding `index.html` (a build's `dist`, `build` or `out`), leaves out dotfiles and
+`node_modules`, uploads the files and publishes them; deploying again replaces the site. `--name`
+may be left out when the project has one site. `sites list --json` shows each site's deployments,
+whose ids `rollback` takes. `delete` unpublishes the site and frees its name.
+
 ### `teams`
 
 ```

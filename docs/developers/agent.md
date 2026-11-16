@@ -115,6 +115,7 @@ A command that needs a project and cannot find one exits 2 saying so.
 | `snoutdata realtime inspect` | `--channel C` `--watch` (not with `--json`) `--ref REF` |
 | `snoutdata realtime logs` | `--since 10m` `--channel C` `--ref REF` |
 | `snoutdata domains` | `--ref REF`; `add\|verify\|remove HOSTNAME` |
+| `snoutdata sites` | `--ref REF`; `deploy FOLDER [--name NAME]`, `rollback NAME DEPLOYMENT_ID`, `delete NAME` |
 | `snoutdata teams` | |
 | `snoutdata link` | `--ref REF` (required) |
 | `snoutdata usage` | `--ref REF` `--days N` (default 30, max 365) `--history` `--tables` `--limit N` (default 20) |
