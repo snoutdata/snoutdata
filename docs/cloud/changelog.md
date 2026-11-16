@@ -28,6 +28,10 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   assistant to build and publish it. Roll back to an earlier deployment from the same page. Sites per
   project: 1 on Free, 2 on Plus, 5 on Pro, 50 on Business. For development and demos, not for
   production yet. [Sites](/stack/sites).
+- **A dedicated project shows its own servers.** Scaling (under Stack) has a Your servers section: each
+  server's zone, size, whether it is live, its memory (what the server keeps, the databases, the
+  services and what is free), how busy its CPU is, and how many more copies of each of the project's
+  services fit. A project on shared servers shows whether it has room to grow in its region.
 - **Recent pages are in search.** Search (Ctrl+K or Cmd+K) in the dashboard opens on the last three
   pages you visited.
 - **Your projects come first in the side menu,** as a card above the pages. Inside a project the side menu
