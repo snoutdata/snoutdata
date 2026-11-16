@@ -11,6 +11,11 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-11-16
+
+- **Recent pages are in search.** Search (Ctrl+K or Cmd+K) in the dashboard opens on the last three
+  pages you visited.
+
 ## 2026-11-15
 
 - **The assistant suggests your next step.** The assistant's first suggestions in the dashboard follow
