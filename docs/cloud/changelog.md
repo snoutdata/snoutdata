@@ -11,6 +11,12 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-11-15
+
+- **The assistant starts you building.** In the dashboard, the assistant's first suggestions are to create
+  your first project, table or function, or to build an app with you, step by step. Once a project has
+  tables, it suggests questions about them.
+
 ## 2026-11-14
 
 - **Project names are letters, numbers, hyphens and underscores.** A new project's name starts with a
