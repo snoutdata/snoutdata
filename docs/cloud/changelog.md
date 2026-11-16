@@ -13,6 +13,12 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-11-16
 
+- **The assistant checks its own work.** After it writes a table's policies or publishes a site, the
+  assistant in the dashboard reads the table the way your app does, with the app key, and reads the
+  published page back before it tells you it works. The policies and grants it writes name the roles
+  your project's keys carry: `snout_app` for the app key, `snout_member` for a signed-in person.
+- **A site's files can be read from any origin.** Sites at `<name>.snoutpages.dev` send
+  `Access-Control-Allow-Origin: *`.
 - **Sites: publish your front end at `<name>.snoutpages.dev`.** A project's HTML, CSS and JavaScript,
   or a built single-page app, served by SnoutData: from the new **Sites** page in the dashboard (a
   folder or one HTML file), with `snoutdata sites deploy dist --name my-app`, or by asking the
