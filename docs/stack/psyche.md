@@ -36,9 +36,8 @@ tables in the project's database, in the `psyche` schema.
    one for each signed-in user (the **Calling from your app** card). Your users then call with their
    own access token as the Bearer token; the app key alone calls nothing.
 
-A call to a paused project wakes it, as any call does, and waits while it starts. A project that has
-been cold for a while restores from storage first, which can take longer than a browser is willing to
-wait for an answer, so a page that calls a model should be ready to try again.
+A call to a paused project is refused, as any call is, until the project is resumed from the
+dashboard or the CLI.
 
 Switching it off stops the server and keeps its tables, so turning it back on finds the models, keys
 and records where they were.

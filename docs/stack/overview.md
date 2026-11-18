@@ -46,7 +46,7 @@ part is open source.
 | Clusters (Lepis) | yes ([clusters in Cloud](/stack/lepis/cloud)) | the router in front of your own Postgres ([run it yourself](/stack/lepis/self-hosting)) |
 | AI Gateway (Psyche) | yes, switched on per project ([AI gateway](/stack/psyche)) | the `ai` profile |
 | Continuous backups, point-in-time restore, every write in another zone on Pro | yes ([durability](/cloud/durability)) | your own (`pg_dump`, volume backups) |
-| Sleeps when idle, wakes on connect | yes | no |
+| Sleeps when idle, resumes when asked | yes | no |
 | Plans, the dashboard, status page | yes | no |
 
 - **[Run it yourself](/stack/self-hosting)**: the whole stack with Docker Compose, from

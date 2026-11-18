@@ -152,7 +152,7 @@ whose CPU, disk or statement time stands well above the others holds more than i
 
 ## Pausing
 
-A cluster pauses, wakes and is deleted as one: its nodes and replicas with it.
+A cluster pauses, resumes and is deleted as one: its nodes and replicas with it.
 
 ## Turn clustering off
 

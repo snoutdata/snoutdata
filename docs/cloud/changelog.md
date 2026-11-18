@@ -13,6 +13,13 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-11-18
 
+- **Resume starts a paused project.** A paused Free project starts when you resume it: **Resume** on
+  the dashboard, or `snoutdata projects resume`. A connection to a paused project is refused, and the
+  refusal names that command. The CLI says so before it connects.
+  [Pausing](limits#pausing-and-waking).
+- **Clusters are on Pro and Business.** Clustering is on Pro (five slots) and Business; a Free or
+  Plus project is one database.
+  [Lepis on SnoutData Cloud](../stack/lepis/cloud).
 - **New plan prices.** Plus is $15 a month and Pro is $30 a month. Business is $100 a month with 5
   seats included, and $20 a month for each seat after that. What each plan includes is the same.
   [Pricing](https://snoutdata.com/pricing).

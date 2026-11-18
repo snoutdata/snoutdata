@@ -56,7 +56,7 @@ A state such as "in sync" also says how long it has held ("for 4 days"). That ti
 the state last changed, so a quiet project's states are often days old, and that is fine. How fresh
 the page is comes from the servers' reports, which is the age after each mark's name.
 
-A paused project says so: nothing of its own is running, and it starts on the next connection.
+A paused project says so: nothing of its own is running until you resume it.
 
 ## What it never shows
 

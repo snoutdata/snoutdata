@@ -36,7 +36,7 @@ team's members. Access belongs to the person's SnoutData account, so it works wh
 sign in to SnoutData: an emailed code, Google, or on Business their company's single sign-on. Each
 person gets a database role of their own, named `oauth_` and their account id, the same on every
 project. It is made within a few seconds while the project is running (when it
-next wakes, if it is paused), and nothing restarts.
+is next resumed, if it is paused), and nothing restarts.
 
 | Level | What it can do |
 | --- | --- |
@@ -94,7 +94,7 @@ snoutdata db access revoke teammate@example.com
 
 From that moment no new token is issued to them. A token already issued can keep working until it
 expires (at most an hour) for as long as the database still has their role; SnoutData removes the
-role and ends their sessions within seconds while the project is running, or when it next wakes if
+role and ends their sessions within seconds while the project is running, or when it is next resumed if
 it is paused. After that, psql asks them for a password (`no password supplied`): their access is
 gone, nothing is broken.
 

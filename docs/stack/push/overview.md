@@ -73,9 +73,8 @@ database's plan: a bigger plan sends more notifications at once.
   project has nothing to send at a time you chose. A future `send_at` is refused with a sentence
   about the plan (the API answers with it; a row inserted from SQL is marked `refused` with it),
   never silently held.
-- **The first notification after a pause waits for the wake**, about a second when the project was
-  paused recently and 10 to 20 seconds when it was paused long ago. Sending does not keep a project
-  awake.
+- **A paused project refuses notifications** until it is resumed from the dashboard or the CLI.
+  Sending does not keep a project awake.
 - **A deleted user's devices go with them** only when [Authentication](/stack/auth) is on. When auth
   is switched on after push, this starts within the hour.
 - **Android always needs your own Firebase project.** Google delivers to Android apps only through

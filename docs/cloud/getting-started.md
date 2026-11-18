@@ -86,8 +86,8 @@ database password into the CLI.
 export DATABASE_URL="$(snoutdata db url)"
 ```
 
-If the project is paused, connecting to it wakes it. The client waits while that happens. See
-[what pauses, and what it costs](limits#pausing-and-waking).
+If the project is paused, the connection is refused until you resume it: **Resume** on the dashboard,
+or `snoutdata projects resume`. See [what pauses, and what it costs](limits#pausing-and-waking).
 
 The connection string goes through the project's [connection pool](connection-pooling).
 

@@ -136,7 +136,9 @@ Both were measured from the host, in region. A separate measurement of the whole
 **about 22 seconds at every size** for a resume driven by a client, which adds an API round trip
 and the host's next poll to the same restore.
 
-Connecting to a paused project wakes it, and the client waits. The CLI says so before it happens.
+A connection never wakes a paused project: it is refused, with the command that resumes it. Resume
+it with **Resume** on the dashboard or `snoutdata projects resume --ref <ref>`. A connection made while
+it resumes waits for it.
 
 ## Durability, in one paragraph
 

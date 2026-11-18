@@ -92,7 +92,7 @@ When you replace a target that already holds data:
 ## Watching it run
 
 The move shows each table as it copies, with its rows and bytes, the rate, and the time left.
-Moving into or out of a hosted project that is paused, it wakes the project first and says so.
+Moving into or out of a hosted project that is paused, it resumes the project first and says so.
 **Stop the move** ends it at any point, and what was already copied stays on the target.
 
 When it finishes, a report compares the row count of every table on both sides and lists anything
