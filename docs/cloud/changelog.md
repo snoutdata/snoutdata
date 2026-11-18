@@ -15,7 +15,8 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 - **Resume starts a paused project.** A paused Free project starts when you resume it: **Resume** on
   the dashboard, or `snoutdata projects resume`. A connection to a paused project is refused, and the
-  refusal names that command. The CLI says so before it connects.
+  refusal names that command. The CLI says so before it connects. A project on a server of its own
+  takes about 100 seconds to resume, since its server starts first.
   [Pausing](limits#pausing-and-waking).
 - **Clusters are on Pro and Business.** Clustering is on Pro (five slots) and Business; a Free or
   Plus project is one database.

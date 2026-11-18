@@ -136,6 +136,10 @@ Both were measured from the host, in region. A separate measurement of the whole
 **about 22 seconds at every size** for a resume driven by a client, which adds an API round trip
 and the host's next poll to the same restore.
 
+Those times are for a project that shares its server. A project on a server of its own has that
+server stopped while it is paused, so a resume starts the server first: **about 100 seconds** from
+Resume to the first query, measured on 2026-11-18.
+
 A connection never wakes a paused project: it is refused, with the command that resumes it. Resume
 it with **Resume** on the dashboard or `snoutdata projects resume --ref <ref>`. A connection made while
 it resumes waits for it.

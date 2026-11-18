@@ -119,7 +119,8 @@ Recovery is a restore rather than an automatic failover, so it takes minutes, no
 
 ## Paused and cold projects
 
-A paused project keeps its data on the machine and resumes in seconds. A project that has been
+A paused project keeps its data on the machine and resumes in seconds, or in about 100 seconds when
+its server is its own and was stopped with it. A project that has been
 idle long enough to go cold lives only in the backup store, and resuming it is a restore (about 10 to
 21 seconds, measured). Cold data is kept for 180 days. See [limits](limits#pausing-and-waking)
 for when each happens.
