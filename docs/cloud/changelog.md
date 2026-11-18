@@ -11,6 +11,12 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-11-18
+
+- **New plan prices.** Plus is $15 a month and Pro is $30 a month. Business is $100 a month with 5
+  seats included, and $20 a month for each seat after that. What each plan includes is the same.
+  [Pricing](https://snoutdata.com/pricing).
+
 ## 2026-11-16
 
 - **The assistant checks its own work.** After it writes a table's policies or publishes a site, the
