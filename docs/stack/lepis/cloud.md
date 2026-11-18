@@ -18,8 +18,8 @@ only when you confirm it.
 
 **Each node uses one of your plan's project slots**, the home node included, and so does each
 replica. A cluster of three nodes uses three slots; give each a replica and it uses six. Each node
-gets your plan's memory and CPU, as a project does. Free has one slot, so a cluster needs Plus (two
-slots) or Pro (five). See [limits](/cloud/limits) for what each plan gets.
+gets your plan's memory and CPU, as a project does. Clustering is on Pro (five slots) and Business; a
+Free or Plus project is one database. See [limits](/cloud/limits) for what each plan gets.
 
 ## Make a project a cluster
 
