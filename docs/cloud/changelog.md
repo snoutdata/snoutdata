@@ -11,6 +11,18 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-11-19
+
+- **The security page corrected on where things run.** It said everything ran on AWS in Oregon.
+  Since October 2026 the control plane, which holds your account, project metadata, your deployed
+  function code and its encrypted secrets, and function logs, has run on Oracle Cloud in Toronto,
+  Canada, with a standby on AWS in Oregon; your projects and their backups have not moved. The page
+  now says so, and names who else handles hosted data: Cloudflare (API traffic in transit, and Sites
+  files) and AWS Bedrock (the assistant's models). It also no longer says our health checks cannot
+  report their own failure: an independent heartbeat has watched them since November 7. The CSA
+  CAIQ it offers is being brought up to date for a public CSA STAR Level 1 listing.
+  [Security](security#where-it-runs).
+
 ## 2026-11-18
 
 - **Resume starts a paused project.** A paused Free project starts when you resume it: **Resume** on

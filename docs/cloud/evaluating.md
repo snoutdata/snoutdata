@@ -13,9 +13,11 @@ Cloud opened on 2026-09-04.
 
 ## Where does my data live?
 
-AWS `us-west-2` (Oregon), on machines we run ourselves. Backups are replicated continuously to
-`us-east-1`. **There is no EU region**, and no other region today. See [security](security) and
-[limits](limits#where-a-project-can-live).
+Your projects are on AWS `us-west-2` (Oregon), on machines we run ourselves. Backups are replicated
+continuously to `us-east-1`. The control plane, which holds your account, project metadata, your
+deployed function code and its encrypted secrets, and function logs, runs on Oracle Cloud in
+Toronto, Canada, with a standby on AWS in Oregon. **There is no EU region.** See
+[security](security#where-it-runs) and [limits](limits#where-a-project-can-live).
 
 ## How much can I lose, and how fast does it come back?
 

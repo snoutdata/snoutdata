@@ -27,21 +27,32 @@ otherwise. If what you need is a credential that never leaves your own machine, 
 | Your uploaded files | If you use storage, in the same object store under your project's own prefix |
 | Your end users' accounts | If you switch auth on, in the `auth` schema of **your own** database |
 | Your deployed code and its secrets | If you deploy Snout Functions |
+| Your site's files | If you publish a front end with Sites, in Cloudflare's object storage |
 
 ## Where it runs
 
-Amazon Web Services, **`us-west-2` (Oregon)**, on instances we manage ourselves rather than
-through a managed database service. Backups are replicated to a second United States region,
-`us-east-1`.
+**Your projects** run on Amazon Web Services, **`us-west-2` (Oregon)**, on instances we manage
+ourselves rather than through a managed database service. Backups are replicated to a second United
+States region, `us-east-1`.
 
-Two AWS accounts, deliberately separated: the control plane that holds accounts, plans and project
-metadata is one account, and the machines running customer databases are another.
+**The control plane**, which holds accounts, plans, project metadata, your deployed function code
+and its encrypted secrets, and function logs, runs on Oracle Cloud Infrastructure in **Toronto,
+Canada**, since October 2026. Its database is a pair of servers there, with a standby on AWS in
+Oregon and its backups in AWS `us-west-2`. The machines running customer databases are in a
+separate AWS account.
 
 **There is no EU region.** If your requirement is that data stays in the EU, we cannot meet it
 today, and we would rather say so than discuss it.
 
-Email a project's auth service sends to *your* users goes through our transactional email
-provider. Nobody else receives your hosted data.
+Who else handles your hosted data:
+
+- **Cloudflare** carries your project's HTTP API traffic in transit, decrypting it at its edge and
+  encrypting it again to us, and stores the files you publish with Sites. Database connections do
+  not pass through it.
+- **Our transactional email provider** sends the email a project's auth service sends to *your*
+  users.
+- **AWS Bedrock** (`us-west-2`) runs the models behind the dashboard's assistant, so what you ask
+  it reaches AWS.
 
 ## Encryption
 
@@ -109,7 +120,10 @@ is still the same role to the database.
 ## What is in front of your project
 
 Sign-in, billing and everything the CLI and the dashboard call go through a content delivery
-network with a web application firewall.
+network with a web application firewall. So does your project's HTTP API
+(`<ref>.api.snoutdata.com`): it reaches the machines that run projects only through an outbound
+tunnel from them, and those machines have no inbound HTTP port open. Database connections arrive through the cloud
+provider's network load balancer.
 
 A project's own two doors are served by our proxy, which:
 
@@ -164,10 +178,12 @@ drill have their own page: **[Backups and recovery](durability)**.
 
 A dozen checks run against the fleet every fifteen minutes and email us when an answer changes.
 Their public half is the status page above, under three rules: nothing identifying, one tenant's
-problem is not an outage, and never green unless we know.
+problem is not an outage, and never green unless we know. Since November 2026 an independent
+heartbeat service, outside our own cloud accounts, emails us if those checks stop running or cannot
+send their mail.
 
-**Disclosed limitation:** those logs are not shipped to a central platform today, so an
-investigation is a pull rather than a dashboard, and the health check cannot report its own death.
+**Disclosed limitation:** our servers' logs are not shipped to a central platform today, so an
+investigation is a pull rather than a dashboard.
 
 ## Keeping the software patched
 
@@ -188,8 +204,9 @@ What exists, and what we will send you:
 - A **security overview mapped to the SOC 2 criteria**, covering each control and the residual
   risk it leaves. Ask and we will send it, under NDA where you need one.
 - A **data processing agreement** with its subprocessor list, ready to sign.
-- A completed **CSA CAIQ v4.1** (the Cloud Security Alliance's standard questionnaire, all 283
-  questions answered). If your team uses a different questionnaire, we will fill that in too.
+- A **CSA CAIQ v4.1** (the Cloud Security Alliance's standard questionnaire, all 283 questions),
+  being brought up to date for a public CSA STAR Level 1 listing. Ask and we will tell you where it
+  stands. If your team uses a different questionnaire, we will fill that in too.
 
 If your organization requires a formal attestation report, get in touch and we will scope it
 rather than pretend we have one.
