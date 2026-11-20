@@ -89,7 +89,7 @@ would be refused.
 Starting a `BACKUP` or a `RESTORE` (the list of them is read; running one is not offered),
 choosing which cluster the multi-node views read (they use `default`, which is ClickHouse Cloud's
 name for it and the usual name), moving a whole database into ClickHouse, and the native TCP
-protocol on 9000/9440 — everything here goes over the HTTP interface, which has not yet been a
+protocol on 9000/9440. Everything here goes over the HTTP interface, which has not yet been a
 limit.
 
 The grid is read-only on purpose: a MergeTree sort key is not unique, so there is no safe way to
