@@ -11,6 +11,12 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-11-21
+
+- **New projects on SnoutData Cloud run Postgres 19.** A project created from today runs Postgres
+  19.0, with data checksums on. New to build with: `REPACK`, `INSERT ... ON CONFLICT DO SELECT`,
+  `IGNORE NULLS` and `COPY ... (FORMAT json)`.
+
 ## 2026-11-19
 
 - **The security page corrected on where things run.** It said everything ran on AWS in Oregon.
