@@ -20,7 +20,7 @@ otherwise. If what you need is a credential that never leaves your own machine, 
 
 | | |
 | --- | --- |
-| Your database | Postgres 18, in a container of its own on a machine we operate |
+| Your database | Postgres 19 on a new project, in a container of its own on a machine we operate |
 | Its backups | Continuously, in object storage we operate |
 | Your project's password | Encrypted, so a signed-in client can fetch connection details without you copying a secret around |
 | The keys that sign database sign-in tokens | Private keys stay in our sign-in service; your database holds only the public half, as a file, and checks every token itself without a network call ([database sign-in](/cloud/database-sign-in)) |
@@ -112,8 +112,8 @@ agent, or one of our scheduled jobs. You can read your own project's entries in 
 
 **It is API-level, not statement-level.** It records who asked the platform to do something, not
 which statement somebody ran inside a database session. Who ran a statement is the database's to
-record, and it can only record a person when the person signed in as themselves: on a Postgres 18
-project, people you give [database access](/cloud/database-sign-in) connect as their own role,
+record, and it can only record a person when the person signed in as themselves: on a project on
+Postgres 18 or newer, people you give [database access](/cloud/database-sign-in) connect as their own role,
 and the database's own `system_user` names them. Everyone who connects with the project password
 is still the same role to the database.
 

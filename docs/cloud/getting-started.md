@@ -11,7 +11,7 @@ functions and push notifications around it.** You create a project from a termin
 [dashboard.snoutdata.com](https://dashboard.snoutdata.com) or from [Studio](/studio/projects), and you get a `postgres://` URL that
 any client can use: `psql`, your ORM, SnoutData Studio, or a coding agent.
 
-Each project is a [Postgres 18](/stack/postgres) database with `pgvector` available, reachable at
+A new project is a [Postgres 19](/stack/postgres) database with `pgvector` available, reachable at
 `<ref>.db.snoutdata.com` over TLS on port 5432. Its data is continuously shipped to object
 storage, which is the only place it has to exist.
 

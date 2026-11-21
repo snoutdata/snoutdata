@@ -2,13 +2,13 @@
 id: database-sign-in
 title: Sign in to the database as yourself
 sidebar_label: Database sign-in
-description: On a Postgres 18 project, the people who work on it open the database itself with their own SnoutData account and a browser approval, instead of the project password. Who can give access, the two levels, how to connect with psql 18, and the limits.
+description: On a project on Postgres 18 or newer, the people who work on it open the database itself with their own SnoutData account and a browser approval, instead of the project password. Who can give access, the two levels, how to connect with psql 18, and the limits.
 ---
 
 # Sign in to the database as yourself
 
-On a Postgres 18 project, the people who work on it can open the **database itself** (psql, a
-migration script, anything built on libpq 18) with their own SnoutData account instead of the
+On a project on Postgres 18 or newer, the people who work on it can open the **database itself**
+(psql, a migration script, anything built on libpq 18) with their own SnoutData account instead of the
 project password. Nobody hands a password around, a sign-in lasts at most an hour, taking someone's
 access away takes a click and a confirmation, and the database records who connected.
 
@@ -107,7 +107,7 @@ What you wait for is the approval in your browser.
 
 ## Limits
 
-- **Postgres 18 projects only.** A project made on Postgres 17 keeps working exactly as it does:
+- **Postgres 18 or newer.** A project made on Postgres 17 keeps working exactly as it does:
   connect to it with its password, as before.
 - **libpq 18 programs only, for now.** psql 18, and libraries on libpq 18 built with OAuth support
   such as psycopg. node-postgres, JDBC, most BI tools and SnoutData Studio cannot do this sign-in

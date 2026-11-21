@@ -209,7 +209,7 @@ log does and does not tell you.
 
 ## Extensions
 
-Your database is [Postgres 18](/stack/postgres), and you install extensions yourself with plain
+Your database is [Postgres](/stack/postgres), and you install extensions yourself with plain
 `create extension`, without being a superuser: `pgvector`, PostGIS and the rest of the usual set
 are available. There is no per-plan extension list yet, so anything the image ships can be
 switched on.

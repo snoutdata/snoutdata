@@ -18,8 +18,8 @@ on every plan: it is preloaded in every project's database, and the project's ow
 not a superuser) can create it, update it and drop it. It is in the Cloud dashboard's **Extensions** and
 **Time series** tabs.
 
-Projects run Postgres 18. SnoutTime is built and tested on 17 as well, so a self-hosted stack or a
-local database that is still on 17 has it too.
+SnoutTime is built and tested on Postgres 19, 18 and 17, so a project, a self-hosted stack or a
+local database has it on any of the three.
 
 ## Not supported yet
 

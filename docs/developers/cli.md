@@ -592,7 +592,7 @@ snoutdata db access revoke EMAIL|ROLE [--ref REF]
 ```
 
 Who signs in to the project's database as themselves, with their SnoutData account, instead of
-with the project password (Postgres 18 projects; see
+with the project password (a project on Postgres 18 or newer; see
 [Sign in to the database as yourself](/cloud/database-sign-in)).
 
 `grant` is the project owner's, and prints the person's connection string alone on stdout, so
