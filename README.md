@@ -19,7 +19,7 @@
 
 ## SnoutData Cloud
 
-Your app's backend in one project: **Postgres 18** with **auth**, **file storage**, **realtime**,
+Your app's backend in one project: **Postgres 19** with **auth**, **file storage**, **realtime**,
 a **REST and GraphQL API**, **Snout Functions** (your own TypeScript), **timeseries** and **push
 notifications** to iPhone, Android and the web. It sleeps when idle and wakes on the next
 connection.
