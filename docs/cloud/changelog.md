@@ -13,6 +13,10 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 
 ## 2026-11-22
 
+- **Project alert emails look like the rest of our mail.** An alert about your project now arrives
+  in the same layout as the pause notices, with a button to the project and a line saying why you
+  got it.
+
 - **Every project on SnoutData Cloud runs Postgres 19.** Projects made before 2026-11-21 were
   upgraded in place, with their data, statistics and backups.
 
