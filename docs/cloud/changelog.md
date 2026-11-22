@@ -11,6 +11,11 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-11-22
+
+- **Every project on SnoutData Cloud runs Postgres 19.** Projects made before 2026-11-21 were
+  upgraded in place, with their data, statistics and backups.
+
 ## 2026-11-21
 
 - **New projects on SnoutData Cloud run Postgres 19.** A project created from today runs Postgres

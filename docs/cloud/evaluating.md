@@ -63,11 +63,11 @@ plan written down on [limits](limits), along with what is not built. Plans and b
 
 ## Which Postgres?
 
-A new Cloud project runs Postgres 19, upstream and unmodified, with pgvector, pg_cron, pg_net,
+Every Cloud project runs Postgres 19, upstream and unmodified, with pgvector, pg_cron, pg_net,
 pg_graphql and SnoutTime in the image ([extensions](/stack/extensions)). Data checksums are on, so
-corruption is reported rather than returned. A project made on 17 keeps running on 17,
-supported like any other, with nothing for you to do; the same holds for a database on your own
-machine (`snoutdata start`, a Local project in Studio, a self-hosted stack).
+corruption is reported rather than returned. A database on your own machine
+(`snoutdata start`, a Local project in Studio, a self-hosted stack) keeps running on the version it
+was made with, supported like any other, with nothing for you to do.
 [Postgres](/stack/postgres) has the detail.
 
 ## Is it moving, and in which direction?
