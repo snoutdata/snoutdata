@@ -1,16 +1,16 @@
 ---
 id: postgres
-title: Postgres 18
-sidebar_label: Postgres 18
-description: A new SnoutData project runs Postgres 18, hosted or in your own Docker, and a project made on 17 keeps running on 17. What 18 gives you to build with (uuidv7, virtual generated columns, temporal constraints, OLD and NEW in RETURNING), what it does for you (larger reads, data checksums), and what to watch for in DDL written for 17.
+title: Postgres
+sidebar_label: Postgres
+description: A new SnoutData project runs Postgres 19, hosted or in your own Docker, and a project made on 17 keeps running on 17. What 18 gives you to build with (uuidv7, virtual generated columns, temporal constraints, OLD and NEW in RETURNING), what it does for you (larger reads, data checksums), and what to watch for in DDL written for 17.
 ---
 
-# Postgres 18
+# Postgres
 
-A new project runs **Postgres 18**: a project on SnoutData Cloud, a new
-[self-hosted stack](/stack/self-hosting), and a new `snoutdata start` database. A project made on
-17 keeps running on 17, supported like any other, and there is nothing you need to do. It is upstream
-Postgres, unmodified, with the extensions on the [extensions](/stack/extensions) page and
+A new project runs **Postgres 19**: a project on SnoutData Cloud, a new
+[self-hosted stack](/stack/self-hosting), and a new `snoutdata start` database.
+A project made on 17 keeps running on 17, supported like any other, and there is nothing you need
+to do. It is upstream Postgres, unmodified, with the extensions on the [extensions](/stack/extensions) page and
 [SnoutTime](/stack/snouttime/overview) in the image.
 
 ```sql
@@ -103,29 +103,21 @@ new project or in a fresh `snoutdata start`.
 
 | | Version |
 | --- | --- |
-| A new project on SnoutData Cloud | 18 |
+| A new project on SnoutData Cloud | 19 |
 | A Cloud project created before 2026-10-03 | stays on 17 |
-| A new self-hosted stack | 18 |
-| A self-hosted stack set up on 17 | stays on 17 |
-| A new `snoutdata start` database, or a new Local project in Studio | 18 |
-| A `snoutdata start` database or Local project made on 17 | stays on 17 |
+| A new self-hosted stack | 19 |
+| A new `snoutdata start` database, or a new Local project in Studio | 19 |
 
 A database's files belong to the major version that wrote them, so every database keeps running
 on the version it was made with, and nothing about it changed when 18 arrived. On Cloud each project
 runs the image of its own version; on your own machine `snoutdata start` and Studio read the version
 from the data directory and run the matching image.
 
-A self-hosted stack chooses its image in `.env`. One set up on 17 pins it there:
-
-```bash
-SNOUT_POD_IMAGE=ghcr.io/snoutdata/snoutpod-postgres:17
-```
-
 ## Sign in to the database as yourself (SnoutData Cloud)
 
 Postgres 18 can authenticate a database login with an OAuth token instead of a password. On a
-SnoutData Cloud project made on 18, the people who work on it use that to open the database itself
-with their own SnoutData account: psql 18 prints a code, they approve it in the browser, and the
+SnoutData Cloud project on Postgres 18 or newer, the people who work on it use that to open the
+database itself with their own SnoutData account: psql 18 prints a code, they approve it in the browser, and the
 database checks the token and lets them in as their own role. No shared password, a sign-in lasts
 at most an hour, and taking someone's access away is one click.
 [Sign in to the database as yourself](/cloud/database-sign-in) has the whole of it: who can give

@@ -17,6 +17,9 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
   19.0, with data checksums on. New to build with: `REPACK`, `INSERT ... ON CONFLICT DO SELECT`,
   `IGNORE NULLS` and `COPY ... (FORMAT json)`.
 
+- **A new self-hosted stack runs Postgres 19 too.** The [self-hosted stack](/stack/self-hosting)'s
+  database image is `ghcr.io/snoutdata/snoutpod-postgres:19`, for amd64 and arm64.
+
 ## 2026-11-19
 
 - **The security page corrected on where things run.** It said everything ran on AWS in Oregon.

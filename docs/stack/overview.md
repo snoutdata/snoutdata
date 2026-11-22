@@ -3,7 +3,7 @@ id: overview
 title: The SnoutData stack
 sidebar_label: Overview
 slug: /stack
-description: What every SnoutData project runs, hosted or in your own Docker. Postgres 18 with SnoutTime and pgvector, a REST and GraphQL data API, auth, file storage, realtime, functions and push, behind one gateway, Lepis to spread a database over several nodes, and Psyche, an AI gateway. Open source.
+description: What every SnoutData project runs, hosted or in your own Docker. Postgres 19 with SnoutTime and pgvector, a REST and GraphQL data API, auth, file storage, realtime, functions and push, behind one gateway, Lepis to spread a database over several nodes, and Psyche, an AI gateway. Open source.
 ---
 
 import {Cards, Scene} from '@site/src/components/Art';
@@ -20,7 +20,7 @@ part is open source.
 ## What is in it
 
 <Cards items={[
-	{title: 'Postgres 18', to: '/stack/postgres', stack: 'postgres', text: 'Upstream Postgres 18 with pgvector, pg_cron, pg_net, pg_graphql and SnoutTime built in. Your migrations, your extensions.'},
+	{title: 'Postgres 19', to: '/stack/postgres', stack: 'postgres', text: 'Upstream Postgres 19 with pgvector, pg_cron, pg_net, pg_graphql and SnoutTime built in. Your migrations, your extensions.'},
 	{title: 'The project API', to: '/stack/api', stack: 'api', text: 'One door, six paths, two keys. Row-level security decides what every request can see.'},
 	{title: 'Data API', to: '/stack/data-api', stack: 'api', text: 'REST and GraphQL generated from your schema, with nothing to deploy.'},
 	{title: 'Auth', to: '/stack/auth', stack: 'auth', text: 'Sign-up, sign-in, sessions, multi-factor, OAuth and SAML single sign-on, with the users in your own database.'},
@@ -39,7 +39,7 @@ part is open source.
 
 | | Hosted (SnoutData Cloud) | Your own Docker |
 |---|---|---|
-| Postgres 18, extensions, SnoutTime | yes | yes |
+| Postgres 19, extensions, SnoutTime | yes | yes |
 | Data API, auth, storage, realtime, functions, push | yes | yes |
 | Socket.IO | yes | yes |
 | Containers | Plus, Pro and Business ([containers](/stack/containers)) | an opt-in profile, on a machine with gVisor |

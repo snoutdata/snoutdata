@@ -62,7 +62,7 @@ including creating the [extensions](/stack/extensions) the image offers, and is 
 
 | Service | |
 |---|---|
-| `db` | [Postgres 18](/stack/postgres) with the same extensions as a hosted project (a stack set up on 17 stays on 17) |
+| `db` | [Postgres 19](/stack/postgres) with the same extensions as a hosted project |
 | `auth` | [snout-auth](https://github.com/snoutdata/snout-auth) |
 | `rest` | [PostgREST](https://postgrest.org), which also serves GraphQL through the database |
 | `storage` | [snout-storage](https://github.com/snoutdata/snout-storage), keeping files in an S3 API |
@@ -127,11 +127,9 @@ stack](/stack/cli-local-stack) walks through it, step by step.
   ```
 
   Without `docker compose pull`, `up` keeps the images already on the machine, the database's
-  included, since its tag (`:18`) moves with each release. The servers bring their schemas up to
+  included, since its tag (`:19`) moves with each release. The servers bring their schemas up to
   date as they start, and the database brings our own extensions ([SnoutTime](/stack/snouttime/overview))
   up to the image's version in every database, one line per update in `docker compose logs db`.
-  A stack set up on Postgres 17 keeps `SNOUT_POD_IMAGE=ghcr.io/snoutdata/snoutpod-postgres:17` in
-  `.env`: a data directory opens only on the major that wrote it.
 
 Every setting is in the repository's [README](https://github.com/snoutdata/snout-stack#configuration).
 

@@ -23,9 +23,9 @@ For the WHOLE stack (auth, the data API, storage, Realtime and functions as well
 first use. You do not need `psql` installed: when the machine has none, the container's own is
 used instead, which is what makes this work on a default Windows install.
 
-**A new database runs [Postgres 18](/stack/postgres)**, like a hosted project. One made on 17 keeps
+**A new database runs [Postgres 19](/stack/postgres)**, like a hosted project. One made on 17 keeps
 starting on 17: `snoutdata start` reads the version from the data directory and runs the matching
-image, because 18 cannot open files 17 wrote.
+image, because a newer major cannot open files an older one wrote.
 
 **It keeps itself current.** Each `start` asks whether a newer image of the same Postgres version
 has been published, which takes a second or so when nothing has changed, and fetches it when one
