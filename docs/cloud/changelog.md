@@ -11,7 +11,19 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-11-26
+
+- **A Resources card on the project overview.** Under Storage, one bar for each part of your
+  project, the database and each service: what it reserves of your servers' memory and what it
+  uses. Click a bar to see where each copy runs and the most it used recently. On dedicated servers
+  it also shows what the server keeps for itself and the services it runs beside your projects.
+
 ## 2026-11-22
+
+- **A self-hosted stack's metadata store runs Postgres 19.** The small database storage and
+  Realtime keep their list of projects in now runs 19, on a volume of its own, `metadata-data-19`.
+  It holds nothing of yours: `setup` registers the project again on the next start, and the
+  `metadata-data-18` volume is left as it was, for you to remove.
 
 - **Project alert emails look like the rest of our mail.** An alert about your project now arrives
   in the same layout as the pause notices, with a button to the project and a line saying why you
