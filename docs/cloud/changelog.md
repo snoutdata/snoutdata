@@ -11,6 +11,18 @@ What changed in SnoutData Cloud: the dashboard, your hosted projects, the `snout
 `@snoutdata/client`. Newest first. Studio, the desktop app, has
 [its own changelog](../changelog).
 
+## 2026-11-27
+
+- **Realtime has a switch, and starts off.** Turn it on from your project's Realtime tab, Studio's
+  project tab, or `snoutdata products enable realtime`. It starts within about a minute, and turning
+  it off leaves your publication and tables as they are. What each plan gets stays the same: signals
+  and the roster on every plan, table changes on Plus, Pro and Business.
+
+- **On dedicated servers, only the services your projects use run.** Storage and image resizing run
+  while a project on the server has Storage on, Realtime while one has Realtime on, Functions while
+  one has a function, and Containers while one has a container. The memory they would reserve goes
+  to your services, and the Resources card shows only what runs.
+
 ## 2026-11-26
 
 - **A Resources card on the project overview.** Under Storage, one bar for each part of your

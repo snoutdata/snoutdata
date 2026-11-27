@@ -219,12 +219,11 @@ switched on.
 **Snout Functions are entirely self-serve.** `snoutdata functions deploy` works on any project, on
 any plan, with nothing to switch on first. See [Snout Functions](/stack/functions).
 
-**Auth, storage and the REST and GraphQL API can be switched on per project**: with the switch at
-the top of the dashboard's Auth and Storage tabs and in its Data API tab, in Studio's project tab
-([Projects in Studio](/studio/projects)), and with `snoutdata products
-enable auth|storage|data-api`, on every plan. A switch asks for the change and it arrives within about a minute; the data API's
-container arrives when the project next restarts. Realtime needs no switch: it is on for every
-project from the start. Each product's tab in the dashboard says whether it is off, starting or on
+**Auth, storage, Realtime and the REST and GraphQL API can be switched on per project**: with the
+switch at the top of the dashboard's Auth, Storage and Realtime tabs and in its Data API tab, in
+Studio's project tab ([Projects in Studio](/studio/projects)), and with `snoutdata products
+enable auth|storage|realtime|data-api`, on every plan. A switch asks for the change and it arrives within about a minute; the data API's
+container arrives when the project next restarts. Each product's tab in the dashboard says whether it is off, starting or on
 for your project right now, and "not on this plan" where that is the reason.
 
 ## Also read

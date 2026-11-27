@@ -19,9 +19,10 @@ The first two never touch your tables: a cursor position, a typing indicator, a 
 room nobody is storing. The third is your data, and it is the one that costs money, because it
 consumes a replication slot and a walsender inside your own database.
 
-There is nothing to switch on. Every project can use Realtime from the moment it is created:
-signals and the roster on every plan, table changes on paid plans once the table is in the
-publication (below).
+Realtime is off until you switch it on: the switch on the dashboard's Realtime tab, Studio's
+project tab, or `snoutdata products enable realtime`. It starts within about a minute. Then you
+have signals and the roster on every plan, and table changes on paid plans once the table is in
+the publication (below).
 
 ## Connecting
 
@@ -399,8 +400,8 @@ batch of changes, so a thousand subscribers who are the same user cost one check
 machine, 1,000 subscribers of one table, each a different signed-in user under a policy, receive
 each change within about 0.2 seconds at the 99th percentile.
 
-A project with no connected client costs almost nothing, so every project is registered whether
-or not it ever subscribes. That is why there is no switch to throw.
+Your project is registered on it when you switch Realtime on, and forgotten when you switch it off.
+Switching it off leaves your publication and your tables as they are.
 
 ## The wire protocol
 

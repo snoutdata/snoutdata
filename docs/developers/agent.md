@@ -474,10 +474,9 @@ Do not invent these:
 The REST and GraphQL data API DOES exist, and it is on every plan, including free, like auth,
 storage, realtime and Snout Functions.
 
-**Snout Functions are self-serve**, with `deploy_function`. **Auth, storage and the data API can
-be switched on per project** with `set_product` / `snoutdata products enable`
-or in Studio's project tab, on every plan. **Realtime needs no switch**:
-it is on for every project. A switch takes about a minute to arrive, so a `/v1/data` that is not answering straight
+**Snout Functions are self-serve**, with `deploy_function`. **Auth, storage, Realtime and the data
+API can be switched on per project** with `set_product` / `snoutdata products enable`
+or in Studio's project tab, on every plan. A switch takes about a minute to arrive, so a `/v1/data` that is not answering straight
 after `set_product` is still starting, not broken. See [the project API](/stack/api).
 
 ## Also read

@@ -77,7 +77,7 @@ it, 27 checks of 27. See [the project API](/stack/api).
 
 What is honest about it today, in one place:
 
-- **Realtime needs no switch**, and what each plan gets is on [Realtime](/stack/realtime).
+- **Realtime is off until you switch it on**, like storage, and what each plan gets is on [Realtime](/stack/realtime).
 - **Google is the only OAuth provider.** Email sign-up and sign-in work and really send mail, and
   Sign in with Google works with your own Google client; GitHub, Apple and the rest are not offered
   yet.
@@ -221,7 +221,3 @@ Named here so you do not go looking:
 - **A per-plan list of database extensions.** Anything the image ships can be installed on any
   plan. [Extensions and cron jobs](/stack/extensions) covers pg_cron and pg_net, including the two
   limits that matter: a paused project runs no scheduled jobs, and at most three run at once.
-- **Switching realtime on yourself.** Auth, storage and the data API are switches you throw
-  (`snoutdata products enable`, or the project's tab in Studio); realtime is the one we
-  still turn on for you, because its switch is not built. See
-  [the API stack, honestly](#the-api-stack-honestly).

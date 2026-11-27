@@ -251,17 +251,17 @@ it as `serverSilent`. The state shown is the last one its server sent before it 
 
 ```
 snoutdata products [--ref REF]
-snoutdata products enable  auth|storage|data-api|push [--ref REF]
-snoutdata products disable auth|storage|data-api|push [--ref REF]
+snoutdata products enable  auth|storage|data-api|push|realtime [--ref REF]
+snoutdata products disable auth|storage|data-api|push|realtime [--ref REF]
 ```
 
 Whether a project's auth (user sign-up and sign-in), storage (files), data API (REST and
-GraphQL over its tables) and [push notifications](/stack/push) are on, and switching them. Switching push
+GraphQL over its tables), [push notifications](/stack/push) and [Realtime](/stack/realtime) are on,
+and switching them. Switching push
 on or off restarts the database once. A switch asks for the change and the host
 makes it within about a minute, so `products` may show `waiting for the host` for a moment. The
-data API is on every plan, including free. Realtime
-needs no switch: it is on for every project from the start, and `products` and `projects show`
-list it as on (signals and the roster on every plan, table changes on Plus, Pro and Business).
+data API is on every plan, including free. Realtime is off until you switch it on, and then
+gives signals and the roster on every plan, and table changes on Plus, Pro and Business.
 
 ### `push credentials`
 

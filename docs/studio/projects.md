@@ -177,7 +177,8 @@ See [Snout Functions](/stack/functions).
 
 ### Realtime
 
-The tables that stream their changes, and the subscriptions open now.
+The **Realtime** switch on a cloud project and, once it is on, the tables that stream their
+changes and the subscriptions open now. See [Realtime](/stack/realtime).
 
 ### Push
 
